@@ -17,6 +17,6 @@ jobs:
     - name: Pod Install
       run: pod install
     - name: Run tests
-      run: xcodebuild clean test -project PokeWiki.xcworkspace -scheme PokeWiki -destination "platform=iOS Simulator,name=iPhone 12 Pro,OS=latest"
+      run: xcodebuild clean test -workspace PokeWiki.xcworkspace -scheme PokeWiki -destination "platform=iOS Simulator,name=iPhone 12 Pro,OS=latest"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.2.1
