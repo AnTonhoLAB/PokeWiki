@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31B1CDCCAB303D8BDFAC62EC /* Pods_PokeWikiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420028C8D306AB9E8279A1F6 /* Pods_PokeWikiTests.framework */; };
 		3F4503FF27866D1E007874FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4503FE27866D1E007874FF /* AppDelegate.swift */; };
 		3F45040127866D1E007874FF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F45040027866D1E007874FF /* SceneDelegate.swift */; };
 		3F45040327866D1E007874FF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F45040227866D1E007874FF /* ViewController.swift */; };
@@ -15,6 +16,8 @@
 		3F45040E27866D20007874FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F45040C27866D20007874FF /* LaunchScreen.storyboard */; };
 		3F45041927866D21007874FF /* PokeWikiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F45041827866D21007874FF /* PokeWikiTests.swift */; };
 		3F45042427866D21007874FF /* PokeWikiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F45042327866D21007874FF /* PokeWikiUITests.swift */; };
+		81ED9D8FA54C21BA7E789C52 /* Pods_PokeWiki_PokeWikiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D324DB8D51F18C3C16E7E5 /* Pods_PokeWiki_PokeWikiUITests.framework */; };
+		F74BB952040CC8AD84D067F9 /* Pods_PokeWiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC52D497237F72B6F7997D7D /* Pods_PokeWiki.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15D324DB8D51F18C3C16E7E5 /* Pods_PokeWiki_PokeWikiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokeWiki_PokeWikiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BB3DD2139AD4E896F6CCEB6 /* Pods-PokeWikiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWikiTests.release.xcconfig"; path = "Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests.release.xcconfig"; sourceTree = "<group>"; };
 		3F4503FB27866D1E007874FF /* PokeWiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeWiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F4503FE27866D1E007874FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F45040027866D1E007874FF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +54,13 @@
 		3F45041F27866D21007874FF /* PokeWikiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokeWikiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F45042327866D21007874FF /* PokeWikiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeWikiUITests.swift; sourceTree = "<group>"; };
 		3F45042527866D21007874FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		420028C8D306AB9E8279A1F6 /* Pods_PokeWikiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokeWikiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5102103C3C9CE5708F17401D /* Pods-PokeWikiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWikiTests.debug.xcconfig"; path = "Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests.debug.xcconfig"; sourceTree = "<group>"; };
+		61F6FE173F8151E06648B295 /* Pods-PokeWiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWiki.release.xcconfig"; path = "Target Support Files/Pods-PokeWiki/Pods-PokeWiki.release.xcconfig"; sourceTree = "<group>"; };
+		AF6B6834E2F5415A14DFCFAA /* Pods-PokeWiki-PokeWikiUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWiki-PokeWikiUITests.debug.xcconfig"; path = "Target Support Files/Pods-PokeWiki-PokeWikiUITests/Pods-PokeWiki-PokeWikiUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		B44823DF63FD9738598349DF /* Pods-PokeWiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWiki.debug.xcconfig"; path = "Target Support Files/Pods-PokeWiki/Pods-PokeWiki.debug.xcconfig"; sourceTree = "<group>"; };
+		D149E4211D544C37FA04C5B1 /* Pods-PokeWiki-PokeWikiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWiki-PokeWikiUITests.release.xcconfig"; path = "Target Support Files/Pods-PokeWiki-PokeWikiUITests/Pods-PokeWiki-PokeWikiUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DC52D497237F72B6F7997D7D /* Pods_PokeWiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokeWiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F74BB952040CC8AD84D067F9 /* Pods_PokeWiki.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31B1CDCCAB303D8BDFAC62EC /* Pods_PokeWikiTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81ED9D8FA54C21BA7E789C52 /* Pods_PokeWiki_PokeWikiUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +98,8 @@
 				3F45041727866D21007874FF /* PokeWikiTests */,
 				3F45042227866D21007874FF /* PokeWikiUITests */,
 				3F4503FC27866D1E007874FF /* Products */,
+				46938580D6460287858ED9E3 /* Pods */,
+				48BA280907B54E6FC831F16A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,7 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				3F45043E27866F1D007874FF /* Persistence */,
-				3F45043D27866F06007874FF /* Scene */,
+				3F45043D27866F06007874FF /* Scenes */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -152,12 +169,12 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
-		3F45043D27866F06007874FF /* Scene */ = {
+		3F45043D27866F06007874FF /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
 				3F45040227866D1E007874FF /* ViewController.swift */,
 			);
-			path = Scene;
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		3F45043E27866F1D007874FF /* Persistence */ = {
@@ -168,6 +185,30 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
+		46938580D6460287858ED9E3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B44823DF63FD9738598349DF /* Pods-PokeWiki.debug.xcconfig */,
+				61F6FE173F8151E06648B295 /* Pods-PokeWiki.release.xcconfig */,
+				AF6B6834E2F5415A14DFCFAA /* Pods-PokeWiki-PokeWikiUITests.debug.xcconfig */,
+				D149E4211D544C37FA04C5B1 /* Pods-PokeWiki-PokeWikiUITests.release.xcconfig */,
+				5102103C3C9CE5708F17401D /* Pods-PokeWikiTests.debug.xcconfig */,
+				1BB3DD2139AD4E896F6CCEB6 /* Pods-PokeWikiTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		48BA280907B54E6FC831F16A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DC52D497237F72B6F7997D7D /* Pods_PokeWiki.framework */,
+				15D324DB8D51F18C3C16E7E5 /* Pods_PokeWiki_PokeWikiUITests.framework */,
+				420028C8D306AB9E8279A1F6 /* Pods_PokeWikiTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -175,9 +216,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F45042827866D21007874FF /* Build configuration list for PBXNativeTarget "PokeWiki" */;
 			buildPhases = (
+				00B8A716EB4158908D42BBF7 /* [CP] Check Pods Manifest.lock */,
 				3F4503F727866D1E007874FF /* Sources */,
 				3F4503F827866D1E007874FF /* Frameworks */,
 				3F4503F927866D1E007874FF /* Resources */,
+				5A6439817737D5E473BFA558 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -192,9 +235,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F45042B27866D21007874FF /* Build configuration list for PBXNativeTarget "PokeWikiTests" */;
 			buildPhases = (
+				1D5BA01D6D76AC1461104BF1 /* [CP] Check Pods Manifest.lock */,
 				3F45041027866D21007874FF /* Sources */,
 				3F45041127866D21007874FF /* Frameworks */,
 				3F45041227866D21007874FF /* Resources */,
+				012327C95496FA456E9BA329 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -210,9 +255,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F45042E27866D21007874FF /* Build configuration list for PBXNativeTarget "PokeWikiUITests" */;
 			buildPhases = (
+				EF0BC7AAE03E53F42293E090 /* [CP] Check Pods Manifest.lock */,
 				3F45041B27866D21007874FF /* Sources */,
 				3F45041C27866D21007874FF /* Frameworks */,
 				3F45041D27866D21007874FF /* Resources */,
+				A1B85FFE50524DB573C29391 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -291,6 +338,126 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00B8A716EB4158908D42BBF7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PokeWiki-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		012327C95496FA456E9BA329 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1D5BA01D6D76AC1461104BF1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PokeWikiTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5A6439817737D5E473BFA558 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWiki/Pods-PokeWiki-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWiki/Pods-PokeWiki-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PokeWiki/Pods-PokeWiki-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1B85FFE50524DB573C29391 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWiki-PokeWikiUITests/Pods-PokeWiki-PokeWikiUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PokeWiki-PokeWikiUITests/Pods-PokeWiki-PokeWikiUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PokeWiki-PokeWikiUITests/Pods-PokeWiki-PokeWikiUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF0BC7AAE03E53F42293E090 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PokeWiki-PokeWikiUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3F4503F727866D1E007874FF /* Sources */ = {
@@ -465,6 +632,7 @@
 		};
 		3F45042927866D21007874FF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B44823DF63FD9738598349DF /* Pods-PokeWiki.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -484,6 +652,7 @@
 		};
 		3F45042A27866D21007874FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61F6FE173F8151E06648B295 /* Pods-PokeWiki.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -503,6 +672,7 @@
 		};
 		3F45042C27866D21007874FF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5102103C3C9CE5708F17401D /* Pods-PokeWikiTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -525,6 +695,7 @@
 		};
 		3F45042D27866D21007874FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1BB3DD2139AD4E896F6CCEB6 /* Pods-PokeWikiTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -547,6 +718,7 @@
 		};
 		3F45042F27866D21007874FF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF6B6834E2F5415A14DFCFAA /* Pods-PokeWiki-PokeWikiUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -567,6 +739,7 @@
 		};
 		3F45043027866D21007874FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D149E4211D544C37FA04C5B1 /* Pods-PokeWiki-PokeWikiUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
