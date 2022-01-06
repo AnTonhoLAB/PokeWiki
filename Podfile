@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
 
 # source to download GGDevelopmentKit
 source 'https://github.com/AnTonhoLAB/Podspecs.git'
@@ -9,8 +9,8 @@ target 'PokeWiki' do
   use_frameworks!
 
   # Pods for PokeWiki
-  pod 'RxSwift', '6.2.0'
-  pod 'RxCocoa', '6.2.0'
+  pod 'RxSwift', '~> 6.2.0'
+  pod 'RxCocoa', '~> 6.2.0'
   pod 'Alamofire', '~> 5.5'
   pod 'GGDevelopmentKit', '~> 0.1.0'
 

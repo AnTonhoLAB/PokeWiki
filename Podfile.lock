@@ -16,8 +16,8 @@ DEPENDENCIES:
   - Alamofire (~> 5.5)
   - GGDevelopmentKit (~> 0.1.0)
   - RxBlocking (= 6.2.0)
-  - RxCocoa (= 6.2.0)
-  - RxSwift (= 6.2.0)
+  - RxCocoa (~> 6.2.0)
+  - RxSwift (~> 6.2.0)
   - RxTest (= 6.2.0)
 
 SPEC REPOS:
@@ -40,6 +40,6 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   RxTest: 0c692fa672b694373ba86d2b00033595297a2831
 
-PODFILE CHECKSUM: f6e9f69a18041371e8f65dc20ce31d1ff03c4f26
+PODFILE CHECKSUM: 54ca9445b5f0b1bbe7b32f43daf9bc7aa0c4006d
 
 COCOAPODS: 1.11.0
