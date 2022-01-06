@@ -10,6 +10,8 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+    - name: pod repo pull
+      run: pod repo add GGDevelopmentKit https://${{ secrets.ACCESS_TOKEN }}@github.com/AnTonhoLAB/Podspecs.git
     - name: Pod Install
       run: pod install
     - name: Run tests
