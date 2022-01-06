@@ -16,7 +16,7 @@
   - RxSwift
   - Alamofire
 
-Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FcHi00B5LWVzys3rcmXGkDk%2FMinhas-evolu%25C3%25A7%25C3%25B5es-APP%3Fnode-id%3D0%253A1)
+Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.figma.com/file/GMPQraVT38Pdd2s2a8YIEJ/PokeWiki?node-id=11%3A2272)
 
 ## Requirements
 
