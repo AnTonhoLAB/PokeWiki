@@ -15,10 +15,10 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 5.5)
   - GGDevelopmentKit (~> 0.1.0)
-  - RxBlocking (= 6.2.0)
-  - RxCocoa (~> 6.2.0)
-  - RxSwift (~> 6.2.0)
-  - RxTest (= 6.2.0)
+  - RxBlocking
+  - RxCocoa (>= 5.0.0)
+  - RxSwift (>= 5.0.0)
+  - RxTest
 
 SPEC REPOS:
   https://github.com/Crowlleey/Podspecs.git:
@@ -40,6 +40,6 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   RxTest: 0c692fa672b694373ba86d2b00033595297a2831
 
-PODFILE CHECKSUM: 54ca9445b5f0b1bbe7b32f43daf9bc7aa0c4006d
+PODFILE CHECKSUM: 5886137b459b1a2097dd18aed0ee009ab655e0a9
 
 COCOAPODS: 1.11.0

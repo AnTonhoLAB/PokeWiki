@@ -9,16 +9,16 @@ target 'PokeWiki' do
   use_frameworks!
 
   # Pods for PokeWiki
-  pod 'RxSwift', '~> 6.2.0'
-  pod 'RxCocoa', '~> 6.2.0'
+  pod 'RxSwift', '>= 5.0.0'
+  pod 'RxCocoa', '>= 5.0.0'
   pod 'Alamofire', '~> 5.5'
   pod 'GGDevelopmentKit', '~> 0.1.0'
 
   target 'PokeWikiTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxBlocking', '6.2.0'
-    pod 'RxTest', '6.2.0'
+    pod 'RxBlocking'
+    pod 'RxTest'
   end
 
   target 'PokeWikiUITests' do
