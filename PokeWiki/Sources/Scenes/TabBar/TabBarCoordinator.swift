@@ -29,15 +29,8 @@ class TabBarCoordinator: GGBaseCoordinator<UITabBarController> {
         listCoordinator.rootViewController.tabBarItem = listTabBarItem
         listCoordinator.start()
 
-        let profileCoordinator = PokemonListCoordinator()
-        let profileTabBarItem = UITabBarItem(title: "", image: #imageLiteral(resourceName: "PokeballIcon"), selectedImage: #imageLiteral(resourceName: "PokeballIcon"))
-        profileTabBarItem.tag = 1
-        profileCoordinator.rootViewController.tabBarItem = profileTabBarItem
-        profileCoordinator.start()
-
-        tabBarController.setViewControllers([listCoordinator.rootViewController,
-                                             profileCoordinator.rootViewController],
+        tabBarController.setViewControllers([listCoordinator.rootViewController],
                                              animated: true)
-       }
+    }
 }
 

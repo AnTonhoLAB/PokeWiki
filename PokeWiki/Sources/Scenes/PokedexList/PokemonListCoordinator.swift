@@ -16,6 +16,6 @@ class PokemonListCoordinator: GGCoordinator {
 
     override func start() {
         let listViewController = ViewController()
-        self.show(listViewController)
+        show(listViewController)
     }
 }
