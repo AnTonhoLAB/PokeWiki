@@ -26,7 +26,7 @@ class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
         } else {
             return Single<PokemonListResponse>
                 .create { single in
-                    single(.failure(ListError.NoConnection))
+                    single(.failure(PokemonListError.NoConnection))
                     return Disposables.create()
                 }
         }

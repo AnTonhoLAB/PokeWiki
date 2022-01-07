@@ -39,15 +39,14 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     private func createServiceState() -> Driver<ServiceState> {
             
         let activityIndicator = ActivityIndicator()
+        let errorTracker = ErrorTracker()
         
-        let loadDebits = viewWillAppear
+        let loadList = viewWillAppear
             .flatMapLatest { [weak self] _ -> Observable<ServiceState> in
-                guard let self = self else { return .just(ServiceState(type: .connectionError)) }
+                guard let self = self else { return .just(ServiceState(type: .error)) }
                 return self.interactor.fetchAll()
                     .trackActivity(activityIndicator)
-                    .do(onNext: { (response) in
-                        
-                    })
+                    .trackError(errorTracker)
                     .map { ServiceState(type: .success, info: $0) }
             }
 
@@ -55,10 +54,14 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
             .filter { $0 }
             .map { _ in ServiceState(type: .loading) }
             .asObservable()
-
+        
+        let errorToShow = errorTracker
+            .map { ServiceState(type: .error, info: $0)}
+            .asObservable()
+        
         return Observable
-            .merge(loadingShown, loadDebits)
-            .asDriver(onErrorJustReturn: ServiceState(type: .connectionError))
+            .merge(loadingShown, loadList, errorToShow)
+            .asDriver(onErrorJustReturn: ServiceState(type: .error))
     }
     
 }
@@ -67,11 +70,15 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
 // MARK: - Helpers
 extension PokemonListAllViewModel {
     
+    // MARK: - Route
+    enum Route: Int, Equatable {
+        case openDetail
+    }
+    
     // MARK: - State
     enum State: Equatable {
         case loading
         case success
-        case connectionError
         case error
     }
 }

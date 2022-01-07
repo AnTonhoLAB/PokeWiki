@@ -36,6 +36,6 @@ struct PokemonItem: Decodable {
     let url: String
 }
 
-enum ListError: Error {
+enum PokemonListError: Error {
     case NoConnection
 }
