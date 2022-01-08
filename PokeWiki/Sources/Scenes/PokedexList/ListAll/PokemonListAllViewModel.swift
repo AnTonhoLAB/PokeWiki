@@ -17,23 +17,28 @@ protocol PokemonListAllViewModelProtocol {
     
     // MARK: - Outputs
     var serviceState: Driver<Navigation<PokemonListAllViewModel.State>> { get }
+    var pokemonList: Driver<[PokemonItem]> { get }
 }
 
 final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     
     typealias ServiceState = Navigation<State>
-    let interactor: PokemonListAllInteractorProtocol
-    
-    init(interactor: PokemonListAllInteractorProtocol) {
-        self.interactor = interactor
-        self.serviceState = createServiceState()
-    }
+    private let interactor: PokemonListAllInteractorProtocol
+    private let pokemonListResponse = PublishSubject<[PokemonItem]>()
     
     // MARK: - Inputs
     let viewWillAppear: PublishSubject<Void> = .init()
     
     // MARK: - Outputs
     private(set) var serviceState: Driver<ServiceState> = .never()
+    private(set) var pokemonList: Driver<[PokemonItem]>
+    
+    // MARK: - Initializer
+    init(interactor: PokemonListAllInteractorProtocol) {
+        self.interactor = interactor
+        self.pokemonList = pokemonListResponse.asDriverOnErrorJustComplete()
+        self.serviceState = createServiceState()
+    }
     
     // MARK: - Internal methods
     private func createServiceState() -> Driver<ServiceState> {
@@ -47,6 +52,9 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
                 return self.interactor.fetchAll()
                     .trackActivity(activityIndicator)
                     .trackError(errorTracker)
+                    .do(onNext: { (pokemonResponse) in
+                        self.pokemonListResponse.onNext(pokemonResponse.results)
+                    })
                     .map { ServiceState(type: .success, info: $0) }
             }
 
