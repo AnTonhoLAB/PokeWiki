@@ -59,6 +59,10 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
                         self.pokemonResponse.onNext(pokemonDetail)
                     })
                     .map { ServiceState(type: .success, info: $0) }
+                    .catch { (error) -> Observable<Navigation<State>> in
+                        print(error)
+                        return .just(ServiceState(type: .error))
+                    }
             }
 
         let loadingShown = activityIndicator
