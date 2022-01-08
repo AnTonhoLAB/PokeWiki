@@ -15,7 +15,10 @@ class PokemonListCoordinator: GGCoordinator {
     }
 
     override func start() {
-        let listViewController = ViewController()
+        let service = PokemonListAllService()
+        let interactor = PokemonListAllInteractor(service: service)
+        let viewModel = PokemonListAllViewModel(interactor: interactor)
+        let listViewController = PokemonListViewController(viewModel: viewModel)
         show(listViewController)
     }
 }
