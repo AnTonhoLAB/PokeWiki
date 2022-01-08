@@ -46,17 +46,16 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
+        let fetchAll = interactor.fetchAll()
+            .trackActivity(activityIndicator)
+            .trackError(errorTracker)
+            .do(onNext: { (pokemonResponse) in
+                self.pokemonListResponse.onNext(pokemonResponse.results)
+            })
+            .map { ServiceState(type: .success, info: $0) }
+        
         let loadList = viewWillAppear
-            .flatMapLatest { [weak self] _ -> Observable<ServiceState> in
-                guard let self = self else { return .just(ServiceState(type: .error)) }
-                return self.interactor.fetchAll()
-                    .trackActivity(activityIndicator)
-                    .trackError(errorTracker)
-                    .do(onNext: { (pokemonResponse) in
-                        self.pokemonListResponse.onNext(pokemonResponse.results)
-                    })
-                    .map { ServiceState(type: .success, info: $0) }
-            }
+            .flatMapLatest { fetchAll }
 
         let loadingShown = activityIndicator
             .filter { $0 }

@@ -49,16 +49,20 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
-        let loadList = viewWillAppear
-            .flatMapLatest { [weak self] _ -> Observable<ServiceState> in
-                guard let self = self else { return .just(ServiceState(type: .error)) }
-                return self.interactor.fetchAPockemon(with: name)
-                    .trackActivity(activityIndicator)
-                    .trackError(errorTracker)
-                    .do(onNext: { pokemonDetail in
-                        self.pokemonResponse.onNext(pokemonDetail)
-                    })
-                    .map { ServiceState(type: .success, info: $0) }
+        let fetchDetail = interactor.fetchAPockemon(with: name)
+            .trackActivity(activityIndicator)
+            .trackError(errorTracker)
+            .do(onNext: { pokemonDetail in
+                self.pokemonResponse.onNext(pokemonDetail)
+            })
+            .map { ServiceState(type: .success, info: $0) }
+            .catch { (error) -> Observable<Navigation<State>> in
+                return .just(ServiceState(type: .error))
+            }
+        
+        let loadDetail = viewWillAppear
+            .flatMapLatest { _ -> Observable<ServiceState> in
+                fetchDetail
             }
 
         let loadingShown = activityIndicator
@@ -71,7 +75,7 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
             .asObservable()
         
         return Observable
-            .merge(loadingShown, loadList, errorToShow)
+            .merge(loadingShown, loadDetail, errorToShow)
             .asDriver(onErrorJustReturn: ServiceState(type: .error))
     }
     

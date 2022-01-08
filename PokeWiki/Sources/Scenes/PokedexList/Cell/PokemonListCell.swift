@@ -15,7 +15,7 @@ class PokemonListCell: UICollectionViewCell {
     static let identifier = "PokemonListCell"
     
     // MARK: - Private properties
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     // MARK: - Initializers
     override init(frame: CGRect = .zero) {
@@ -29,18 +29,16 @@ class PokemonListCell: UICollectionViewCell {
     
     // MARK: - Public methods
     func setup(viewModel: PokemonListCellViewModelProtocol) {
-        self.nameLabel.text = viewModel.name
         viewModel.viewWillAppear.onNext(())
         
         viewModel.pokemonDetail.drive { (detail) in
+            self.nameLabel.text = detail.name
             self.backgroundColor = detail.types.first?.type.name.color()
         }.disposed(by: disposeBag)
-
         
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-                print(object)
             }
             .disposed(by: disposeBag)
 
@@ -51,8 +49,6 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Private methods
     private func setupViews() {
         self.addSubview(self.nameLabel)
-        self.backgroundColor = .blue
-        
         nameLabel.textAlignment = .center
         nameLabel.textColor = .white
         nameLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -60,5 +56,12 @@ class PokemonListCell: UICollectionViewCell {
         nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.backgroundColor = .white
+        self.nameLabel.text = ""
+        disposeBag = DisposeBag()
     }
 }
