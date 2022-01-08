@@ -57,7 +57,6 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
             })
             .map { ServiceState(type: .success, info: $0) }
             .catch { (error) -> Observable<Navigation<State>> in
-                print(error)
                 return .just(ServiceState(type: .error))
             }
         
