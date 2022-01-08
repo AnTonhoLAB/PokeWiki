@@ -5,7 +5,7 @@
     <img src="https://github.com/AnTonhoLAB/PokeWiki/actions/workflows/Tests.yml/badge.svg" alt="building" />
     <br />
     <a href="https://codecov.io/github/AnTonhoLAB/PokeWiki?branch=master" alt="codecov.io" title="Codecov"><img src="https://codecov.io/github/AnTonhoLAB/PokeWiki/coverage.svg?branch=master" /></a>
-    <a href="https://codebeat.co/projects/github-com-antonholab-pokewiki-master"><img alt="codebeat badge" src="https://codebeat.co/badges/c041788d-216f-423c-8289-e7dcc9e24064" /></a>
+    <a href="https://codebeat.co/projects/github-com-antonholab-pokewiki-master"><img alt="codebeat badge" src="https://codebeat.co/badges/af4cabc8-3cf6-48da-aa2a-1b718279f6d4" /></a>
 </p>
 
 # PokeWiki
