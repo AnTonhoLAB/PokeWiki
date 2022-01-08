@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import RxSwift
 
 class PokemonListCell: UICollectionViewCell {
     private let nameLabel: UILabel = UILabel(frame: .zero)
     
     // MARK: - Static variables
     static let identifier = "PokemonListCell"
+    
+    private let disposeBag = DisposeBag()
     
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
@@ -21,8 +24,24 @@ class PokemonListCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     
-    func setup(name: String) {
-        self.nameLabel.text = name
+    func setup(viewModel: PokemonListCellViewModelProtocol) {
+        self.nameLabel.text = viewModel.name
+        viewModel.viewWillAppear.onNext(())
+        
+        viewModel.pokemonDetail.drive { (detail) in
+            self.backgroundColor = detail.types.first?.type.name.color()
+        }.disposed(by: disposeBag)
+
+        
+        viewModel.serviceState
+            .filter { $0.type == .success }
+            .drive { object in
+                print(object)
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.viewWillAppear
+            .onNext(())
     }
     
     private func setupViews() {

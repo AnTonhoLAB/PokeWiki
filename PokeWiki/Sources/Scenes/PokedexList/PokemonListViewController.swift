@@ -16,7 +16,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(PokemonListCell.self, forCellWithReuseIdentifier: "PokemonListCell")
+        collectionView.register(PokemonListCell.self, forCellWithReuseIdentifier: PokemonListCell.identifier)
         
         return collectionView
     }()
@@ -44,7 +44,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-                print(object)
+                
             }
             .disposed(by: disposeBag)
 
@@ -59,8 +59,10 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .bind(to: collectionView.rx
                     .items(cellIdentifier: PokemonListCell.identifier,
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
-
-                cell.setup(name: pokemon.name)
+                let service = PokemonListCellService()
+                let interactor = PokemonListCellInteractor(service: service)
+                let viewModel = PokemonListCellViewModel(name: pokemon.name, interactor: interactor)
+                cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
@@ -80,18 +82,6 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-    }
-    
-    fileprivate var sectionInsets: UIEdgeInsets {
-        return .zero
-    }
-
-    fileprivate var itemsPerRow: CGFloat {
-        return 2
-    }
-
-    fileprivate var interitemSpace: CGFloat {
-        return 10.0
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

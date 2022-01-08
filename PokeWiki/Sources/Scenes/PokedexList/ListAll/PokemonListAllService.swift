@@ -30,20 +30,3 @@ final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProto
             }
     }
 }
-
-struct PokemonListResponse: Decodable {
-    let count: Int
-    let next: String?
-    let previous: String?
-    let results: [PokemonItem]
-}
-
-struct PokemonItem: Decodable {
-    let name: String
-    let url: String
-}
-
-enum PokemonListError: Error {
-    case internalError
-    case NoConnection
-}
