@@ -14,8 +14,10 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Static variables
     static let identifier = "PokemonListCell"
     
+    // MARK: - Private properties
     private let disposeBag = DisposeBag()
     
+    // MARK: - Initializers
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
         self.setupViews()
@@ -24,6 +26,8 @@ class PokemonListCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     
+    
+    // MARK: - Public methods
     func setup(viewModel: PokemonListCellViewModelProtocol) {
         self.nameLabel.text = viewModel.name
         viewModel.viewWillAppear.onNext(())
@@ -44,6 +48,7 @@ class PokemonListCell: UICollectionViewCell {
             .onNext(())
     }
     
+    // MARK: - Private methods
     private func setupViews() {
         self.addSubview(self.nameLabel)
         self.backgroundColor = .blue

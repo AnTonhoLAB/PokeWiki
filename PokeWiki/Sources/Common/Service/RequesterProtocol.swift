@@ -13,6 +13,8 @@ protocol RequesterProtocol {
 }
 
 extension RequesterProtocol {
+    
+    // Generic function to call Alamofire and return espected type
     func makeRequest<T>(url: String, single: @escaping (Result<T, Error>) -> Void) where T: Decodable {
         AF.request(url)
             .responseDecodable(of: T.self) { (response) in

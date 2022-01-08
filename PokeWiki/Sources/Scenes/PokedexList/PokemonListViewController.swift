@@ -52,6 +52,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .onNext(())
     }
     
+    // MARK: - Private methods
     private func setupRx() {
         viewModel
             .pokemonList
@@ -77,6 +78,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         self.view.backgroundColor = .white
     }
     
+    // MARK: - Delegate methods
     private func setupConstraints() {
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
