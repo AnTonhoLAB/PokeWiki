@@ -14,7 +14,7 @@ protocol PokemonListAllServiceProtocol {
 
 final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProtocol {
         
-    private let baseURL = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0"
+    private let baseURL = "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
     
     func fetchAll() -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>
