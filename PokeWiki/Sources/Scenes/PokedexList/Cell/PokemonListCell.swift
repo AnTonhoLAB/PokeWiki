@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import AlamofireImage
 
 class PokemonListCell: UICollectionViewCell {
     
@@ -16,7 +17,10 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Private properties
     private let imageBG = UIImageView(image: #imageLiteral(resourceName: "BGCardNeutral").withRenderingMode(.alwaysTemplate))
     private let imageHLBG = UIImageView(image: #imageLiteral(resourceName: "highLightBG"))
+    private let pokemonImage = UIImageView(frame: .zero)
     private let nameLabel: UILabel = UILabel(frame: .zero)
+    private let numberLabel: UILabel = UILabel(frame: .zero)
+    private let font = UIFont(name: "GillSans-Bold", size: 17)
     
     private var disposeBag = DisposeBag()
     
@@ -37,7 +41,12 @@ class PokemonListCell: UICollectionViewCell {
         viewModel.pokemonDetail.drive { [weak self] (detail) in
             guard let self = self else { return }
             self.nameLabel.text = detail.name
+            self.numberLabel.text = "#\(detail.id)"
             self.imageBG.tintColor = detail.types.first?.type.name.color()
+            
+            if let url = URL(string: detail.sprites.other.officialArtwork.frontDefault) {
+                self.pokemonImage.af.setImage(withURL: url)
+            }
         }.disposed(by: disposeBag)
         
         viewModel.serviceState
@@ -52,11 +61,11 @@ class PokemonListCell: UICollectionViewCell {
     
     // MARK: - Private methods
     private func setupViews() {
-        imageBG.addSubview(self.nameLabel)
+        imageBG.addSubview(nameLabel)
+        imageBG.addSubview(numberLabel)
         addSubview(imageBG)
         addSubview(imageHLBG)
-        nameLabel.font = UIFont(name: "GillSans-Bold", size: 17)
-        nameLabel.numberOfLines = 2
+        imageHLBG.addSubview(pokemonImage)
         
         imageBG.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         imageBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -69,21 +78,39 @@ class PokemonListCell: UICollectionViewCell {
         imageHLBG.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor).isActive = true
         imageHLBG.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 24).isActive = true
         imageHLBG.translatesAutoresizingMaskIntoConstraints = false
+
+        pokemonImage.contentMode = .scaleAspectFill
+        pokemonImage.topAnchor.constraint(equalTo: imageHLBG.topAnchor, constant: -20).isActive = true
+        pokemonImage.bottomAnchor.constraint(equalTo: imageHLBG.bottomAnchor).isActive = true
+        pokemonImage.trailingAnchor.constraint(equalTo: imageHLBG.trailingAnchor, constant: 15).isActive = true
+        pokemonImage.leadingAnchor.constraint(equalTo: imageHLBG.leadingAnchor, constant: 5).isActive = true
+        pokemonImage.translatesAutoresizingMaskIntoConstraints = false
         
+        nameLabel.font = font
+        nameLabel.numberOfLines = 2
         nameLabel.textAlignment = .center
         nameLabel.textColor = .white
-        
         nameLabel.bottomAnchor.constraint(equalTo: imageBG.bottomAnchor, constant: -8).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor, constant: -5).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 5).isActive = true
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        numberLabel.font = font
+        numberLabel.textAlignment = .left
+        numberLabel.textColor = .white
+        numberLabel.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -10).isActive = true
+        numberLabel.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor, constant: -10).isActive = true
+        numberLabel.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 10).isActive = true
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.backgroundColor = .white
         self.imageBG.tintColor = .white
+        self.pokemonImage.image = nil
         self.nameLabel.text = ""
+        self.numberLabel.text = ""
         disposeBag = DisposeBag()
     }
 }

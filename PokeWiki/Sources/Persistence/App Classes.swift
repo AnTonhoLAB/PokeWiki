@@ -112,6 +112,7 @@ struct PokemonDetail: Codable {
     let stats: [Stat]
     let types: [TypeElement]
     let weight: Int
+    let sprites: Sprites
 
     enum CodingKeys: String, CodingKey {
         case abilities
@@ -124,6 +125,40 @@ struct PokemonDetail: Codable {
         case locationAreaEncounters = "location_area_encounters"
         case moves, name, order
         case species, stats, types, weight
+        case sprites
+    }
+}
+
+class Sprites: Codable {
+    let backDefault: String?
+    let backFemale: String?
+    let backShiny: String?
+    let backShinyFemale: String?
+    let frontDefault: String
+    let frontFemale: String?
+    let frontShiny: String?
+    let frontShinyFemale: String?
+    let other: OtherSprites
+
+    enum CodingKeys: String, CodingKey {
+        case backDefault = "back_default"
+        case backFemale = "back_female"
+        case backShiny = "back_shiny"
+        case backShinyFemale = "back_shiny_female"
+        case frontDefault = "front_default"
+        case frontFemale = "front_female"
+        case frontShiny = "front_shiny"
+        case frontShinyFemale = "front_shiny_female"
+        case other
+    }
+}
+
+// MARK: - Other
+struct OtherSprites: Codable {
+    let officialArtwork: OfficialArtwork
+
+    enum CodingKeys: String, CodingKey {
+        case officialArtwork = "official-artwork"
     }
 }
 
