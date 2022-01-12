@@ -31,7 +31,8 @@ class PokemonListCell: UICollectionViewCell {
     func setup(viewModel: PokemonListCellViewModelProtocol) {
         viewModel.viewWillAppear.onNext(())
         
-        viewModel.pokemonDetail.drive { (detail) in
+        viewModel.pokemonDetail.drive { [weak self] (detail) in
+            guard let self = self else { return }
             self.nameLabel.text = detail.name
             self.backgroundColor = detail.types.first?.type.name.color()
         }.disposed(by: disposeBag)

@@ -52,8 +52,9 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
         let fetchDetail = interactor.fetchAPockemon(with: name)
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
-            .do(onNext: { pokemonDetail in
-                self.pokemonResponse.onNext(pokemonDetail)
+            .do(onNext: { [pokemonResponse] pokemonDetail in
+                
+               pokemonResponse.onNext(pokemonDetail)
             })
             .map { ServiceState(type: .success, info: $0) }
             .catch { (error) -> Observable<Navigation<State>> in

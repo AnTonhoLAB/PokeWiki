@@ -9,14 +9,18 @@ import Foundation
 import RxSwift
 
 protocol PokemonListAllServiceProtocol {
-    func fetchAll() -> Single<PokemonListResponse>
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse>
+}
+
+private enum URLParams: String {
+    case limit
+    case offset
 }
 
 final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProtocol {
         
-    private let baseURL = "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
-    
-    func fetchAll() -> Single<PokemonListResponse> {
+    private let baseURL = "https://pokeapi.co/api/v2/pokemon"
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>
             .create { [weak self] single in
             
@@ -25,7 +29,8 @@ final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProto
                     return Disposables.create()
                 }
                 
-                self.makeRequest(url: self.baseURL, single: single)
+                let params = [URLParams.limit.rawValue: "\(limit)", URLParams.offset.rawValue: "\(offSet)"]
+                self.makeRequest(url: self.baseURL, urlParams: params, single: single)
                 return Disposables.create()
             }
     }
