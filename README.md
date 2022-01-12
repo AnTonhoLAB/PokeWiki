@@ -12,11 +12,11 @@
 # PokeWiki
 ### Um app de pokedex feito em swift com a lista de todos pokemons
 
-
 ## Tecnologias utilizadas: 
   - [MVVM-C](assets/PokeWikiArc.png)
   - RxSwift
   - Alamofire
+  - [GGDevelopmentKit](https://github.com/AnTonhoLAB/GGDevelopmentKit)
 
 Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.figma.com/file/GMPQraVT38Pdd2s2a8YIEJ/PokeWiki?node-id=11%3A2272)
 
