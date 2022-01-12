@@ -67,12 +67,11 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         
-        collectionView.rx.willDisplayCellIndex
-            .asDriver()
-            .drive { object in
-                print(object)
-            }
-        .disposed(by: disposeBag)
+        collectionView.rx.willDisplayLastCell
+            .filter { $0 }
+            .mapToVoid()
+            .bind(to: viewModel.loadMore)
+            .disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
     }

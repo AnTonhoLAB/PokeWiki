@@ -52,10 +52,11 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
-        let fetchList = interactor.fetchList(with: 10, offSet: 0)
+        let fetchList = interactor.fetchList(with: 150, offSet: 0)
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
-            .do(onNext: { (pokemonResponse) in
+            .do(onNext: { [weak self] (pokemonResponse) in
+                guard let self = self else { return }
                 self.pokemonListResponse.onNext(pokemonResponse.results)
             })
             .map { ServiceState(type: .success, info: $0) }
