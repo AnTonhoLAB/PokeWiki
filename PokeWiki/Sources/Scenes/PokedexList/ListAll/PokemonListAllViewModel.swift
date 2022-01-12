@@ -26,10 +26,8 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     
     // MARK: - Internal properties
     private let interactor: PokemonListAllInteractorProtocol
-    private let pokemonListResponse = PublishSubject<[PokemonItem]>()
-    
-    // MARK: - Public properties
-    let paginationSupport: GGPaginationSupport = GGPaginationSupport()
+    private let pokemonListResponse = BehaviorRelay<[PokemonItem]>(value: [])
+    private let paginationSupport: GGPaginationSupport = GGPaginationSupport(limit: 20)
     
     // MARK: - Inputs
     let viewDidLoad: PublishSubject<Void> = .init()
@@ -48,40 +46,45 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     
     // MARK: - Internal methods
     private func createServiceState() -> Driver<ServiceState> {
+                
+            let activityIndicator = ActivityIndicator()
+            let errorTracker = ErrorTracker()
             
-        let activityIndicator = ActivityIndicator()
-        let errorTracker = ErrorTracker()
-        
-        let fetchList = interactor.fetchList(with: 150, offSet: 0)
-            .trackActivity(activityIndicator)
-            .trackError(errorTracker)
-            .do(onNext: { [weak self] (pokemonResponse) in
-                guard let self = self else { return }
-                self.pokemonListResponse.onNext(pokemonResponse.results)
-            })
-            .map { ServiceState(type: .success, info: $0) }
-        
-        let load = Observable.merge([viewDidLoad, loadMore])
-        
-        let loadList = load
-            .flatMapLatest { fetchList }
+            let load = Observable.merge([viewDidLoad, loadMore])
+            
+            let loadList = load
+                .filter { self.paginationSupport.needCall() }
+                .flatMapLatest { [weak self] _ ->  Observable<PokemonListAllViewModel.ServiceState> in
+                    
+                    guard let self = self else { return .just(ServiceState(type: .error)) }
+                    
+                    return self.interactor.fetchList(with: self.paginationSupport.limit, offSet: self.paginationSupport.offSet)
+                        .trackActivity(activityIndicator)
+                        .trackError(errorTracker)
+                        .do(onNext: { [weak self] (pokemonResponse) in
+                            guard let self = self else { return }
 
-        let loadingShown = activityIndicator
-            .filter { $0 }
-            .map { _ in ServiceState(type: .loading) }
-            .asObservable()
-        
-        let errorToShow = errorTracker
-            .map { ServiceState(type: .error, info: $0)}
-            .asObservable()
-        
-        return Observable
-            .merge(loadingShown, loadList, errorToShow)
-            .asDriver(onErrorJustReturn: ServiceState(type: .error))
-    }
-    
+                            self.pokemonListResponse.accept(self.pokemonListResponse.value + pokemonResponse.results)
+                            self.paginationSupport.size = pokemonResponse.count
+                            self.paginationSupport.validateIsLast(count: self.pokemonListResponse.value.count)
+                        })
+                        .map { ServiceState(type: .success, info: $0) }
+                }
+
+            let loadingShown = activityIndicator
+                .filter { $0 }
+                .map { _ in ServiceState(type: .loading) }
+                .asObservable()
+            
+            let errorToShow = errorTracker
+                .map { ServiceState(type: .error, info: $0)}
+                .asObservable()
+            
+            return Observable
+                .merge(loadingShown, loadList, errorToShow)
+                .asDriver(onErrorJustReturn: ServiceState(type: .error))
+        }
 }
-
 
 // MARK: - Helpers
 extension PokemonListAllViewModel {

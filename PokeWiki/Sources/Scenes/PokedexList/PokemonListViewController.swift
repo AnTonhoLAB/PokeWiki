@@ -67,7 +67,8 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         
-        collectionView.rx.willDisplayLastCell
+        collectionView.rx
+            .willDisplayLastCell
             .filter { $0 }
             .mapToVoid()
             .bind(to: viewModel.loadMore)
