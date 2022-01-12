@@ -13,7 +13,7 @@ import GGDevelopmentKit
 protocol PokemonListAllViewModelProtocol {
     
     // MARK: - Inputs
-    var viewWillAppear: PublishSubject<Void> { get }
+    var viewDidLoad: PublishSubject<Void> { get }
     
     // MARK: - Outputs
     var serviceState: Driver<Navigation<PokemonListAllViewModel.State>> { get }
@@ -23,11 +23,17 @@ protocol PokemonListAllViewModelProtocol {
 final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     
     typealias ServiceState = Navigation<State>
+    
+    // MARK: - Internal properties
     private let interactor: PokemonListAllInteractorProtocol
     private let pokemonListResponse = PublishSubject<[PokemonItem]>()
     
+    // MARK: - Public properties
+    let paginationSupport: GGPaginationSupport = GGPaginationSupport()
+    
     // MARK: - Inputs
-    let viewWillAppear: PublishSubject<Void> = .init()
+    let viewDidLoad: PublishSubject<Void> = .init()
+    let loadMore: PublishSubject<Void> = .init()
     
     // MARK: - Outputs
     private(set) var serviceState: Driver<ServiceState> = .never()
@@ -46,7 +52,7 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
-        let fetchAll = interactor.fetchAll()
+        let fetchList = interactor.fetchList(with: 10, offSet: 0)
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
             .do(onNext: { (pokemonResponse) in
@@ -54,8 +60,10 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
             })
             .map { ServiceState(type: .success, info: $0) }
         
-        let loadList = viewWillAppear
-            .flatMapLatest { fetchAll }
+        let load = Observable.merge([viewDidLoad, loadMore])
+        
+        let loadList = load
+            .flatMapLatest { fetchList }
 
         let loadingShown = activityIndicator
             .filter { $0 }

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol PokemonListAllInteractorProtocol {
-    func fetchAll() -> Single<PokemonListResponse>
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse>
 }
 
 class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
@@ -20,9 +20,9 @@ class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
         self.service = service
     }
     
-    func fetchAll() -> Single<PokemonListResponse> {
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         if NetworkingManager.isConnected  {
-            return service.fetchAll()
+            return service.fetchList(with: limit, offSet: offSet)
         } else {
             return Single<PokemonListResponse>
                 .create { single in
