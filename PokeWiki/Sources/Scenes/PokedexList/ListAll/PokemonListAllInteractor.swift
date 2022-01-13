@@ -9,26 +9,28 @@ import Foundation
 import RxSwift
 
 protocol PokemonListAllInteractorProtocol {
-    func fetchAll() -> Single<PokemonListResponse>
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse>
 }
 
 class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
     
     let service: PokemonListAllServiceProtocol
+    let networkingManager: NetworkingManagerProtocol
     
-    init(service: PokemonListAllServiceProtocol) {
+    init(service: PokemonListAllServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
         self.service = service
+        self.networkingManager = networkingManager
     }
     
-    func fetchAll() -> Single<PokemonListResponse> {
-        if NetworkingManager.isConnected  {
-            return service.fetchAll()
-        } else {
+    func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
+        guard networkingManager.isConnected  else {
             return Single<PokemonListResponse>
-                .create { single in
-                    single(.failure(PokemonListError.NoConnection))
-                    return Disposables.create()
-                }
+                        .create { single in
+                            single(.failure(PokemonListError.NoConnection))
+                            return Disposables.create()
+                        }
         }
+        
+        return service.fetchList(with: limit, offSet: offSet)
     }
 }
