@@ -25,10 +25,17 @@
 		3F4504A22787C456007874FF /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4504A12787C456007874FF /* AppCoordinator.swift */; };
 		3F4504AF2787C617007874FF /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4504AE2787C617007874FF /* TabBarCoordinator.swift */; };
 		3F4504B72787C669007874FF /* PokemonListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4504B62787C669007874FF /* PokemonListCoordinator.swift */; };
+		3F7F75BF2790D12800498CE1 /* ListCellInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F75BE2790D12800498CE1 /* ListCellInteractorTests.swift */; };
+		3F7F75CB2790D15900498CE1 /* ListCellServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F75CA2790D15900498CE1 /* ListCellServiceMock.swift */; };
+		3F7F75DA2790E59300498CE1 /* ListAllInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F75D92790E59300498CE1 /* ListAllInteractorTests.swift */; };
+		3F7F75E32790E5E000498CE1 /* ListAllServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F75E22790E5E000498CE1 /* ListAllServiceMock.swift */; };
 		3FB53C902789604200802D19 /* App Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB53C8F2789604200802D19 /* App Classes.swift */; };
 		3FB53C95278960C500802D19 /* PokemonListCellInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB53C94278960C500802D19 /* PokemonListCellInteractor.swift */; };
 		3FB53C9A278960DB00802D19 /* PokemonListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB53C99278960DB00802D19 /* PokemonListCellViewModel.swift */; };
 		3FB53CA22789611000802D19 /* PokemonListCellService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB53CA12789611000802D19 /* PokemonListCellService.swift */; };
+		3FC5F642278FC35500B73B56 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC5F641278FC35500B73B56 /* String+Ext.swift */; };
+		3FC5F655278FC8FE00B73B56 /* ListAllViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC5F654278FC8FE00B73B56 /* ListAllViewModelTests.swift */; };
+		3FC5F67F278FD15000B73B56 /* ListAllInteractorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC5F67E278FD15000B73B56 /* ListAllInteractorMock.swift */; };
 		81ED9D8FA54C21BA7E789C52 /* Pods_PokeWiki_PokeWikiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D324DB8D51F18C3C16E7E5 /* Pods_PokeWiki_PokeWikiUITests.framework */; };
 		F74BB952040CC8AD84D067F9 /* Pods_PokeWiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC52D497237F72B6F7997D7D /* Pods_PokeWiki.framework */; };
 /* End PBXBuildFile section */
@@ -76,10 +83,17 @@
 		3F4504A12787C456007874FF /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3F4504AE2787C617007874FF /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		3F4504B62787C669007874FF /* PokemonListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListCoordinator.swift; sourceTree = "<group>"; };
+		3F7F75BE2790D12800498CE1 /* ListCellInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellInteractorTests.swift; sourceTree = "<group>"; };
+		3F7F75CA2790D15900498CE1 /* ListCellServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellServiceMock.swift; sourceTree = "<group>"; };
+		3F7F75D92790E59300498CE1 /* ListAllInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllInteractorTests.swift; sourceTree = "<group>"; };
+		3F7F75E22790E5E000498CE1 /* ListAllServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllServiceMock.swift; sourceTree = "<group>"; };
 		3FB53C8F2789604200802D19 /* App Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App Classes.swift"; sourceTree = "<group>"; };
 		3FB53C94278960C500802D19 /* PokemonListCellInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListCellInteractor.swift; sourceTree = "<group>"; };
 		3FB53C99278960DB00802D19 /* PokemonListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListCellViewModel.swift; sourceTree = "<group>"; };
 		3FB53CA12789611000802D19 /* PokemonListCellService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListCellService.swift; sourceTree = "<group>"; };
+		3FC5F641278FC35500B73B56 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		3FC5F654278FC8FE00B73B56 /* ListAllViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllViewModelTests.swift; sourceTree = "<group>"; };
+		3FC5F67E278FD15000B73B56 /* ListAllInteractorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllInteractorMock.swift; sourceTree = "<group>"; };
 		420028C8D306AB9E8279A1F6 /* Pods_PokeWikiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokeWikiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5102103C3C9CE5708F17401D /* Pods-PokeWikiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWikiTests.debug.xcconfig"; path = "Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		61F6FE173F8151E06648B295 /* Pods-PokeWiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWiki.release.xcconfig"; path = "Target Support Files/Pods-PokeWiki/Pods-PokeWiki.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +153,7 @@
 		3F3C701E2789194800628BC5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3FC5F63D278FC1CB00B73B56 /* Extensions */,
 				3F3C701D2789193600628BC5 /* Service */,
 			);
 			path = Common;
@@ -190,6 +205,9 @@
 		3F45041727866D21007874FF /* PokeWikiTests */ = {
 			isa = PBXGroup;
 			children = (
+				3F7F75D82790E56F00498CE1 /* ListAllInteractorTests */,
+				3F7F75BD2790D10100498CE1 /* ListCellInteractorTests */,
+				3FC5F653278FC87D00B73B56 /* ListAll */,
 				3F45041827866D21007874FF /* PokeWikiTests.swift */,
 				3F45041A27866D21007874FF /* Info.plist */,
 			);
@@ -270,6 +288,65 @@
 				3F4504AE2787C617007874FF /* TabBarCoordinator.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		3F7F75BD2790D10100498CE1 /* ListCellInteractorTests */ = {
+			isa = PBXGroup;
+			children = (
+				3F7F75C92790D14900498CE1 /* Mock */,
+				3F7F75BE2790D12800498CE1 /* ListCellInteractorTests.swift */,
+			);
+			path = ListCellInteractorTests;
+			sourceTree = "<group>";
+		};
+		3F7F75C92790D14900498CE1 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				3F7F75CA2790D15900498CE1 /* ListCellServiceMock.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		3F7F75D82790E56F00498CE1 /* ListAllInteractorTests */ = {
+			isa = PBXGroup;
+			children = (
+				3F7F75E12790E5B700498CE1 /* Mock */,
+				3F7F75D92790E59300498CE1 /* ListAllInteractorTests.swift */,
+			);
+			path = ListAllInteractorTests;
+			sourceTree = "<group>";
+		};
+		3F7F75E12790E5B700498CE1 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				3F7F75E22790E5E000498CE1 /* ListAllServiceMock.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		3FC5F63D278FC1CB00B73B56 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3FC5F641278FC35500B73B56 /* String+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3FC5F653278FC87D00B73B56 /* ListAll */ = {
+			isa = PBXGroup;
+			children = (
+				3FC5F67D278FD12E00B73B56 /* Mock */,
+				3FC5F654278FC8FE00B73B56 /* ListAllViewModelTests.swift */,
+			);
+			path = ListAll;
+			sourceTree = "<group>";
+		};
+		3FC5F67D278FD12E00B73B56 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				3FC5F67E278FD15000B73B56 /* ListAllInteractorMock.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		46938580D6460287858ED9E3 /* Pods */ = {
@@ -550,6 +627,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FC5F642278FC35500B73B56 /* String+Ext.swift in Sources */,
 				3F45040927866D1E007874FF /* PokeWiki.xcdatamodeld in Sources */,
 				3FB53C95278960C500802D19 /* PokemonListCellInteractor.swift in Sources */,
 				3F45040327866D1E007874FF /* PokemonListViewController.swift in Sources */,
@@ -574,7 +652,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F7F75DA2790E59300498CE1 /* ListAllInteractorTests.swift in Sources */,
+				3F7F75CB2790D15900498CE1 /* ListCellServiceMock.swift in Sources */,
 				3F45041927866D21007874FF /* PokeWikiTests.swift in Sources */,
+				3F7F75E32790E5E000498CE1 /* ListAllServiceMock.swift in Sources */,
+				3FC5F67F278FD15000B73B56 /* ListAllInteractorMock.swift in Sources */,
+				3F7F75BF2790D12800498CE1 /* ListCellInteractorTests.swift in Sources */,
+				3FC5F655278FC8FE00B73B56 /* ListAllViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

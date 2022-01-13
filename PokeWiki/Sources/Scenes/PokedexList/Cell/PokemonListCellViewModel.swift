@@ -19,6 +19,7 @@ protocol PokemonListCellViewModelProtocol {
     var name: String { get }
     var serviceState: Driver<Navigation<PokemonListCellViewModel.State>> { get }
     var pokemonDetail: Driver<PokemonDetail> { get }
+    var pokemonImage: Driver<Data> { get }
 }
 
 final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
@@ -26,6 +27,7 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
     typealias ServiceState = Navigation<State>
     private let interactor: PokemonListCellInteractorProtocol
     private let pokemonResponse = PublishSubject<PokemonDetail>()
+    private let pokemonImageResponse = PublishSubject<Data>()
     
     // MARK: - Inputs
     let viewWillAppear: PublishSubject<Void> = .init()
@@ -34,26 +36,43 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
     let name: String
     private(set) var serviceState: Driver<ServiceState> = .never()
     private(set) var pokemonDetail: Driver<PokemonDetail>
+    private(set) var pokemonImage: Driver<Data>
     
     // MARK: - Initializer
-    init(name: String, interactor: PokemonListCellInteractorProtocol) {
+    init(name: String, url: String, interactor: PokemonListCellInteractorProtocol) {
         self.name = name
         self.interactor = interactor
         self.pokemonDetail = pokemonResponse.asDriverOnErrorJustComplete()
-        self.serviceState = createServiceState(with: name)
+        self.pokemonImage = pokemonImageResponse.asDriverOnErrorJustComplete()
+        self.serviceState = createServiceState(with: name, url: url)
     }
     
     // MARK: - Internal methods
-    private func createServiceState(with name: String) -> Driver<ServiceState> {
+    private func createServiceState(with name: String, url: String) -> Driver<ServiceState> {
             
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
-        let fetchDetail = interactor.fetchAPockemon(with: name)
+        let fetchDetail = interactor.fetchAPokemon(with: name)
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
-            .do(onNext: { pokemonDetail in
-                self.pokemonResponse.onNext(pokemonDetail)
+            .do(onNext: { [pokemonResponse] pokemonDetail in
+                
+               pokemonResponse.onNext(pokemonDetail)
+            })
+            .map { ServiceState(type: .success, info: $0) }
+            .catch { (error) -> Observable<Navigation<State>> in
+                return .just(ServiceState(type: .error))
+            }
+
+        let idStr = url.getId()
+        let id = idStr.parseToIntOrZero()
+        
+        let fetchImage = interactor.fetchPokemonImage(for: id)
+            .trackActivity(activityIndicator)
+            .trackError(errorTracker)
+            .do(onNext: { [pokemonImageResponse] pokemonImage in
+                pokemonImageResponse.onNext(pokemonImage)
             })
             .map { ServiceState(type: .success, info: $0) }
             .catch { (error) -> Observable<Navigation<State>> in
@@ -63,6 +82,11 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
         let loadDetail = viewWillAppear
             .flatMapLatest { _ -> Observable<ServiceState> in
                 fetchDetail
+            }
+        
+        let loadImage = viewWillAppear
+            .flatMapLatest { _ -> Observable<ServiceState> in
+                fetchImage
             }
 
         let loadingShown = activityIndicator
@@ -75,7 +99,7 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
             .asObservable()
         
         return Observable
-            .merge(loadingShown, loadDetail, errorToShow)
+            .merge(loadingShown, loadDetail, loadImage, errorToShow)
             .asDriver(onErrorJustReturn: ServiceState(type: .error))
     }
     

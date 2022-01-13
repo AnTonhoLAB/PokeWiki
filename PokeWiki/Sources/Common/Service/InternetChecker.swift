@@ -8,7 +8,11 @@
 import Foundation
 import SystemConfiguration
 
-class NetworkingManager {
+protocol NetworkingManagerProtocol {
+    var isConnected: Bool { get }
+}
+
+class NetworkingManager: NetworkingManagerProtocol {
     /**
         # isConnected
          is a static variable of the Boolean type to know if the device is connected to the Internet by data or wifi, returns true if it is connected and false if it is not.
@@ -17,7 +21,7 @@ class NetworkingManager {
 
         - Try to use only in networking request classes
     */
-    static var isConnected: Bool = {
+    var isConnected: Bool = {
         
         var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))

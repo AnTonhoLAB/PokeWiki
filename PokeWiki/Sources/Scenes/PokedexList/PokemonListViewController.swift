@@ -32,7 +32,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    // MARK: Lyfe cycle
+    // MARK: - Lyfe cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,6 +41,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         configureViews()
         
         setupRx()
+        
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
@@ -48,7 +49,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             }
             .disposed(by: disposeBag)
 
-        viewModel.viewWillAppear
+        viewModel.viewDidLoad
             .onNext(())
     }
     
@@ -62,9 +63,16 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
                 let service = PokemonListCellService()
                 let interactor = PokemonListCellInteractor(service: service)
-                let viewModel = PokemonListCellViewModel(name: pokemon.name, interactor: interactor)
+                let viewModel = PokemonListCellViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
+        
+        collectionView.rx
+            .willDisplayLastCell
+            .filter { $0 }
+            .mapToVoid()
+            .bind(to: viewModel.loadMore)
+            .disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
     }
@@ -94,17 +102,3 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     }
 }
 
-import RxCocoa
-
-extension SharedSequence {
-
-    /**
-     Takes a SharedSequence of optional elements and returns a SharedSequence of non-optional elements, filtering out any nil values.
-
-     - returns: A SharedSequence of non-optional elements
-     */
-
-    public func unwrap<Result>() -> SharedSequence<SharingStrategy, Result> where Element == Result? {
-        return self.filter { $0 != nil }.map { $0! }
-    }
-}
