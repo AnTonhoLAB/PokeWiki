@@ -7,7 +7,6 @@
 
 import UIKit
 import RxSwift
-import AlamofireImage
 
 class PokemonListCell: UICollectionViewCell {
     
@@ -33,7 +32,6 @@ class PokemonListCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     
-    
     // MARK: - Public methods
     func setup(viewModel: PokemonListCellViewModelProtocol) {
         viewModel.viewWillAppear.onNext(())
@@ -43,15 +41,18 @@ class PokemonListCell: UICollectionViewCell {
             self.nameLabel.text = detail.name
             self.numberLabel.text = "#\(detail.id)"
             self.imageBG.tintColor = detail.types.first?.type.name.color()
+        }.disposed(by: disposeBag)
+        
+        viewModel.pokemonImage.drive { [weak self] (image) in
+            guard let self = self else { return }
+            self.pokemonImage.image = UIImage(data: image)
             
-            if let url = URL(string: detail.sprites.other.officialArtwork.frontDefault) {
-                self.pokemonImage.af.setImage(withURL: url)
-            }
         }.disposed(by: disposeBag)
         
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
+                
             }
             .disposed(by: disposeBag)
 

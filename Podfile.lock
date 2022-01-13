@@ -1,7 +1,5 @@
 PODS:
   - Alamofire (5.5.0)
-  - AlamofireImage (4.2.0):
-    - Alamofire (~> 5.4)
   - GGDevelopmentKit (0.4.0):
     - RxCocoa
     - RxSwift
@@ -18,7 +16,6 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.5)
-  - AlamofireImage (~> 4.1)
   - GGDevelopmentKit (~> 0.4.0)
   - RxBlocking
   - RxCocoa (>= 5.0.0)
@@ -30,7 +27,6 @@ SPEC REPOS:
     - GGDevelopmentKit
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
-    - AlamofireImage
     - RxBlocking
     - RxCocoa
     - RxRelay
@@ -39,7 +35,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
-  AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   GGDevelopmentKit: 84f761556d22b8dc7fafe55ffc8dc1bff329d8cb
   RxBlocking: 0b29f7d2079109a8de49c411381bed7c33ef1eeb
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
@@ -47,6 +42,6 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   RxTest: 0c692fa672b694373ba86d2b00033595297a2831
 
-PODFILE CHECKSUM: 7cc462f7a0969e3f9559281b2a948d4c0c650968
+PODFILE CHECKSUM: c172c6a7aceb4893fca1dab7e78daf4a920bf643
 
 COCOAPODS: 1.11.0

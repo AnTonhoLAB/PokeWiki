@@ -9,7 +9,8 @@ import Foundation
 import RxSwift
 
 protocol PokemonListCellInteractorProtocol {
-    func fetchAPockemon(with name: String) -> Single<PokemonDetail>
+    func fetchAPokemon(with name: String) -> Single<PokemonDetail>
+    func fetchPokemonImage(for id: Int) -> Single<Data>
 }
 
 class PokemonListCellInteractor: PokemonListCellInteractorProtocol {
@@ -20,11 +21,23 @@ class PokemonListCellInteractor: PokemonListCellInteractorProtocol {
         self.service = service
     }
     
-    func fetchAPockemon(with name: String) -> Single<PokemonDetail> {
+    func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
         if NetworkingManager.isConnected  {
-            return service.fetchAPockemon(with: name)
+            return service.fetchAPokemon(with: name)
         } else {
             return Single<PokemonDetail>
+                .create { single in
+                    single(.failure(PokemonListError.NoConnection))
+                    return Disposables.create()
+                }
+        }
+    }
+    
+    func fetchPokemonImage(for id: Int) -> Single<Data> {
+        if NetworkingManager.isConnected  {
+            return service.fechPokemonImage(for: id)
+        } else {
+            return Single<Data>
                 .create { single in
                     single(.failure(PokemonListError.NoConnection))
                     return Disposables.create()

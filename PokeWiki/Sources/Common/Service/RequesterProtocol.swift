@@ -26,4 +26,15 @@ extension RequesterProtocol {
                 }
         }
     }
+    
+    func makeRequestForImage(url: String, single: @escaping (Result<Data, Error>) -> Void) {        
+        AF.request(url).responseData { response in
+                switch response.result {
+                case .success(let result):
+                    single(.success(result))
+                case .failure(let error):
+                    single(.failure(error))
+                }
+        }
+    }
 }

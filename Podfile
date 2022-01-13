@@ -15,7 +15,6 @@ target 'PokeWiki' do
   pod 'RxSwift', '>= 5.0.0'
   pod 'RxCocoa', '>= 5.0.0'
   pod 'Alamofire', '~> 5.5'
-  pod 'AlamofireImage', '~> 4.1'
   pod 'GGDevelopmentKit', '~> 0.4.0'
 
   target 'PokeWikiTests' do
