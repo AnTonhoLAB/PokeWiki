@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct PokemonListResponse: Decodable {
+struct PokemonListResponse: Decodable, Equatable {
     let count: Int
     let next: String?
     let previous: String?
