@@ -32,7 +32,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    // MARK: Lyfe cycle
+    // MARK: - Lyfe cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,7 +63,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
                 let service = PokemonListCellService()
                 let interactor = PokemonListCellInteractor(service: service)
-                let viewModel = PokemonListCellViewModel(name: pokemon.name, interactor: interactor)
+                let viewModel = PokemonListCellViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         

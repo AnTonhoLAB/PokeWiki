@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-struct PokemonListResponse: Decodable {
+struct PokemonListResponse: Decodable, Equatable {
     let count: Int
     let next: String?
     let previous: String?
     let results: [PokemonItem]
 }
 
-struct PokemonItem: Decodable {
+struct PokemonItem: Decodable, Equatable {
     let name: String
     let url: String
 }
@@ -96,7 +96,11 @@ enum PokemonType: String, Codable {
 
 
 // MARK: - PokemonDetail
-struct PokemonDetail: Codable {
+struct PokemonDetail: Codable, Equatable {
+    static func == (lhs: PokemonDetail, rhs: PokemonDetail) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let abilities: [Ability]
     let baseExperience: Int
     let forms: [Species]
@@ -112,6 +116,7 @@ struct PokemonDetail: Codable {
     let stats: [Stat]
     let types: [TypeElement]
     let weight: Int
+    let sprites: Sprites
 
     enum CodingKeys: String, CodingKey {
         case abilities
@@ -124,6 +129,53 @@ struct PokemonDetail: Codable {
         case locationAreaEncounters = "location_area_encounters"
         case moves, name, order
         case species, stats, types, weight
+        case sprites
+    }
+}
+
+class Sprites: Codable {
+    let backDefault: String?
+    let backFemale: String?
+    let backShiny: String?
+    let backShinyFemale: String?
+    let frontDefault: String?
+    let frontFemale: String?
+    let frontShiny: String?
+    let frontShinyFemale: String?
+    let other: OtherSprites
+    
+    init(backDefault: String? = nil, backFemale: String? = nil, backShiny: String? = nil, backShinyFemale: String? = nil, frontDefault: String? = nil, frontFemale: String? = nil, frontShiny: String? = nil, frontShinyFemale: String? = nil, other: OtherSprites) {
+        
+        self.backDefault = backDefault
+        self.backFemale = backFemale
+        self.backShiny = backShiny
+        self.backShinyFemale = backShinyFemale
+        self.frontDefault = frontDefault
+        self.frontFemale = frontFemale
+        self.frontShiny = frontShiny
+        self.frontShinyFemale = frontShinyFemale
+        self.other = other
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case backDefault = "back_default"
+        case backFemale = "back_female"
+        case backShiny = "back_shiny"
+        case backShinyFemale = "back_shiny_female"
+        case frontDefault = "front_default"
+        case frontFemale = "front_female"
+        case frontShiny = "front_shiny"
+        case frontShinyFemale = "front_shiny_female"
+        case other
+    }
+}
+
+// MARK: - Other
+struct OtherSprites: Codable {
+    let officialArtwork: OfficialArtwork
+
+    enum CodingKeys: String, CodingKey {
+        case officialArtwork = "official-artwork"
     }
 }
 
