@@ -15,13 +15,15 @@ target 'PokeWiki' do
   pod 'RxSwift', '>= 5.0.0'
   pod 'RxCocoa', '>= 5.0.0'
   pod 'Alamofire', '~> 5.5'
-  pod 'GGDevelopmentKit', '~> 0.4.0'
+  pod 'GGDevelopmentKit', '~> 0.4.1'
 
   target 'PokeWikiTests' do
     inherit! :search_paths
     # Pods for testing
     pod 'RxBlocking'
     pod 'RxTest'
+    pod 'Quick', '~> 4.0.0'
+    pod 'Nimble', '~> 9.2.1'
   end
 
   target 'PokeWikiUITests' do

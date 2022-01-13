@@ -15,20 +15,22 @@ protocol PokemonListAllInteractorProtocol {
 class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
     
     let service: PokemonListAllServiceProtocol
+    let networkingManager: NetworkingManagerProtocol
     
-    init(service: PokemonListAllServiceProtocol) {
+    init(service: PokemonListAllServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
         self.service = service
+        self.networkingManager = networkingManager
     }
     
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
-        if NetworkingManager.isConnected  {
-            return service.fetchList(with: limit, offSet: offSet)
-        } else {
+        guard networkingManager.isConnected  else {
             return Single<PokemonListResponse>
-                .create { single in
-                    single(.failure(PokemonListError.NoConnection))
-                    return Disposables.create()
-                }
+                        .create { single in
+                            single(.failure(PokemonListError.NoConnection))
+                            return Disposables.create()
+                        }
         }
+        
+        return service.fetchList(with: limit, offSet: offSet)
     }
 }

@@ -16,32 +16,34 @@ protocol PokemonListCellInteractorProtocol {
 class PokemonListCellInteractor: PokemonListCellInteractorProtocol {
     
     let service: PokemonListCellServiceProtocol
+    let networkingManager: NetworkingManagerProtocol
     
-    init(service: PokemonListCellService) {
+    init(service: PokemonListCellServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
         self.service = service
+        self.networkingManager = networkingManager
     }
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
-        if NetworkingManager.isConnected  {
-            return service.fetchAPokemon(with: name)
-        } else {
+        guard networkingManager.isConnected  else {
             return Single<PokemonDetail>
-                .create { single in
-                    single(.failure(PokemonListError.NoConnection))
-                    return Disposables.create()
-                }
+                        .create { single in
+                            single(.failure(PokemonListError.NoConnection))
+                            return Disposables.create()
+                        }
         }
+        
+        return service.fetchAPokemon(with: name)
     }
     
     func fetchPokemonImage(for id: Int) -> Single<Data> {
-        if NetworkingManager.isConnected  {
-            return service.fechPokemonImage(for: id)
-        } else {
+        guard networkingManager.isConnected  else {
             return Single<Data>
-                .create { single in
-                    single(.failure(PokemonListError.NoConnection))
-                    return Disposables.create()
-                }
+                        .create { single in
+                            single(.failure(PokemonListError.NoConnection))
+                            return Disposables.create()
+                        }
         }
+        
+        return service.fechPokemonImage(for: id)
     }
 }

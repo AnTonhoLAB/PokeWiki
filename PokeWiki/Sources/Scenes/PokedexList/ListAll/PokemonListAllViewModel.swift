@@ -52,19 +52,20 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
         
         /// Triger when start to load
         let startLoad = Observable.merge([viewDidLoad, loadMore])
+        
         /// Function to load Pokemons
-        let fetchPokemons = {
-            return self.interactor.fetchList(with: self.paginationSupport.limit, offSet: self.paginationSupport.offSet)
+        let fetchPokemons = { [pokemonListResponse, paginationSupport, interactor] in
+            return interactor.fetchList(with: paginationSupport.limit, offSet: paginationSupport.offSet)
                 .trackActivity(activityIndicator)
                 .trackError(errorTracker)
-                .do(onNext: { [weak self] (pokemonResponse) in
-                    guard let self = self else { return }
+                .do(onNext: { [pokemonListResponse, paginationSupport] (pokemonResponse) in
 
-                    self.pokemonListResponse.accept(self.pokemonListResponse.value + pokemonResponse.results)
-                    self.paginationSupport.size = pokemonResponse.count
-                    self.paginationSupport.validateIsLast(count: self.pokemonListResponse.value.count)
+                    pokemonListResponse.accept(pokemonListResponse.value + pokemonResponse.results)
+                    paginationSupport.size = pokemonResponse.count
+                    paginationSupport.validateIsLast(count: pokemonListResponse.value.count)
                 })
                 .map { ServiceState(type: .success, info: $0) }
+                
         }
             
         let loadList = startLoad
@@ -99,20 +100,5 @@ extension PokemonListAllViewModel {
         case loading
         case success
         case error
-    }
-}
-
-// MARK: - Actions
-struct Actions {
-    let back: PublishSubject<Void>
-    let close: PublishSubject<Void>
-    let next: PublishSubject<Void>
-    
-    init(back: PublishSubject<Void> = .init(),
-         close: PublishSubject<Void> = .init(),
-         next: PublishSubject<Void> = .init()) {
-        self.back = back
-        self.close = close
-        self.next = next
     }
 }
