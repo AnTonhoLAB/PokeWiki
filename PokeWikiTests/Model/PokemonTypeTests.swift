@@ -38,6 +38,21 @@ class PokemonTypeTests: QuickSpec {
                 }
             }
             
+            context("Quando o pokemon for do tipo fighting") {
+                
+                afterEach {
+                    self.sut = nil
+                }
+
+                beforeEach {
+                    self.sut = PokemonType.fighting
+                }
+                
+                it("Então a cor deve ser") {
+                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.3176470697, green: 0.07450980693, blue: 0.02745098062, alpha: 1)))
+                }
+            }
+            
             context("Quando o pokemon for do tipo flying") {
                 
                 afterEach {
