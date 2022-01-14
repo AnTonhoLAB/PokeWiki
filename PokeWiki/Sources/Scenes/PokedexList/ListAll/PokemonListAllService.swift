@@ -22,15 +22,10 @@ final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProto
     private let baseURL = "https://pokeapi.co/api/v2/pokemon"
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>
-            .create { [weak self] single in
-            
-                guard let self = self else {
-                    single(.failure(PokemonListError.internalError))
-                    return Disposables.create()
-                }
+            .create { [weak self, baseURL] single in
                 
                 let params = [URLParams.limit.rawValue: "\(limit)", URLParams.offset.rawValue: "\(offSet)"]
-                self.makeRequest(url: self.baseURL, urlParams: params, single: single)
+                self?.makeRequest(url: baseURL, urlParams: params, single: single)
                 return Disposables.create()
             }
     }

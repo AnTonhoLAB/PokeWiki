@@ -21,28 +21,17 @@ final class PokemonListCellService: PokemonListCellServiceProtocol, RequesterPro
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
         return Single<PokemonDetail>
-            .create { [weak self] single in
-                
-                guard let self = self else {
-                    single(.failure(PokemonListError.internalError))
-                    return Disposables.create()
-                }
-                
-                self.makeRequest(url: self.baseURL + name, single: single)
+            .create { [weak self, baseURL] single in
+                self?.makeRequest(url: baseURL + name, single: single)
                 return Disposables.create()
             }
     }
     
     func fechPokemonImage(for id: Int) -> Single<Data> {
         return Single<Data>
-            .create { [weak self] single in
-                
-                guard let self = self else {
-                    single(.failure(PokemonListError.internalError))
-                    return Disposables.create()
-                }
-                let url = self.baseImageURL + "\(id)" + self.png
-                self.makeRequestForImage(url: url, single: single)
+            .create { [weak self, baseImageURL, png] single in
+                let url = baseImageURL + "\(id)" + png
+                self?.makeRequestForImage(url: url, single: single)
                 return Disposables.create()
             }
     }

@@ -61,9 +61,6 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
                pokemonResponse.onNext(pokemonDetail)
             })
             .map { ServiceState(type: .success, info: $0) }
-            .catch { (error) -> Observable<Navigation<State>> in
-                return .just(ServiceState(type: .error))
-            }
 
         let idStr = url.getId()
         let id = idStr.parseToIntOrZero()
@@ -75,9 +72,6 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
                 pokemonImageResponse.onNext(pokemonImage)
             })
             .map { ServiceState(type: .success, info: $0) }
-            .catch { (error) -> Observable<Navigation<State>> in
-                return .just(ServiceState(type: .error))
-            }
         
         let loadDetail = viewWillAppear
             .flatMapLatest { _ -> Observable<ServiceState> in

@@ -37,16 +37,13 @@ class PokemonListCell: UICollectionViewCell {
         viewModel.viewWillAppear.onNext(())
         
         viewModel.pokemonDetail.drive { [weak self] (detail) in
-            guard let self = self else { return }
-            self.nameLabel.text = detail.name
-            self.numberLabel.text = "#\(detail.id)"
-            self.imageBG.tintColor = detail.types.first?.type.name.color()
+            self?.nameLabel.text = detail.name
+            self?.numberLabel.text = "#\(detail.id)"
+            self?.imageBG.tintColor = detail.types.first?.type.name.color()
         }.disposed(by: disposeBag)
         
         viewModel.pokemonImage.drive { [weak self] (image) in
-            guard let self = self else { return }
-            self.pokemonImage.image = UIImage(data: image)
-            
+            self?.pokemonImage.image = UIImage(data: image)
         }.disposed(by: disposeBag)
         
         viewModel.serviceState
