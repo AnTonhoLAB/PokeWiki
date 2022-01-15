@@ -20,17 +20,19 @@
 
 Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.figma.com/file/GMPQraVT38Pdd2s2a8YIEJ/PokeWiki?node-id=11%3A2272)
 
-## Requirements
+## Requisitos
 
 * Xcode 12.x
 * Swift 5.x
 
-## Installation
+## Instalação
 
-Download the project on main branch
+Baixe o projeto da branch Main
 
 ```bash
 $ pod install
 ```
-Run app 
+Use o arquivo `.xcodeproj` para abrir o projeto
+
+Rode o app 
 
