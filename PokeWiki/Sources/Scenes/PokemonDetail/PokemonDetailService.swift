@@ -1,5 +1,5 @@
 //
-//  PokemonListCellService.swift
+//  PokemonDetailService.swift
 //  PokeWiki
 //
 //  Created by George Vilnei Arboite Gomes on 08/01/22.
@@ -8,12 +8,12 @@
 import Foundation
 import RxSwift
 
-protocol PokemonListCellServiceProtocol {
+protocol PokemonDetailServiceProtocol {
     func fetchAPokemon(with name: String) -> Single<PokemonDetail>
     func fechPokemonImage(for id: Int) -> Single<Data>
 }
 
-final class PokemonListCellService: PokemonListCellServiceProtocol, RequesterProtocol {
+final class PokemonDetailService: PokemonDetailServiceProtocol, RequesterProtocol {
         
     private let baseURL = "https://pokeapi.co/api/v2/pokemon/"
     private let baseImageURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"

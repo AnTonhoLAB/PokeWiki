@@ -61,9 +61,9 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .bind(to: collectionView.rx
                     .items(cellIdentifier: PokemonListCell.identifier,
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
-                let service = PokemonListCellService()
-                let interactor = PokemonListCellInteractor(service: service)
-                let viewModel = PokemonListCellViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
+                let service = PokemonDetailService()
+                let interactor = PokemonDetailInteractor(service: service)
+                let viewModel = PokemonDetailViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         
