@@ -117,6 +117,10 @@ struct PokemonDetail: Codable, Equatable {
     let types: [TypeElement]
     let weight: Int
     let sprites: Sprites
+    
+    var mainType: PokemonType {
+        return types.first?.type.name ?? PokemonType.unknown
+    }
 
     enum CodingKeys: String, CodingKey {
         case abilities

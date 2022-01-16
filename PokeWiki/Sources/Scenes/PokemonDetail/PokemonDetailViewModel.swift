@@ -18,8 +18,8 @@ protocol PokemonBasicDetailViewModelProtocol {
     // MARK: - Outputs
     var name: String { get }
     var serviceState: Driver<Navigation<PokemonBasicDetailViewModel.State>> { get }
-    var pokemonDetail: Driver<PokemonDetail> { get }
-    var pokemonImage: Driver<Data> { get }
+    var basicInfo: Observable<PokemonBasicInfo> { get }
+    var pokemonImage: Observable<Data> { get }
 }
 
 protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol {
@@ -39,16 +39,21 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     // MARK: - Outputs
     let name: String
     private(set) var serviceState: Driver<ServiceState> = .never()
-    private(set) var pokemonDetail: Driver<PokemonDetail>
-    private(set) var pokemonImage: Driver<Data>
+    private(set) var basicInfo: Observable<PokemonBasicInfo>
+    private(set) var pokemonImage: Observable<Data>
     
     // MARK: - Initializer
     init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         self.name = name
         self.interactor = interactor
-        self.pokemonDetail = pokemonResponse.asDriverOnErrorJustComplete()
-        self.pokemonImage = pokemonImageResponse.asDriverOnErrorJustComplete()
+        
+        self.basicInfo = pokemonResponse
+            .map { PokemonBasicInfo(id: $0.id, name: $0.name, type: $0.types.first?.type.name ?? PokemonType.unknown) }
+            .asObservable()
+        
+        self.pokemonImage = pokemonImageResponse.asObservable()
         self.serviceState = createServiceState(with: name, url: url)
+        
     }
     
     // MARK: - Internal methods
@@ -98,7 +103,7 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         
         return Observable
             .merge(loadingShown, loadDetail, loadImage, errorToShow)
-            .asDriver(onErrorJustReturn: ServiceState(type: .error))
+            .asDriverOnErrorJustComplete()
     }
     
 }

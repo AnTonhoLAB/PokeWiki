@@ -14,14 +14,15 @@ class PokemonListCell: UICollectionViewCell {
     static let identifier = "PokemonListCell"
     
     // MARK: - Private properties
-    private let imageBG = UIImageView(image: #imageLiteral(resourceName: "BGCardNeutral").withRenderingMode(.alwaysTemplate))
-    private let imageHLBG = UIImageView(image: #imageLiteral(resourceName: "highLightBG"))
-    private let pokemonImage = UIImageView(frame: .zero)
-    private let nameLabel: UILabel = UILabel(frame: .zero)
-    private let numberLabel: UILabel = UILabel(frame: .zero)
     private let font = UIFont(name: "GillSans-Bold", size: 17)
-    
     private var disposeBag = DisposeBag()
+    
+    // MARK: - Public properties
+    private(set) var imageBG = UIImageView(image: #imageLiteral(resourceName: "BGCardNeutral").withRenderingMode(.alwaysTemplate))
+    private(set) var imageHLBG = UIImageView(image: #imageLiteral(resourceName: "highLightBG"))
+    private(set) var pokemonImage = UIImageView(frame: .zero)
+    private(set) var nameLabel: UILabel = UILabel(frame: .zero)
+    private(set) var numberLabel: UILabel = UILabel(frame: .zero)
     
     // MARK: - Initializers
     override init(frame: CGRect = .zero) {
@@ -36,20 +37,18 @@ class PokemonListCell: UICollectionViewCell {
     func setup(viewModel: PokemonBasicDetailViewModelProtocol) {
         viewModel.viewWillAppear.onNext(())
         
-        viewModel.pokemonDetail.drive { [weak self] (detail) in
-            self?.nameLabel.text = detail.name
-            self?.numberLabel.text = "#\(detail.id)"
-            self?.imageBG.tintColor = detail.types.first?.type.name.color()
-        }.disposed(by: disposeBag)
-        
-        viewModel.pokemonImage.drive { [weak self] (image) in
-            self?.pokemonImage.image = UIImage(data: image)
-        }.disposed(by: disposeBag)
+        viewModel.basicInfo
+            .bind(to: rx.pokemonBasicInfo)
+            .disposed(by: disposeBag)
+
+        viewModel.pokemonImage
+            .bind(to: pokemonImage.rx.imageData)
+            .disposed(by: disposeBag)
         
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-                
+
             }
             .disposed(by: disposeBag)
 
@@ -110,5 +109,25 @@ class PokemonListCell: UICollectionViewCell {
         self.nameLabel.text = ""
         self.numberLabel.text = ""
         disposeBag = DisposeBag()
+    }
+}
+
+extension Reactive where Base: PokemonListCell {
+
+    var pokemonBasicInfo: Binder<PokemonBasicInfo> {
+        return Binder(self.base) { view, detail in
+            view.nameLabel.text = detail.name
+            view.numberLabel.text = "#\(detail.id)"
+            view.imageBG.tintColor = detail.type.color()
+        }
+    }
+}
+
+extension Reactive where Base: UIImageView {
+
+    var imageData: Binder<Data> {
+        return Binder(self.base) { view, data in
+            view.image = UIImage(data: data)
+        }
     }
 }
