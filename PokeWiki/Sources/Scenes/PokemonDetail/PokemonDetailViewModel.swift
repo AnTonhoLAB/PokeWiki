@@ -15,12 +15,10 @@ final class PokemonDetailViewModel: PokemonDetailViewModelProtocol {
     
     
     private let interactor: PokemonDetailInteractorProtocol
-    private let pokemonDetail: PokemonDetail
-    private let image: UIImage
+    private let pokemonDetail: PokemonItem
     
-    init( interactor: PokemonDetailInteractorProtocol, pokemonDetail: PokemonDetail, image: UIImage) {
+    init( interactor: PokemonDetailInteractorProtocol, pokemonDetail: PokemonItem) {
         self.interactor = interactor
         self.pokemonDetail = pokemonDetail
-        self.image = image
     }
 }

@@ -9,20 +9,18 @@ import GGDevelopmentKit
 
 class PokemonDetailCoordinator: GGCoordinator {
     
-    private let pokemonDetail: PokemonDetail
-    private let image: UIImage
+    private let PokemonItem: PokemonItem
     
-    init(navigation: UINavigationController, pokemonDetail: PokemonDetail, image: UIImage) {
-        self.pokemonDetail = pokemonDetail
-        self.image = image
+    init(navigation: UINavigationController, pokemonDetail: PokemonItem) {
+        self.PokemonItem = pokemonDetail
         super.init(rootViewController: navigation)
     }
 
     override func start() {
         let interactor = PokemonDetailInteractor()
-        let viewModel = PokemonDetailViewModel(interactor: interactor, pokemonDetail: pokemonDetail, image: image)
-        let listViewController = PokemonDetailViewController(viewModel: viewModel)
+        let viewModel = PokemonDetailViewModel(interactor: interactor, pokemonDetail: PokemonItem)
+        let detailViewController = PokemonDetailViewController(viewModel: viewModel)
         
-        show(listViewController)
+        show(detailViewController)
     }
 }

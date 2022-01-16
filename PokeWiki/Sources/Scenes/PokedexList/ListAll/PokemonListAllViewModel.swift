@@ -14,14 +14,17 @@ protocol PokemonListAllViewModelProtocol {
     
     // MARK: - Inputs
     var viewDidLoad: PublishSubject<Void> { get }
+    var didSelectItem: PublishSubject<PokemonItem> { get }
     
     // MARK: - Outputs
+    var navigation: Driver<Navigation<PokemonListAllViewModel.Route>> { get }
     var serviceState: Driver<Navigation<PokemonListAllViewModel.State>> { get }
     var pokemonList: Driver<[PokemonItem]> { get }
 }
 
 final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
-    
+    // MARK: - Definitions
+    typealias ListNavigation = Navigation<Route>
     typealias ServiceState = Navigation<State>
     
     // MARK: - Internal properties
@@ -32,8 +35,10 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     // MARK: - Inputs
     let viewDidLoad: PublishSubject<Void> = .init()
     let loadMore: PublishSubject<Void> = .init()
+    let didSelectItem: PublishSubject<PokemonItem> = .init()
     
     // MARK: - Outputs
+    private(set) var navigation: Driver<ListNavigation> = .never()
     private(set) var serviceState: Driver<ServiceState> = .never()
     private(set) var pokemonList: Driver<[PokemonItem]>
     
@@ -41,7 +46,9 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     init(interactor: PokemonListAllInteractorProtocol) {
         self.interactor = interactor
         self.pokemonList = pokemonListResponse.asDriverOnErrorJustComplete()
+        
         self.serviceState = createServiceState()
+        self.navigation = createNavigation()
     }
     
     // MARK: - Internal methods
@@ -85,13 +92,24 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
             .merge(loadingShown, loadList, errorToShow)
             .asDriver(onErrorJustReturn: ServiceState(type: .error))
     }
+    
+    // MARK: -Internal methods
+    private func createNavigation() -> Driver<ListNavigation> {
+
+        let routeToNext = didSelectItem
+            .map { ListNavigation(type: .openDetail, info: $0) }
+        
+        return Observable.merge([routeToNext]
+        )
+            .asDriver(onErrorRecover: { _ in .never() })
+    }
 }
 
 // MARK: - Helpers
 extension PokemonListAllViewModel {
     
     // MARK: - Route
-    enum Route: Int, Equatable {
+    enum Route: Equatable {
         case openDetail
     }
     
@@ -100,5 +118,14 @@ extension PokemonListAllViewModel {
         case loading
         case success
         case error
+    }
+    
+    // MARK: - Actions
+    struct Actions {
+        let next: PublishSubject<Void>
+        
+        init(next: PublishSubject<Void> = .init()) {
+            self.next = next
+        }
     }
 }
