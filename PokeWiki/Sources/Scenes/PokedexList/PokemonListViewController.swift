@@ -67,6 +67,13 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         
+        collectionView
+            .rx
+            .modelSelected(PokemonItem.self)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .bind(to: viewModel.didSelectItem)
+            .disposed(by: disposeBag)
+        
         collectionView.rx
             .willDisplayLastCell
             .filter { $0 }
