@@ -32,7 +32,7 @@ Baixe o projeto da branch Main
 ```bash
 $ pod install
 ```
-Use o arquivo `.xcodeproj` para abrir o projeto
+Use o arquivo `PokeWiki.xcworkspace` para abrir o projeto
 
 Rode o app 
 
