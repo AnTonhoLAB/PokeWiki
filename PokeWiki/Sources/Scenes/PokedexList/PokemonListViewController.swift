@@ -63,7 +63,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
                 let service = PokemonDetailService()
                 let interactor = PokemonDetailInteractor(service: service)
-                let viewModel = PokemonDetailViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
+                let viewModel = PokemonBasicDetailViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
         

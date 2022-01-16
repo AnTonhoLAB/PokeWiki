@@ -10,19 +10,23 @@ import RxSwift
 import RxCocoa
 import GGDevelopmentKit
 
-protocol PokemonDetailViewModelProtocol {
+protocol PokemonBasicDetailViewModelProtocol {
     
     // MARK: - Inputs
     var viewWillAppear: PublishSubject<Void> { get }
     
     // MARK: - Outputs
     var name: String { get }
-    var serviceState: Driver<Navigation<PokemonDetailViewModel.State>> { get }
+    var serviceState: Driver<Navigation<PokemonBasicDetailViewModel.State>> { get }
     var pokemonDetail: Driver<PokemonDetail> { get }
     var pokemonImage: Driver<Data> { get }
 }
 
-final class PokemonDetailViewModel: PokemonDetailViewModelProtocol {
+protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol {
+    
+}
+
+class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     
     typealias ServiceState = Navigation<State>
     private let interactor: PokemonDetailInteractorProtocol
@@ -100,7 +104,7 @@ final class PokemonDetailViewModel: PokemonDetailViewModelProtocol {
 }
 
 // MARK: - Helpers
-extension PokemonDetailViewModel {
+extension PokemonBasicDetailViewModel {
     
     // MARK: - Route
     enum Route: Int, Equatable {
@@ -112,5 +116,15 @@ extension PokemonDetailViewModel {
         case loading
         case success
         case error
+    }
+}
+
+final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
+    
+    
+    override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
+        super.init(name: name, url: url, interactor: interactor)
+        
+        
     }
 }

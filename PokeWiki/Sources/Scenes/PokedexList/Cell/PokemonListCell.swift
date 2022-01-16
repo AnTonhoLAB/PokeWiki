@@ -33,7 +33,7 @@ class PokemonListCell: UICollectionViewCell {
     required init?(coder: NSCoder) {  fatalError("init(coder:) has not been implemented") }
     
     // MARK: - Public methods
-    func setup(viewModel: PokemonDetailViewModelProtocol) {
+    func setup(viewModel: PokemonBasicDetailViewModelProtocol) {
         viewModel.viewWillAppear.onNext(())
         
         viewModel.pokemonDetail.drive { [weak self] (detail) in
