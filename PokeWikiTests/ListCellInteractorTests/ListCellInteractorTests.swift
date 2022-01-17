@@ -15,7 +15,7 @@ import GGDevelopmentKit
 
 class ListCellInteractorTests: QuickSpec {
     
-    private var sut: PokemonListCellInteractor!
+    private var sut: PokemonDetailInteractor!
     private var scheduler: TestScheduler!
     private var disposeBag: DisposeBag!
     
@@ -40,7 +40,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMock(), networkingManager: NetworkMock())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMock(), networkingManager: NetworkMock())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -82,7 +82,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMock())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMock())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -109,7 +109,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -133,7 +133,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
                 }
                 
                 it("Então retorna o detalhe") {

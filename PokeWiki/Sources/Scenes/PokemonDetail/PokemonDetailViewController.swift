@@ -9,9 +9,9 @@ import UIKit
 
 final class PokemonDetailViewController: UIViewController {
     
-    private let viewModel: PokemonDetailViewModelProtocol
+    private let viewModel: PokemonBasicDetailViewModelProtocol
     
-    init(viewModel: PokemonDetailViewModelProtocol) {
+    init(viewModel: PokemonBasicDetailViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

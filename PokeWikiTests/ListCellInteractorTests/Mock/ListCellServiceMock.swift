@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-class ListCellServiceMock: PokemonListCellServiceProtocol {
+class ListCellServiceMock: PokemonDetailServiceProtocol {
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
         return Single<PokemonDetail>
@@ -45,7 +45,7 @@ class ListCellServiceMock: PokemonListCellServiceProtocol {
     }
 }
 
-class ListCellServiceMockError: PokemonListCellServiceProtocol {
+class ListCellServiceMockError: PokemonDetailServiceProtocol {
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
         return Single<PokemonDetail>

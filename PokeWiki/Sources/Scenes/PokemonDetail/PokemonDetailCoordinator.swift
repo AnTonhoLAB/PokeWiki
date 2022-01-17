@@ -9,16 +9,17 @@ import GGDevelopmentKit
 
 class PokemonDetailCoordinator: GGCoordinator {
     
-    private let PokemonItem: PokemonItem
+    private let pokemonItem: PokemonItem
     
     init(navigation: UINavigationController, pokemonDetail: PokemonItem) {
-        self.PokemonItem = pokemonDetail
+        self.pokemonItem = pokemonDetail
         super.init(rootViewController: navigation)
     }
 
     override func start() {
-        let interactor = PokemonDetailInteractor()
-        let viewModel = PokemonDetailViewModel(interactor: interactor, pokemonDetail: PokemonItem)
+        let service = PokemonDetailService()
+        let interactor = PokemonDetailInteractor(service: service)
+        let viewModel = PokemonBasicDetailViewModel(name: pokemonItem.name, url: pokemonItem.url, interactor: interactor)
         let detailViewController = PokemonDetailViewController(viewModel: viewModel)
         
         show(detailViewController)
