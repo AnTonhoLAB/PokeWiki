@@ -10,5 +10,10 @@ import Foundation
 struct PokemonBasicInfo {
     let id: Int
     let name: String
-    let type: PokemonType
+    let type: [TypeElement]
+}
+
+struct PokemonBioInfo {
+    let height: Int
+    let weight: Int
 }

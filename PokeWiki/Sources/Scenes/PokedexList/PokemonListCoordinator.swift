@@ -11,7 +11,9 @@ import GGDevelopmentKit
 class PokemonListCoordinator: GGCoordinator {
     
     init() {
-        super.init(rootViewController: UINavigationController())
+        let navigation = UINavigationController()
+//        navigation.interactivePopGestureRecognizer?.isEnabled = false
+        super.init(rootViewController: navigation)
     }
 
     override func start() {

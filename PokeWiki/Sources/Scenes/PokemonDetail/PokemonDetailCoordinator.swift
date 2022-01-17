@@ -19,7 +19,7 @@ class PokemonDetailCoordinator: GGCoordinator {
     override func start() {
         let service = PokemonDetailService()
         let interactor = PokemonDetailInteractor(service: service)
-        let viewModel = PokemonBasicDetailViewModel(name: pokemonItem.name, url: pokemonItem.url, interactor: interactor)
+        let viewModel = PokemonFullDetailViewModel(name: pokemonItem.name, url: pokemonItem.url, interactor: interactor)
         let detailViewController = PokemonDetailViewController(viewModel: viewModel)
         
         show(detailViewController)

@@ -19,7 +19,6 @@ class TabBarCoordinator: GGBaseCoordinator<UITabBarController> {
     init() {
         tabBarController = UITabBarController()
         super.init(rootViewController: tabBarController)
-        
     }
        
     override func start() {

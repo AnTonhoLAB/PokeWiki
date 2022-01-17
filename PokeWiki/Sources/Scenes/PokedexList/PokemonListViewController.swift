@@ -30,6 +30,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     // MARK: - Lyfe cycle
