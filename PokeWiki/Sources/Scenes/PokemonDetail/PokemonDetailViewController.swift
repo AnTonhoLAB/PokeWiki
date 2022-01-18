@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import SnapKit
 
 final class PokemonDetailViewController: UIViewController, ViewCoded {
     
