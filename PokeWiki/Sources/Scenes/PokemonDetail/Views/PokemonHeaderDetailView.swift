@@ -58,7 +58,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         nameLabel.topAnchor.constraint(equalTo: pokemonImage.bottomAnchor).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
-        nameLabel.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         numberLabel.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
@@ -66,8 +66,8 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         numberLabel.translatesAutoresizingMaskIntoConstraints = false
         
         typesStack.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 12).isActive = true
-        typesStack.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        typesStack.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        typesStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
+        typesStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30).isActive = true
         typesStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
         typesStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 22).isActive = true
         typesStack.translatesAutoresizingMaskIntoConstraints = false
@@ -125,7 +125,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             typeBadgeView.centerXAnchor.constraint(equalTo: typeContentView.centerXAnchor).isActive = true
             typeBadgeView.translatesAutoresizingMaskIntoConstraints = false
             
-            typeContentView.widthAnchor.constraint(equalToConstant: frame.width / CGFloat(types.count)).isActive = true
+            typeContentView.widthAnchor.constraint(equalToConstant:( (frame.width - 60) / CGFloat(types.count)) ).isActive = true
             typeContentView.translatesAutoresizingMaskIntoConstraints = false
            
             
