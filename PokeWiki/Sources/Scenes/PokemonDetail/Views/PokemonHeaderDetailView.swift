@@ -8,15 +8,16 @@
 import GGDevelopmentKit
 import RxSwift
 
-class PokemonHeaderDetailView: UIView {
+class PokemonHeaderDetailView: UIView, ViewCoded {
+    
+    
     
     // MARK: - Private properties
-    private let font = UIFont(name: "GillSans-Bold", size: 17)
+    private let font = UIFont(name: "GillSans-Bold", size: 26)
     private var disposeBag = DisposeBag()
     
     // MARK: - Public properties
-    private(set) var imageBG = UIImageView(image: #imageLiteral(resourceName: "BGCardNeutral").withRenderingMode(.alwaysTemplate))
-    private(set) var imageHLBG = UIImageView(image: #imageLiteral(resourceName: "highLightBG"))
+    private(set) var imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
     private(set) var pokemonImage = UIImageView(frame: .zero)
     private(set) var nameLabel: UILabel = UILabel(frame: .zero)
     private(set) var numberLabel: UILabel = UILabel(frame: .zero)
@@ -24,7 +25,7 @@ class PokemonHeaderDetailView: UIView {
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupViews()
+        self.setupLayout()
     }
     
     @available(*, unavailable)
@@ -32,49 +33,51 @@ class PokemonHeaderDetailView: UIView {
     
     
     // MARK: - Private methods
-    private func setupViews() {
-        imageBG.addSubview(nameLabel)
-        imageBG.addSubview(numberLabel)
-        addSubview(imageBG)
+    func setupViews() {
+        addSubview(nameLabel)
+        addSubview(numberLabel)
         addSubview(imageHLBG)
         imageHLBG.addSubview(pokemonImage)
-
-        imageBG.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        imageBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        imageBG.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-        imageBG.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        imageBG.translatesAutoresizingMaskIntoConstraints = false
-
-        imageHLBG.topAnchor.constraint(equalTo: imageBG.topAnchor).isActive = true
-        imageHLBG.bottomAnchor.constraint(equalTo: imageBG.bottomAnchor, constant: -35).isActive = true
-        imageHLBG.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor).isActive = true
-        imageHLBG.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 24).isActive = true
-        self.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        
+        imageHLBG.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        imageHLBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        imageHLBG.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        imageHLBG.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         imageHLBG.translatesAutoresizingMaskIntoConstraints = false
 
-        pokemonImage.contentMode = .scaleAspectFill
-        pokemonImage.topAnchor.constraint(equalTo: imageHLBG.topAnchor, constant: -20).isActive = true
-        pokemonImage.bottomAnchor.constraint(equalTo: imageHLBG.bottomAnchor).isActive = true
-        pokemonImage.trailingAnchor.constraint(equalTo: imageHLBG.trailingAnchor, constant: 15).isActive = true
-        pokemonImage.leadingAnchor.constraint(equalTo: imageHLBG.leadingAnchor, constant: 5).isActive = true
+        pokemonImage.contentMode = .scaleAspectFit
+        pokemonImage.topAnchor.constraint(equalTo: imageHLBG.topAnchor, constant: 17).isActive = true
+        pokemonImage.leadingAnchor.constraint(equalTo: imageHLBG.leadingAnchor, constant: 70).isActive = true
+        pokemonImage.trailingAnchor.constraint(equalTo: imageHLBG.trailingAnchor, constant: -70).isActive = true
+        pokemonImage.heightAnchor.constraint(equalToConstant: 220).isActive = true
         pokemonImage.translatesAutoresizingMaskIntoConstraints = false
 
+        nameLabel.topAnchor.constraint(equalTo: pokemonImage.bottomAnchor).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
+        
+        nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -54).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        numberLabel.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
+        numberLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22).isActive = true
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func setupViewConfigs() {
         nameLabel.font = font
         nameLabel.numberOfLines = 2
         nameLabel.textAlignment = .center
         nameLabel.textColor = .white
-        nameLabel.bottomAnchor.constraint(equalTo: imageBG.bottomAnchor, constant: -8).isActive = true
-        nameLabel.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor, constant: -5).isActive = true
-        nameLabel.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 5).isActive = true
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        
         numberLabel.font = font
         numberLabel.textAlignment = .left
         numberLabel.textColor = .white
-        numberLabel.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -10).isActive = true
-        numberLabel.trailingAnchor.constraint(equalTo: imageBG.trailingAnchor, constant: -10).isActive = true
-        numberLabel.leadingAnchor.constraint(equalTo: imageBG.leadingAnchor, constant: 10).isActive = true
-        numberLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func setupConstraints() {
+        
     }
 }
 
@@ -84,7 +87,6 @@ extension Reactive where Base: PokemonHeaderDetailView {
         return Binder(self.base) { view, detail in
             view.nameLabel.text = detail.name
             view.numberLabel.text = "#\(detail.id)"
-            view.imageBG.tintColor = detail.type.first?.type.name.color()
         }
     }
 }

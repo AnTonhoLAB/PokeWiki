@@ -42,11 +42,34 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         setupRx()
         setupLayout()
         
+    }
+    
+    // MARK: - Private methods
+    
+    
+    // MARK: - Setup methods
+    private func setupRx() {
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
                 print(object)
             }
+            .disposed(by: disposeBag)
+        
+        viewModel.basicInfo
+            .bind(to: headerView.rx.pokemonBasicInfo)
+            .disposed(by: disposeBag)
+        
+        viewModel.basicInfo
+            .subscribe(onNext: { [view] basicInfo in
+                view?.backgroundColor = basicInfo.type.first?.type.name.color()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.pokemonImage
+            .bind(to: headerView.pokemonImage
+                    .rx
+                    .imageData)
             .disposed(by: disposeBag)
         
         viewModel.bioInfo
@@ -71,14 +94,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
             .onNext(())
     }
     
-    // MARK: - Private methods
-    
-    
-    // MARK: - Setup methods
-    private func setupRx() {
-        
-    }
-    
     internal func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -91,7 +106,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
     }
     
     internal func setupConstraints() {
-        
         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
