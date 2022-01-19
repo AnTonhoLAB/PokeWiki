@@ -114,8 +114,8 @@ extension Reactive where Base: PokemonBioInfoView {
 
     var pokemonBasicInfo: Binder<PokemonBioInfo> {
         return Binder(self.base) { view, detail in
-            view.heightValueLabel.text = "\(detail.height) cm"
-            view.weightValueLabel.text = "\(detail.weight) gm"
+            view.heightValueLabel.text = "\((detail.height/10).stringWithoutZeroFraction) m"
+            view.weightValueLabel.text = "\((detail.weight/10).stringWithoutZeroFraction) kg"
         }
     }
 }

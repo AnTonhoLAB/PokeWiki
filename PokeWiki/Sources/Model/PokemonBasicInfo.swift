@@ -14,6 +14,6 @@ struct PokemonBasicInfo {
 }
 
 struct PokemonBioInfo {
-    let height: Int
-    let weight: Int
+    let height: Double
+    let weight: Double
 }

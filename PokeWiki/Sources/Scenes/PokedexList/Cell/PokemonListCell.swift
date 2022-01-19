@@ -27,6 +27,8 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Initializers
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
+        self.backgroundColor = .white
+        self.imageBG.tintColor = .white
         self.setupViews()
     }
     

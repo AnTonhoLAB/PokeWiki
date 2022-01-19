@@ -51,9 +51,9 @@ enum PokemonType: String, Codable {
     func color() -> UIColor {
         switch self {
         case .normal:
-            return #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+            return #colorLiteral(red: 0.6594975591, green: 0.6579902172, blue: 0.470580101, alpha: 1)
         case .fighting:
-            return #colorLiteral(red: 0.3176470697, green: 0.07450980693, blue: 0.02745098062, alpha: 1)
+            return #colorLiteral(red: 0.5896615696, green: 0.1413095594, blue: 0.05477729757, alpha: 1)
         case .flying:
             return #colorLiteral(red: 0.7350213434, green: 0.5857658941, blue: 1, alpha: 1)
         case .poison:
@@ -79,7 +79,7 @@ enum PokemonType: String, Codable {
         case .psychic:
             return #colorLiteral(red: 0.9254902005, green: 0.3827843903, blue: 0.492022982, alpha: 1)
         case .ice:
-            return #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+            return #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         case .dragon:
             return #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         case .dark:
@@ -94,6 +94,11 @@ enum PokemonType: String, Codable {
     }
 }
 
+extension Double {
+    var stringWithoutZeroFraction: String {
+        return truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 
 // MARK: - PokemonDetail
 struct PokemonDetail: Codable, Equatable {
@@ -105,7 +110,7 @@ struct PokemonDetail: Codable, Equatable {
     let baseExperience: Int
     let forms: [Species]
     let gameIndices: [GameIndex]
-    let height: Int
+    let height: Double
     let id: Int
     let isDefault: Bool
     let locationAreaEncounters: String
@@ -115,7 +120,7 @@ struct PokemonDetail: Codable, Equatable {
     let species: Species
     let stats: [Stat]
     let types: [TypeElement]
-    let weight: Int
+    let weight: Double
     let sprites: Sprites
     
     var mainType: PokemonType {
