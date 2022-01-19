@@ -69,7 +69,7 @@ enum PokemonType: String, Codable {
         case .steel:
             return #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         case .fire:
-            return #colorLiteral(red: 0.7993484268, green: 0.09057982137, blue: 0.08117144422, alpha: 1)
+            return #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         case .water:
             return #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         case .grass:

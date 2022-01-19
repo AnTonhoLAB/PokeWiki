@@ -16,11 +16,11 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
     private let contentView = UIView()
     private let stackView: UIStackView = {
         $0.axis = .vertical
-        $0.spacing = 5
         return $0
     }(UIStackView())
     
     private let headerView =  PokemonHeaderDetailView(frame: .zero)
+    private let bioIndoView = PokemonBioInfoView(frame: .zero)
     
     let disposeBag = DisposeBag()
     
@@ -59,12 +59,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
             .bind(to: headerView.rx.pokemonBasicInfo)
             .disposed(by: disposeBag)
         
-        viewModel.basicInfo
-            .subscribe(onNext: { [view] basicInfo in
-                view?.backgroundColor = basicInfo.type.first?.type.name.color()
-            })
-            .disposed(by: disposeBag)
-        
         viewModel.pokemonImage
             .bind(to: headerView.pokemonImage
                     .rx
@@ -72,15 +66,14 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
             .disposed(by: disposeBag)
         
         viewModel.bioInfo
-            .subscribe { (bio) in
-                print(bio)
-            }
+            .bind(to: bioIndoView
+                    .rx
+                    .pokemonBasicInfo)
             .disposed(by: disposeBag)
         
-        viewModel.typeinfo
-            .subscribe { (typeinfo) in
-                print(typeinfo)
-            }
+        viewModel.typeinfoColor
+            .bind(to: view.rx
+                    .backgroundColor)
             .disposed(by: disposeBag)
         
         viewModel.status
@@ -98,6 +91,7 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         scrollView.addSubview(contentView)
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(headerView)
+        stackView.addArrangedSubview(bioIndoView)
     }
     
     internal func setupViewConfigs() {

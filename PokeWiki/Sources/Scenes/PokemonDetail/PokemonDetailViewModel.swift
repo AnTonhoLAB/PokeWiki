@@ -27,7 +27,7 @@ protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol
     var didTapFavorite: PublishSubject<Void> { get }
     
     // MARK: - Outputs
-    var typeinfo: Observable<[PokemonType]> { get }
+    var typeinfoColor: Observable<UIColor> { get }
     var bioInfo: Observable<PokemonBioInfo> { get }
     var status: Observable<[Stat]> { get }
 }
@@ -136,15 +136,16 @@ extension PokemonBasicDetailViewModel {
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
     
     private(set) var didTapFavorite: PublishSubject<Void> = .init()
-    private(set) var typeinfo: Observable<[PokemonType]> = .never()
+    private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
     private(set) var status: Observable<[Stat]> = .never()
 
     override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         super.init(name: name, url: url, interactor: interactor)
 
-        typeinfo = pokemonResponse
-            .map { $0.types.map { $0.type.name} }
+        typeinfoColor = pokemonResponse
+            .map { $0.types.map { $0.type.name.color()}.first }
+            .unwrap()
             .asObservable()
 
         bioInfo = pokemonResponse

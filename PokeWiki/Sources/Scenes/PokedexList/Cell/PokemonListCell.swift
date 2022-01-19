@@ -116,7 +116,7 @@ extension Reactive where Base: PokemonListCell {
 
     var pokemonBasicInfo: Binder<PokemonBasicInfo> {
         return Binder(self.base) { view, detail in
-            view.nameLabel.text = detail.name
+            view.nameLabel.text = detail.name.capitalized
             view.numberLabel.text = "#\(detail.id)"
             view.imageBG.tintColor = detail.type.first?.type.name.color()
         }
