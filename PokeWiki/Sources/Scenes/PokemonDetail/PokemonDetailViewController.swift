@@ -22,6 +22,7 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
     
     private let headerView =  PokemonHeaderDetailView(frame: .zero)
     private let bioIndoView = PokemonBioInfoView(frame: .zero)
+    private let statsView = PokemonStatsView(frame: .zero)
     
     let disposeBag = DisposeBag()
     
@@ -51,7 +52,7 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-                print(object)
+                // TODO: - setup loader
             }
             .disposed(by: disposeBag)
         
@@ -92,6 +93,7 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(headerView)
         stackView.addArrangedSubview(bioIndoView)
+        stackView.addArrangedSubview(statsView)
     }
     
     internal func setupViewConfigs() {

@@ -61,7 +61,6 @@ class ListAllViewModelTests: QuickSpec {
                     let stateLoading : Navigation<PokemonListAllViewModel.State> = Navigation(type: .loading)
                     let stateSuccess : Navigation<PokemonListAllViewModel.State> = Navigation(type: .success)
 
-                    print(state.events)
                     expect(state.events).to(equal([.next(10, stateLoading),
                                                    .next(10, stateSuccess)
                                                    ]))
@@ -116,7 +115,6 @@ class ListAllViewModelTests: QuickSpec {
                     let stateLoading : Navigation<PokemonListAllViewModel.State> = Navigation(type: .loading)
                     let stateError : Navigation<PokemonListAllViewModel.State> = Navigation(type: .error)
 
-                    print(state.events)
                     expect(state.events).to(equal([.next(10, stateLoading),
                                                    .next(10, stateError),
                                                    .next(10, stateError),
