@@ -44,9 +44,8 @@ class PokemonBioInfoView: UIView, ViewCoded {
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    
     // MARK: - Private methods
-    func setupViews() {
+    internal func setupViews() {
         
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.2879525528)
         self.heightAnchor.constraint(equalToConstant: 108).isActive = true
@@ -62,7 +61,7 @@ class PokemonBioInfoView: UIView, ViewCoded {
         weighStack.addArrangedSubview(weightValueLabel)
     }
     
-    func setupViewConfigs() {
+    internal func setupViewConfigs() {
         
         bioInfoStack.layer.cornerRadius = 20
         bioInfoStack.layer.masksToBounds = true
@@ -84,10 +83,9 @@ class PokemonBioInfoView: UIView, ViewCoded {
         weightValueLabel.textAlignment = .center
         weightValueLabel.font = infoFont
         weightValueLabel.textColor = .white
-        
     }
     
-    func setupConstraints() {
+    internal func setupConstraints() {
         bioInfoStack.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         bioInfoStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12).isActive = true
         bioInfoStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
@@ -106,7 +104,6 @@ class PokemonBioInfoView: UIView, ViewCoded {
         weightTextLabel.heightAnchor.constraint(equalTo: weightValueLabel.heightAnchor).isActive = true
         weightTextLabel.translatesAutoresizingMaskIntoConstraints = false
         weightValueLabel.translatesAutoresizingMaskIntoConstraints = false
-       
     }
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import GGDevelopmentKit
 
 final class PokemonDetailViewController: UIViewController, ViewCoded {
     
@@ -40,7 +41,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         super.viewDidLoad()
         setupRx()
         setupLayout()
-        
     }
     
     // MARK: - Private methods
@@ -118,19 +118,5 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         stackView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
-    }
-}
-
-protocol ViewCoded {
-    func setupViews()
-    func setupViewConfigs()
-    func setupConstraints()
-}
-
-extension ViewCoded {
-    func setupLayout() {
-        setupViews()
-        setupViewConfigs()
-        setupConstraints()
     }
 }
