@@ -78,9 +78,8 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
             .disposed(by: disposeBag)
         
         viewModel.status
-            .subscribe { (status) in
-                // TODO
-            }
+            .bind(to: statsView.rx
+                    .pokemonStatsInfo)
             .disposed(by: disposeBag)
 
         viewModel.viewWillAppear
