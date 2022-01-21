@@ -79,7 +79,7 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         
         viewModel.status
             .subscribe { (status) in
-                print(status)
+                // TODO
             }
             .disposed(by: disposeBag)
 

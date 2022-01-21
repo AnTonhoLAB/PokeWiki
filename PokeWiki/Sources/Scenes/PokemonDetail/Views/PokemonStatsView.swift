@@ -15,6 +15,7 @@ class PokemonStatsView: UIView, ViewCoded {
         self.setupLayout()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func setupViews() {
