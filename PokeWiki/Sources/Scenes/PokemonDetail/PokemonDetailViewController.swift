@@ -40,8 +40,9 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
     // MARK: - Lyfe cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupRx()
+        
         setupLayout()
+        setupRx()
     }
     
     // MARK: - Private methods

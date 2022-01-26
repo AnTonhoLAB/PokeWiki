@@ -12,7 +12,8 @@ class PokemonStatsView: UIView, ViewCoded {
     
     private var statsStack: UIStackView = {
         $0.axis = .vertical
-        $0.backgroundColor = #colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 0.2417441647)
+        $0.spacing = 0
+        $0.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.04415166945)
         return $0
     }(UIStackView())
     
@@ -26,13 +27,30 @@ class PokemonStatsView: UIView, ViewCoded {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     func setup(stats: [Stat]) {
-        stats.forEach { stat in
-            
-            let chart = GGSimpleBarChart(frame: .zero)
-            chart.setup(value: stat.baseStat, from: 250)
-            chart.heightAnchor.constraint(equalToConstant: 20).isActive = true
-            statsStack.addSubview(chart)
+        
+        let charts = stats.map { stat ->  (Stat, GGSimpleBarChart) in
+            let chart = createChart(stat: stat)
+            return (stat, chart)
         }
+        
+        for chart in charts {
+            statsStack.addArrangedSubview(chart.1)
+        }
+        
+        for chart in charts {
+            if let statName = chart.0.stat.statName {
+                chart.1.setup(nameStatus: chart.0.stat.name, value: chart.0.baseStat, from: 250, chartColor: statName.getColor())
+            } else {
+                chart.1.setup(nameStatus: chart.0.stat.name, value: chart.0.baseStat, from: 250)
+            }
+        }
+    }
+    
+    private func createChart(stat: Stat) -> GGSimpleBarChart {
+        let chart = GGSimpleBarChart(frame: .zero)
+        chart.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        chart.translatesAutoresizingMaskIntoConstraints = false
+        return chart
     }
     
     // MARK: - Setup layout
@@ -45,8 +63,14 @@ class PokemonStatsView: UIView, ViewCoded {
     }
     
     func setupConstraints() {
-        
-        self.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        statsStack.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        statsStack.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        statsStack.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        statsStack.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        statsStack.translatesAutoresizingMaskIntoConstraints = false
+        statsStack.isLayoutMarginsRelativeArrangement = true
+        statsStack.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 20)
+
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 }
