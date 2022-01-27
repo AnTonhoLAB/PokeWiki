@@ -8,8 +8,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import GGDevelopmentKit
 
-class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlerableViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -44,11 +45,44 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         setupRx()
         
         viewModel.serviceState
-            .filter { $0.type == .success }
-            .drive { object in
-                
+            .filter { $0.type == .loading }
+            .drive { state in
+                self.view.showLoading()
             }
             .disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .success }
+            .drive { object in
+                self.view.removeLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        let reload: ( (UIAlertAction) -> Void) = { _ in
+            print("aqui oi")
+            self.viewModel.viewDidLoad.onNext(())
+        }
+        
+        viewModel.serviceState
+            .filter { $0.type == .error }
+            .map { $0.info as? PokemonListError }
+            .unwrap()
+            .drive { object in
+                self.view.removeLoading()
+                self.alertSimpleMessage(message: "No connection") { _ in
+                    print("aqui oi")
+                    self.viewModel.viewDidLoad.onNext(())
+                }
+            }
+            .disposed(by: disposeBag)
+        
+//        viewModel.serviceState
+//            .filter { $0.type == .error }
+//            .drive { object in
+//                self.view.removeLoading()
+//                self.alertSimpleMessage(message: "No connection", action: reload)
+//            }
+//            .disposed(by: disposeBag)
 
         viewModel.viewDidLoad
             .onNext(())

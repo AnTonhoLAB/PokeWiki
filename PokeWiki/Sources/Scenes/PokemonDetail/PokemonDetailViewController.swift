@@ -53,7 +53,14 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-                // TODO: - setup loader
+                self.view.removeLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .loading }
+            .drive { object in
+                self.view.showLoading()
             }
             .disposed(by: disposeBag)
         

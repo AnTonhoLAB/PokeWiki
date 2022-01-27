@@ -77,7 +77,10 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
             
         let loadList = startLoad
             .filter { self.paginationSupport.needCall() }
-            .flatMapLatest { fetchPokemons() }
+            .flatMapLatest {
+                fetchPokemons()
+                
+            }
 
         let loadingShown = activityIndicator
             .filter { $0 }

@@ -48,9 +48,16 @@ class PokemonListCell: UICollectionViewCell {
             .disposed(by: disposeBag)
         
         viewModel.serviceState
+            .filter { $0.type == .loading }
+            .drive { object in
+                self.contentView.showLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-
+                self.contentView.removeLoading()
             }
             .disposed(by: disposeBag)
 
@@ -65,6 +72,9 @@ class PokemonListCell: UICollectionViewCell {
         addSubview(imageBG)
         addSubview(imageHLBG)
         imageHLBG.addSubview(pokemonImage)
+        
+        contentView.layer.cornerRadius = 12
+        contentView.layer.masksToBounds = true
         
         imageBG.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         imageBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
