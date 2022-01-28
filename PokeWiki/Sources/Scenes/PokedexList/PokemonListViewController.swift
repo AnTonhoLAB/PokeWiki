@@ -58,37 +58,38 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             }
             .disposed(by: disposeBag)
         
-        let reload: ( (UIAlertAction) -> Void) = { _ in
-            print("aqui oi")
-            self.viewModel.viewDidLoad.onNext(())
-        }
-        
         viewModel.serviceState
             .filter { $0.type == .error }
             .map { $0.info as? PokemonListError }
             .unwrap()
             .drive { object in
                 self.view.removeLoading()
-                self.alertSimpleMessage(message: "No connection") { _ in
-                    print("aqui oi")
-                    self.viewModel.viewDidLoad.onNext(())
+                self.alertSimpleMessage(message: "No connection") { bt in
+                    self.viewModel.viewDidLoad.onNext(true)
                 }
             }
             .disposed(by: disposeBag)
         
-//        viewModel.serviceState
-//            .filter { $0.type == .error }
-//            .drive { object in
-//                self.view.removeLoading()
-//                self.alertSimpleMessage(message: "No connection", action: reload)
-//            }
-//            .disposed(by: disposeBag)
-
+        let reload: (UIAlertAction) -> Void = { [weak self] _ in
+            self?.viewModel
+                .viewDidLoad
+                .onNext(true)
+        }
+        
+        viewModel.serviceState
+            .filter { $0.type == .error }
+            .drive { object in
+                self.view.removeLoading()
+                self.alertSimpleMessage(message: "No connection", action: reload)
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.viewDidLoad
-            .onNext(())
+            .onNext(true)
     }
     
     // MARK: - Private methods
+    
     private func setupRx() {
         viewModel
             .pokemonList
@@ -112,7 +113,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         collectionView.rx
             .willDisplayLastCell
             .filter { $0 }
-            .mapToVoid()
+            .mapToFalse()
             .bind(to: viewModel.loadMore)
             .disposed(by: disposeBag)
         

@@ -13,7 +13,7 @@ import GGDevelopmentKit
 protocol PokemonListAllViewModelProtocol {
     
     // MARK: - Inputs
-    var viewDidLoad: PublishSubject<Void> { get }
+    var viewDidLoad: PublishSubject<Bool> { get }
     var didSelectItem: PublishSubject<PokemonItem> { get }
     
     // MARK: - Outputs
@@ -33,8 +33,8 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     private let paginationSupport: GGPaginationSupport = GGPaginationSupport(limit: 20)
     
     // MARK: - Inputs
-    let viewDidLoad: PublishSubject<Void> = .init()
-    let loadMore: PublishSubject<Void> = .init()
+    let viewDidLoad: PublishSubject<Bool> = .init()
+    let loadMore: PublishSubject<Bool> = .init()
     let didSelectItem: PublishSubject<PokemonItem> = .init()
     
     // MARK: - Outputs
@@ -55,31 +55,30 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     private func createServiceState() -> Driver<ServiceState> {
                 
         let activityIndicator = ActivityIndicator()
-        let errorTracker = ErrorTracker()
         
         /// Triger when start to load
         let startLoad = Observable.merge([viewDidLoad, loadMore])
         
         /// Function to load Pokemons
-        let fetchPokemons = { [pokemonListResponse, paginationSupport, interactor] in
+        let fetchPokemons: (_ reload: Bool) -> Observable<PokemonListAllViewModel.ServiceState> = { [pokemonListResponse, paginationSupport, interactor] (reload)  in
             return interactor.fetchList(with: paginationSupport.limit, offSet: paginationSupport.offSet)
                 .trackActivity(activityIndicator)
-                .trackError(errorTracker)
                 .do(onNext: { [pokemonListResponse, paginationSupport] (pokemonResponse) in
-
-                    pokemonListResponse.accept(pokemonListResponse.value + pokemonResponse.results)
+                    let newValue = reload ? pokemonResponse.results : pokemonListResponse.value + pokemonResponse.results
+                    pokemonListResponse.accept(newValue)
                     paginationSupport.size = pokemonResponse.count
                     paginationSupport.validateIsLast(count: pokemonListResponse.value.count)
                 })
                 .map { ServiceState(type: .success, info: $0) }
-                
+                .catch { err in
+                    return .just(ServiceState(type: .error, info: err))
+                }
         }
             
         let loadList = startLoad
-            .filter { self.paginationSupport.needCall() }
-            .flatMapLatest {
-                fetchPokemons()
-                
+            .filter { reload in self.paginationSupport.needCall(reload: reload) }
+            .flatMapLatest { reload in
+                fetchPokemons(reload)
             }
 
         let loadingShown = activityIndicator
@@ -87,12 +86,8 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
             .map { _ in ServiceState(type: .loading) }
             .asObservable()
         
-        let errorToShow = errorTracker
-            .map { ServiceState(type: .error, info: $0)}
-            .asObservable()
-        
         return Observable
-            .merge(loadingShown, loadList, errorToShow)
+            .merge(loadingShown, loadList)
             .asDriver(onErrorJustReturn: ServiceState(type: .error))
     }
     
@@ -132,3 +127,4 @@ extension PokemonListAllViewModel {
         }
     }
 }
+
