@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import GGDevelopmentKit
 
-class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlerableViewController {
+class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlertableViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -43,53 +43,9 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         configureViews()
         
         setupRx()
-        
-        viewModel.serviceState
-            .filter { $0.type == .loading }
-            .drive { state in
-                self.view.showLoading()
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.serviceState
-            .filter { $0.type == .success }
-            .drive { object in
-                self.view.removeLoading()
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.serviceState
-            .filter { $0.type == .error }
-            .map { $0.info as? PokemonListError }
-            .unwrap()
-            .drive { object in
-                self.view.removeLoading()
-                self.alertSimpleMessage(message: "No connection") { bt in
-                    self.viewModel.viewDidLoad.onNext(true)
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        let reload: (UIAlertAction) -> Void = { [weak self] _ in
-            self?.viewModel
-                .viewDidLoad
-                .onNext(true)
-        }
-        
-        viewModel.serviceState
-            .filter { $0.type == .error }
-            .drive { object in
-                self.view.removeLoading()
-                self.alertSimpleMessage(message: "No connection", action: reload)
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.viewDidLoad
-            .onNext(true)
     }
     
     // MARK: - Private methods
-    
     private func setupRx() {
         viewModel
             .pokemonList
@@ -118,6 +74,47 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .loading }
+            .drive { state in
+                self.view.showLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .success }
+            .drive { object in
+                self.view.removeLoading()
+            }
+            .disposed(by: disposeBag)
+    
+        viewModel.serviceState
+            .filter { $0.type == .error }
+            .map { $0.info as? Error }
+            .unwrap()
+            .drive { [handle] error in
+                self.view.removeLoading()
+                handle(error)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.viewDidLoad
+            .onNext(true)
+    }
+    
+    private func handle(error: Error) {
+        let reload: (UIAlertAction) -> Void = { [weak self] _ in
+            self?.viewModel
+                .viewDidLoad
+                .onNext(true)
+        }
+        
+        if let listError = error as? PokemonListError {
+            self.alertSimpleMessage(title: "oh no, an error occurred", message: listError.localizedDescription, buttonTitle: "Try again", action: reload)
+        } else {
+            self.alertSimpleMessage(message: "An unexpected error occurred", buttonTitle: "Try again", action: reload)
+        }
     }
     
     private func setupViews() {
