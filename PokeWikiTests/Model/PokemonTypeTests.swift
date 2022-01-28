@@ -34,7 +34,7 @@ class PokemonTypeTests: QuickSpec {
                 }
                 
                 it("Então a cor deve ser") {
-                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)))
+                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.6594975591, green: 0.6579902172, blue: 0.470580101, alpha: 1)))
                 }
             }
             
@@ -49,8 +49,8 @@ class PokemonTypeTests: QuickSpec {
                 }
                 
                 it("Então a cor deve ser") {
-                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.3176470697, green: 0.07450980693, blue: 0.02745098062, alpha: 1)))
-                }
+                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.5896615696, green: 0.1413095594, blue: 0.05477729757, alpha: 1)))
+               }
             }
             
             context("Quando o pokemon for do tipo flying") {
@@ -170,7 +170,7 @@ class PokemonTypeTests: QuickSpec {
                 }
                 
                 it("Então a cor deve ser") {
-                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.7993484268, green: 0.09057982137, blue: 0.08117144422, alpha: 1)))
+                    expect(self.sut.color).to(equal(#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)))
                 }
             }
             
@@ -245,7 +245,7 @@ class PokemonTypeTests: QuickSpec {
                 }
                 
                 it("Então a cor deve ser") {
-                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
+                    expect(self.sut.color).to(equal(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)))
                 }
             }
            
