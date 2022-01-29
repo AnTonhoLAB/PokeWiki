@@ -6,7 +6,6 @@
     <br />
     <a href="https://codecov.io/github/AnTonhoLAB/PokeWiki?branch=master" alt="codecov.io" title="Codecov"><img src="https://codecov.io/github/AnTonhoLAB/PokeWiki/coverage.svg?branch=master" /></a>
     <a href="https://codebeat.co/projects/github-com-antonholab-pokewiki-master"><img alt="codebeat badge" src="https://codebeat.co/badges/af4cabc8-3cf6-48da-aa2a-1b718279f6d4" /></a>
-
 </p>
 
 # PokeWiki
@@ -23,7 +22,7 @@ Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.fig
 ## Requisitos
 
 * Xcode 12.x
-* Swift 5.x
+* Swift 5
 
 ## Instalação
 
