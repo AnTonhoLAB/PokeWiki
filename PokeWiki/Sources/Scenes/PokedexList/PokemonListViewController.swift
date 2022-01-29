@@ -122,8 +122,8 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     }
     
     private func configureViews() {
-        self.collectionView.backgroundColor = .white
-        self.view.backgroundColor = .white
+        self.collectionView.backgroundColor = AppColors.bgColor
+        self.view.backgroundColor = AppColors.bgColor
     }
     
     // MARK: - Delegate methods

@@ -27,8 +27,8 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Initializers
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
-        self.backgroundColor = .white
-        self.imageBG.tintColor = .white
+        self.backgroundColor = AppColors.bgColor
+        self.imageBG.tintColor = AppColors.bgColor
         self.setupViews()
     }
     
@@ -115,7 +115,7 @@ class PokemonListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.backgroundColor = .white
+        self.backgroundColor = AppColors.bgColor
         self.imageBG.tintColor = .white
         self.pokemonImage.image = nil
         self.nameLabel.text = ""
