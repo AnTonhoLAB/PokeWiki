@@ -18,7 +18,8 @@ class ListCellServiceMock: PokemonDetailServiceProtocol {
                 let specie = Species(name: "species", url: "http://species")
                 let indice = GameIndex(gameIndex: 1, version: specie)
                 let move = Move(move: specie, versionGroupDetails: [VersionGroupDetail(levelLearnedAt: 1, moveLearnMethod: specie, versionGroup: specie)])
-                let stat = Stat(baseStat: 1, effort: 1, stat: specie)
+                let statInfo = StatInfo(name: "species", url: "http://species")
+                let stat = Stat(baseStat: 1, effort: 1, stat: statInfo)
                 let type = PokemonType.normal
                 let specieType = SpecieType(name: type, url: "http://species")
                 let typeElement = TypeElement(slot: 1, type: specieType)
@@ -69,13 +70,13 @@ enum MockError: Error {
 }
 
 class NetworkMock: NetworkingManagerProtocol {
-    var isConnected: Bool = {
+    func isConnected() -> Bool {
         true
-    }()
+    }
 }
 
 class NetworkMockError: NetworkingManagerProtocol {
-    var isConnected: Bool = {
+    func isConnected() -> Bool {
         false
-    }()
+    }
 }

@@ -24,7 +24,7 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
     }
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
-        guard networkingManager.isConnected  else {
+        guard networkingManager.isConnected()  else {
             return Single<PokemonDetail>
                         .create { single in
                             single(.failure(PokemonListError.NoConnection))
@@ -36,7 +36,7 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
     }
     
     func fetchPokemonImage(for id: Int) -> Single<Data> {
-        guard networkingManager.isConnected  else {
+        guard networkingManager.isConnected()  else {
             return Single<Data>
                         .create { single in
                             single(.failure(PokemonListError.NoConnection))

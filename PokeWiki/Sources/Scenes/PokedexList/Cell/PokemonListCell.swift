@@ -27,6 +27,8 @@ class PokemonListCell: UICollectionViewCell {
     // MARK: - Initializers
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
+        self.backgroundColor = AppColors.bgColor
+        self.imageBG.tintColor = AppColors.bgColor
         self.setupViews()
     }
     
@@ -46,9 +48,16 @@ class PokemonListCell: UICollectionViewCell {
             .disposed(by: disposeBag)
         
         viewModel.serviceState
+            .filter { $0.type == .loading }
+            .drive { object in
+                self.contentView.showLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.serviceState
             .filter { $0.type == .success }
             .drive { object in
-
+                self.contentView.removeLoading()
             }
             .disposed(by: disposeBag)
 
@@ -63,6 +72,9 @@ class PokemonListCell: UICollectionViewCell {
         addSubview(imageBG)
         addSubview(imageHLBG)
         imageHLBG.addSubview(pokemonImage)
+        
+        contentView.layer.cornerRadius = 12
+        contentView.layer.masksToBounds = true
         
         imageBG.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         imageBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -103,7 +115,7 @@ class PokemonListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.backgroundColor = .white
+        self.backgroundColor = AppColors.bgColor
         self.imageBG.tintColor = .white
         self.pokemonImage.image = nil
         self.nameLabel.text = ""
@@ -116,9 +128,9 @@ extension Reactive where Base: PokemonListCell {
 
     var pokemonBasicInfo: Binder<PokemonBasicInfo> {
         return Binder(self.base) { view, detail in
-            view.nameLabel.text = detail.name
+            view.nameLabel.text = detail.name.capitalized
             view.numberLabel.text = "#\(detail.id)"
-            view.imageBG.tintColor = detail.type.color()
+            view.imageBG.tintColor = detail.type.first?.type.name.color()
         }
     }
 }

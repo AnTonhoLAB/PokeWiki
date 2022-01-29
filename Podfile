@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.0'
+platform :ios, '13.0'
 
 # source to download other pods
 source 'https://github.com/CocoaPods/Specs.git'
@@ -15,7 +15,7 @@ target 'PokeWiki' do
   pod 'RxSwift', '>= 5.0.0'
   pod 'RxCocoa', '>= 5.0.0'
   pod 'Alamofire', '~> 5.5'
-  pod 'GGDevelopmentKit', '~> 0.4.1'
+  pod 'GGDevelopmentKit', '~> 0.6.0'
 
   target 'PokeWikiTests' do
     inherit! :search_paths

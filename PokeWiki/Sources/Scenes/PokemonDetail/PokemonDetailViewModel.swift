@@ -23,14 +23,20 @@ protocol PokemonBasicDetailViewModelProtocol {
 }
 
 protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol {
+    // MARK: - Inputs
+    var didTapFavorite: PublishSubject<Void> { get }
     
+    // MARK: - Outputs
+    var typeinfoColor: Observable<UIColor> { get }
+    var bioInfo: Observable<PokemonBioInfo> { get }
+    var status: Observable<[Stat]> { get }
 }
 
 class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     
     typealias ServiceState = Navigation<State>
     private let interactor: PokemonDetailInteractorProtocol
-    private let pokemonResponse = PublishSubject<PokemonDetail>()
+    fileprivate let pokemonResponse = PublishSubject<PokemonDetail>()
     private let pokemonImageResponse = PublishSubject<Data>()
     
     // MARK: - Inputs
@@ -48,7 +54,10 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         self.interactor = interactor
         
         self.basicInfo = pokemonResponse
-            .map { PokemonBasicInfo(id: $0.id, name: $0.name, type: $0.types.first?.type.name ?? PokemonType.unknown) }
+            .map { PokemonBasicInfo(id: $0.id,
+                                    name: $0.name,
+                                    type: $0.types)
+            }
             .asObservable()
         
         self.pokemonImage = pokemonImageResponse.asObservable()
@@ -126,10 +135,26 @@ extension PokemonBasicDetailViewModel {
 
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
     
-    
+    private(set) var didTapFavorite: PublishSubject<Void> = .init()
+    private(set) var typeinfoColor: Observable<UIColor> = .never()
+    private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
+    private(set) var status: Observable<[Stat]> = .never()
+
     override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         super.init(name: name, url: url, interactor: interactor)
-        
-        
+
+        typeinfoColor = pokemonResponse
+            .map { $0.types.map { $0.type.name.color()}.first }
+            .unwrap()
+            .asObservable()
+
+        bioInfo = pokemonResponse
+            .map { PokemonBioInfo(height: $0.height, weight: $0.weight) }
+            .asObservable()
+
+        status = pokemonResponse
+            .map { $0.stats }
+            .asObservable()
     }
+
 }
