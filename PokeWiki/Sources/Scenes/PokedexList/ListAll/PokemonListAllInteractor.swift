@@ -23,7 +23,7 @@ class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
     }
     
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
-        guard networkingManager.isConnected  else {
+        guard networkingManager.isConnected()  else {
             return Single<PokemonListResponse>
                         .create { single in
                             single(.failure(PokemonListError.NoConnection))

@@ -8,8 +8,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import GGDevelopmentKit
 
-class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlertableViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -30,6 +31,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     // MARK: - Lyfe cycle
@@ -41,16 +43,6 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         configureViews()
         
         setupRx()
-        
-        viewModel.serviceState
-            .filter { $0.type == .success }
-            .drive { object in
-                
-            }
-            .disposed(by: disposeBag)
-
-        viewModel.viewDidLoad
-            .onNext(())
     }
     
     // MARK: - Private methods
@@ -61,20 +53,68 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .bind(to: collectionView.rx
                     .items(cellIdentifier: PokemonListCell.identifier,
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
-                let service = PokemonListCellService()
-                let interactor = PokemonListCellInteractor(service: service)
-                let viewModel = PokemonListCellViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
+                let service = PokemonDetailService()
+                let interactor = PokemonDetailInteractor(service: service)
+                let viewModel = PokemonBasicDetailViewModel(name: pokemon.name, url: pokemon.url, interactor: interactor)
                 cell.setup(viewModel: viewModel)
             }.disposed(by: disposeBag)
+        
+        collectionView
+            .rx
+            .modelSelected(PokemonItem.self)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .bind(to: viewModel.didSelectItem)
+            .disposed(by: disposeBag)
         
         collectionView.rx
             .willDisplayLastCell
             .filter { $0 }
-            .mapToVoid()
+            .mapToFalse()
             .bind(to: viewModel.loadMore)
             .disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .loading }
+            .drive { state in
+                self.view.showLoading()
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.serviceState
+            .filter { $0.type == .success }
+            .drive { object in
+                self.view.removeLoading()
+            }
+            .disposed(by: disposeBag)
+    
+        viewModel.serviceState
+            .filter { $0.type == .error }
+            .map { $0.info as? Error }
+            .unwrap()
+            .drive { [handle] error in
+                self.view.removeLoading()
+                handle(error)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.viewDidLoad
+            .onNext(true)
+    }
+    
+    private func handle(error: Error) {
+        let reload: (UIAlertAction) -> Void = { [weak self] _ in
+            self?.viewModel
+                .viewDidLoad
+                .onNext(true)
+        }
+        
+        if let listError = error as? PokemonListError {
+            self.alertSimpleMessage(title: "oh no, an error occurred", message: listError.localizedDescription, buttonTitle: "Try again", action: reload)
+        } else {
+            self.alertSimpleMessage(message: "An unexpected error occurred", buttonTitle: "Try again", action: reload)
+        }
     }
     
     private func setupViews() {
@@ -82,8 +122,8 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     }
     
     private func configureViews() {
-        self.collectionView.backgroundColor = .white
-        self.view.backgroundColor = .white
+        self.collectionView.backgroundColor = AppColors.bgColor
+        self.view.backgroundColor = AppColors.bgColor
     }
     
     // MARK: - Delegate methods

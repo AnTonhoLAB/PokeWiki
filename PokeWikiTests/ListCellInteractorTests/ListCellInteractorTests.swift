@@ -15,7 +15,7 @@ import GGDevelopmentKit
 
 class ListCellInteractorTests: QuickSpec {
     
-    private var sut: PokemonListCellInteractor!
+    private var sut: PokemonDetailInteractor!
     private var scheduler: TestScheduler!
     private var disposeBag: DisposeBag!
     
@@ -40,7 +40,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMock(), networkingManager: NetworkMock())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMock(), networkingManager: NetworkMock())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -55,8 +55,9 @@ class ListCellInteractorTests: QuickSpec {
                     
                     let specie = Species(name: "species", url: "http://species")
                     let indice = GameIndex(gameIndex: 1, version: specie)
+                    let statInfo = StatInfo(name: "species", url: "http://species")
                     let move = Move(move: specie, versionGroupDetails: [VersionGroupDetail(levelLearnedAt: 1, moveLearnMethod: specie, versionGroup: specie)])
-                    let stat = Stat(baseStat: 1, effort: 1, stat: specie)
+                    let stat = Stat(baseStat: 1, effort: 1, stat: statInfo)
                     let type = PokemonType.normal
                     let specieType = SpecieType(name: type, url: "http://species")
                     let typeElement = TypeElement(slot: 1, type: specieType)
@@ -82,7 +83,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMock())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMock())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -109,7 +110,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
                 }
                 
                 it("Então retorna o detalhe") {
@@ -133,7 +134,7 @@ class ListCellInteractorTests: QuickSpec {
 
                 beforeEach {
                     self.setUpTests()
-                    self.sut = PokemonListCellInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
+                    self.sut = PokemonDetailInteractor(service: ListCellServiceMockError(), networkingManager: NetworkMockError())
                 }
                 
                 it("Então retorna o detalhe") {

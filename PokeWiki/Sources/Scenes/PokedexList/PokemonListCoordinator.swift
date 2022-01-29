@@ -11,7 +11,9 @@ import GGDevelopmentKit
 class PokemonListCoordinator: GGCoordinator {
     
     init() {
-        super.init(rootViewController: UINavigationController())
+        let navigation = UINavigationController()
+//        navigation.interactivePopGestureRecognizer?.isEnabled = false
+        super.init(rootViewController: navigation)
     }
 
     override func start() {
@@ -19,6 +21,20 @@ class PokemonListCoordinator: GGCoordinator {
         let interactor = PokemonListAllInteractor(service: service)
         let viewModel = PokemonListAllViewModel(interactor: interactor)
         let listViewController = PokemonListViewController(viewModel: viewModel)
+        
+        viewModel.navigation
+            .filter { $0.type == .openDetail}
+            .map { $0.info as? PokemonItem }
+            .unwrap()
+            .drive(onNext:  { [openDetail] item in
+                openDetail(item)
+            })
+            .disposed(by: listViewController.disposeBag)
+        
         show(listViewController)
+    }
+    
+    private func openDetail(for pokemonItem: PokemonItem) {
+        PokemonDetailCoordinator(navigation: rootViewController, pokemonDetail: pokemonItem).start()
     }
 }

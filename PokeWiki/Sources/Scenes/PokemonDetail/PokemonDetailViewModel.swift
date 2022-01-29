@@ -1,5 +1,5 @@
 //
-//  PokemonListCellViewModel.swift
+//  PokemonDetailViewModel.swift
 //  PokeWiki
 //
 //  Created by George Vilnei Arboite Gomes on 08/01/22.
@@ -10,23 +10,33 @@ import RxSwift
 import RxCocoa
 import GGDevelopmentKit
 
-protocol PokemonListCellViewModelProtocol {
+protocol PokemonBasicDetailViewModelProtocol {
     
     // MARK: - Inputs
     var viewWillAppear: PublishSubject<Void> { get }
     
     // MARK: - Outputs
     var name: String { get }
-    var serviceState: Driver<Navigation<PokemonListCellViewModel.State>> { get }
-    var pokemonDetail: Driver<PokemonDetail> { get }
-    var pokemonImage: Driver<Data> { get }
+    var serviceState: Driver<Navigation<PokemonBasicDetailViewModel.State>> { get }
+    var basicInfo: Observable<PokemonBasicInfo> { get }
+    var pokemonImage: Observable<Data> { get }
 }
 
-final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
+protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol {
+    // MARK: - Inputs
+    var didTapFavorite: PublishSubject<Void> { get }
+    
+    // MARK: - Outputs
+    var typeinfoColor: Observable<UIColor> { get }
+    var bioInfo: Observable<PokemonBioInfo> { get }
+    var status: Observable<[Stat]> { get }
+}
+
+class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     
     typealias ServiceState = Navigation<State>
-    private let interactor: PokemonListCellInteractorProtocol
-    private let pokemonResponse = PublishSubject<PokemonDetail>()
+    private let interactor: PokemonDetailInteractorProtocol
+    fileprivate let pokemonResponse = PublishSubject<PokemonDetail>()
     private let pokemonImageResponse = PublishSubject<Data>()
     
     // MARK: - Inputs
@@ -35,16 +45,24 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
     // MARK: - Outputs
     let name: String
     private(set) var serviceState: Driver<ServiceState> = .never()
-    private(set) var pokemonDetail: Driver<PokemonDetail>
-    private(set) var pokemonImage: Driver<Data>
+    private(set) var basicInfo: Observable<PokemonBasicInfo>
+    private(set) var pokemonImage: Observable<Data>
     
     // MARK: - Initializer
-    init(name: String, url: String, interactor: PokemonListCellInteractorProtocol) {
+    init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         self.name = name
         self.interactor = interactor
-        self.pokemonDetail = pokemonResponse.asDriverOnErrorJustComplete()
-        self.pokemonImage = pokemonImageResponse.asDriverOnErrorJustComplete()
+        
+        self.basicInfo = pokemonResponse
+            .map { PokemonBasicInfo(id: $0.id,
+                                    name: $0.name,
+                                    type: $0.types)
+            }
+            .asObservable()
+        
+        self.pokemonImage = pokemonImageResponse.asObservable()
         self.serviceState = createServiceState(with: name, url: url)
+        
     }
     
     // MARK: - Internal methods
@@ -94,13 +112,13 @@ final class PokemonListCellViewModel: PokemonListCellViewModelProtocol {
         
         return Observable
             .merge(loadingShown, loadDetail, loadImage, errorToShow)
-            .asDriver(onErrorJustReturn: ServiceState(type: .error))
+            .asDriverOnErrorJustComplete()
     }
     
 }
 
 // MARK: - Helpers
-extension PokemonListCellViewModel {
+extension PokemonBasicDetailViewModel {
     
     // MARK: - Route
     enum Route: Int, Equatable {
@@ -113,4 +131,30 @@ extension PokemonListCellViewModel {
         case success
         case error
     }
+}
+
+final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
+    
+    private(set) var didTapFavorite: PublishSubject<Void> = .init()
+    private(set) var typeinfoColor: Observable<UIColor> = .never()
+    private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
+    private(set) var status: Observable<[Stat]> = .never()
+
+    override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
+        super.init(name: name, url: url, interactor: interactor)
+
+        typeinfoColor = pokemonResponse
+            .map { $0.types.map { $0.type.name.color()}.first }
+            .unwrap()
+            .asObservable()
+
+        bioInfo = pokemonResponse
+            .map { PokemonBioInfo(height: $0.height, weight: $0.weight) }
+            .asObservable()
+
+        status = pokemonResponse
+            .map { $0.stats }
+            .asObservable()
+    }
+
 }

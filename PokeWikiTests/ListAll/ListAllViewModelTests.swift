@@ -42,8 +42,8 @@ class ListAllViewModelTests: QuickSpec {
                     self.setUpTests()
                     self.sut = PokemonListAllViewModel(interactor: ListAllInteractorMock())
 
-                    self.scheduler.createColdObservable([.next(10, ()),
-                                                         .next(20, ())])
+                    self.scheduler.createColdObservable([.next(10, (true)),
+                                                         .next(20, (true))])
                         .bind(to: self.sut.viewDidLoad)
                         .disposed(by: self.disposeBag)
                 }
@@ -61,9 +61,10 @@ class ListAllViewModelTests: QuickSpec {
                     let stateLoading : Navigation<PokemonListAllViewModel.State> = Navigation(type: .loading)
                     let stateSuccess : Navigation<PokemonListAllViewModel.State> = Navigation(type: .success)
 
-                    print(state.events)
                     expect(state.events).to(equal([.next(10, stateLoading),
-                                                   .next(10, stateSuccess)
+                                                   .next(10, stateSuccess),
+                                                   .next(20, stateLoading),
+                                                   .next(20, stateSuccess)
                                                    ]))
                 }
 
@@ -82,9 +83,9 @@ class ListAllViewModelTests: QuickSpec {
 
                     self.scheduler.start()
                     expect(pokemonList.events).to(equal([.next(0, []),
-                                                         .next(10, [PokemonItem(name: "kakuna", url: "http://kakuna.com")])]))
-
-
+                                                         .next(10, [PokemonItem(name: "kakuna", url: "http://kakuna.com")]),
+                                                         .next(20, [PokemonItem(name: "kakuna", url: "http://kakuna.com")])
+                    ]))
                 }
             }
             
@@ -98,7 +99,7 @@ class ListAllViewModelTests: QuickSpec {
                     self.setUpTests()
                     self.sut = PokemonListAllViewModel(interactor: ListAllWithErrorInteractorMock())
                     
-                    self.scheduler.createColdObservable([.next(10, ())])
+                    self.scheduler.createColdObservable([.next(10, (true))])
                         .bind(to: self.sut.viewDidLoad)
                         .disposed(by: self.disposeBag)
                 }
@@ -116,11 +117,8 @@ class ListAllViewModelTests: QuickSpec {
                     let stateLoading : Navigation<PokemonListAllViewModel.State> = Navigation(type: .loading)
                     let stateError : Navigation<PokemonListAllViewModel.State> = Navigation(type: .error)
 
-                    print(state.events)
                     expect(state.events).to(equal([.next(10, stateLoading),
-                                                   .next(10, stateError),
-                                                   .next(10, stateError),
-                                                   .completed(10)]))
+                                                   .next(10, stateError)]))
                 }
                 
                 it("Então a lista fica vazia") {

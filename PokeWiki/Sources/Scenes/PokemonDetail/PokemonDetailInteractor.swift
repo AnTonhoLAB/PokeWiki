@@ -1,5 +1,5 @@
 //
-//  PokemonListCellInteractor.swift
+//  PokemonDetailInteractor.swift
 //  PokeWiki
 //
 //  Created by George Vilnei Arboite Gomes on 08/01/22.
@@ -8,23 +8,23 @@
 import Foundation
 import RxSwift
 
-protocol PokemonListCellInteractorProtocol {
+protocol PokemonDetailInteractorProtocol {
     func fetchAPokemon(with name: String) -> Single<PokemonDetail>
     func fetchPokemonImage(for id: Int) -> Single<Data>
 }
 
-class PokemonListCellInteractor: PokemonListCellInteractorProtocol {
+class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
     
-    let service: PokemonListCellServiceProtocol
+    let service: PokemonDetailServiceProtocol
     let networkingManager: NetworkingManagerProtocol
     
-    init(service: PokemonListCellServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
+    init(service: PokemonDetailServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
         self.service = service
         self.networkingManager = networkingManager
     }
     
     func fetchAPokemon(with name: String) -> Single<PokemonDetail> {
-        guard networkingManager.isConnected  else {
+        guard networkingManager.isConnected()  else {
             return Single<PokemonDetail>
                         .create { single in
                             single(.failure(PokemonListError.NoConnection))
@@ -36,7 +36,7 @@ class PokemonListCellInteractor: PokemonListCellInteractorProtocol {
     }
     
     func fetchPokemonImage(for id: Int) -> Single<Data> {
-        guard networkingManager.isConnected  else {
+        guard networkingManager.isConnected()  else {
             return Single<Data>
                         .create { single in
                             single(.failure(PokemonListError.NoConnection))

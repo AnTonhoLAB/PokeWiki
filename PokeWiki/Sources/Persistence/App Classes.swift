@@ -25,6 +25,17 @@ enum PokemonListError: Error {
     case NoConnection
 }
 
+extension PokemonListError {
+    var localizedDescription: String {
+        switch self {
+        case .internalError:
+            return "Internal error, try again"
+        case .NoConnection:
+            return "No connection, turn on the internet and try again"
+        }
+    }
+}
+
 enum PokemonType: String, Codable {
     
     case normal
@@ -51,9 +62,9 @@ enum PokemonType: String, Codable {
     func color() -> UIColor {
         switch self {
         case .normal:
-            return #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+            return #colorLiteral(red: 0.6594975591, green: 0.6579902172, blue: 0.470580101, alpha: 1)
         case .fighting:
-            return #colorLiteral(red: 0.3176470697, green: 0.07450980693, blue: 0.02745098062, alpha: 1)
+            return #colorLiteral(red: 0.5896615696, green: 0.1413095594, blue: 0.05477729757, alpha: 1)
         case .flying:
             return #colorLiteral(red: 0.7350213434, green: 0.5857658941, blue: 1, alpha: 1)
         case .poison:
@@ -69,7 +80,7 @@ enum PokemonType: String, Codable {
         case .steel:
             return #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         case .fire:
-            return #colorLiteral(red: 0.7993484268, green: 0.09057982137, blue: 0.08117144422, alpha: 1)
+            return #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         case .water:
             return #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         case .grass:
@@ -79,7 +90,7 @@ enum PokemonType: String, Codable {
         case .psychic:
             return #colorLiteral(red: 0.9254902005, green: 0.3827843903, blue: 0.492022982, alpha: 1)
         case .ice:
-            return #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+            return #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         case .dragon:
             return #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         case .dark:
@@ -94,6 +105,11 @@ enum PokemonType: String, Codable {
     }
 }
 
+extension Double {
+    var stringWithoutZeroFraction: String {
+        return truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 
 // MARK: - PokemonDetail
 struct PokemonDetail: Codable, Equatable {
@@ -105,7 +121,7 @@ struct PokemonDetail: Codable, Equatable {
     let baseExperience: Int
     let forms: [Species]
     let gameIndices: [GameIndex]
-    let height: Int
+    let height: Double
     let id: Int
     let isDefault: Bool
     let locationAreaEncounters: String
@@ -115,8 +131,12 @@ struct PokemonDetail: Codable, Equatable {
     let species: Species
     let stats: [Stat]
     let types: [TypeElement]
-    let weight: Int
+    let weight: Double
     let sprites: Sprites
+    
+    var mainType: PokemonType {
+        return types.first?.type.name ?? PokemonType.unknown
+    }
 
     enum CodingKeys: String, CodingKey {
         case abilities
@@ -244,11 +264,65 @@ struct OfficialArtwork: Codable {
 // MARK: - Stat
 struct Stat: Codable {
     let baseStat, effort: Int
-    let stat: Species
+    var stat: StatInfo
 
     enum CodingKeys: String, CodingKey {
         case baseStat = "base_stat"
         case effort, stat
+    }
+}
+
+enum StatName {
+    case hp
+    case attack
+    case defense
+    case special_attack
+    case special_defense
+    case speed
+    
+    init?(name: String) {
+        switch name  {
+        case "hp":
+            self = .hp
+        case "attack":
+            self = .attack
+        case "defense":
+            self = .defense
+        case "special-attack":
+            self = .special_attack
+        case "special-defense":
+            self = .special_defense
+        case "speed":
+            self = .speed
+        default:
+            return nil
+        }
+    }
+    
+    func getColor () -> UIColor {
+        switch self {
+        case .hp:
+            return #colorLiteral(red: 0.1233642325, green: 0.9913472533, blue: 0.4012124836, alpha: 1)
+        case .attack:
+            return #colorLiteral(red: 0.9838288426, green: 0.5258914828, blue: 0.4574290514, alpha: 1)
+        case .defense:
+            return #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        case .special_attack:
+            return #colorLiteral(red: 0.9969050288, green: 0.3966171145, blue: 0.2911958098, alpha: 1)
+        case .special_defense:
+            return #colorLiteral(red: 0.09446146339, green: 1, blue: 0.941624105, alpha: 1)
+        case .speed:
+            return #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+        }
+    }
+}
+
+struct StatInfo: Codable {
+    let name: String
+    let url: String
+    
+    var statName: StatName? {
+        return StatName(name: self.name)
     }
 }
 
