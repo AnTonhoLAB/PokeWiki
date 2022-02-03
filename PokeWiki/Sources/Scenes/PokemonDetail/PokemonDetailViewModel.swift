@@ -75,8 +75,10 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
             .do(onNext: { [pokemonResponse] pokemonDetail in
+                let manager = PersistenceManager()
+                let poke = manager.create(PokemonDetail.self)
                 
-               pokemonResponse.onNext(pokemonDetail)
+                pokemonResponse.onNext(pokemonDetail)
             })
             .map { ServiceState(type: .success, info: $0) }
 

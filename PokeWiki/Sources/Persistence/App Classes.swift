@@ -153,7 +153,7 @@ struct PokemonDetail: Codable, Equatable {
     }
 }
 
-class Sprites: Codable {
+struct Sprites: Codable {
     let backDefault: String?
     let backFemale: String?
     let backShiny: String?

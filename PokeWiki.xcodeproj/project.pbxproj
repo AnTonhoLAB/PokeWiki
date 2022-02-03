@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		31B1CDCCAB303D8BDFAC62EC /* Pods_PokeWikiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420028C8D306AB9E8279A1F6 /* Pods_PokeWikiTests.framework */; };
+		3F119E8F27AC4F86006C57D8 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F119E8E27AC4F86006C57D8 /* PersistenceManager.swift */; };
+		3F119E9127AC537D006C57D8 /* PersistenceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F119E9027AC537D006C57D8 /* PersistenceContainer.swift */; };
 		3F34A301279515F5003CC725 /* PokemonHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F34A300279515F5003CC725 /* PokemonHeaderDetailView.swift */; };
 		3F3C6F5127880FEE00628BC5 /* PokemonListAllViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3C6F5027880FEE00628BC5 /* PokemonListAllViewModel.swift */; };
 		3F3C6F5C278810C600628BC5 /* PokemonListAllService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3C6F5B278810C600628BC5 /* PokemonListAllService.swift */; };
@@ -70,6 +72,8 @@
 /* Begin PBXFileReference section */
 		15D324DB8D51F18C3C16E7E5 /* Pods_PokeWiki_PokeWikiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokeWiki_PokeWikiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB3DD2139AD4E896F6CCEB6 /* Pods-PokeWikiTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokeWikiTests.release.xcconfig"; path = "Target Support Files/Pods-PokeWikiTests/Pods-PokeWikiTests.release.xcconfig"; sourceTree = "<group>"; };
+		3F119E8E27AC4F86006C57D8 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		3F119E9027AC537D006C57D8 /* PersistenceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceContainer.swift; sourceTree = "<group>"; };
 		3F34A300279515F5003CC725 /* PokemonHeaderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonHeaderDetailView.swift; sourceTree = "<group>"; };
 		3F3C6F5027880FEE00628BC5 /* PokemonListAllViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListAllViewModel.swift; sourceTree = "<group>"; };
 		3F3C6F5B278810C600628BC5 /* PokemonListAllService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListAllService.swift; sourceTree = "<group>"; };
@@ -307,6 +311,8 @@
 			children = (
 				3F45040727866D1E007874FF /* PokeWiki.xcdatamodeld */,
 				3FB53C8F2789604200802D19 /* App Classes.swift */,
+				3F119E8E27AC4F86006C57D8 /* PersistenceManager.swift */,
+				3F119E9027AC537D006C57D8 /* PersistenceContainer.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -714,7 +720,9 @@
 				3FB53CA22789611000802D19 /* PokemonDetailService.swift in Sources */,
 				3FEB5A982798EDC900734C8D /* ViewCodedProtocol.swift in Sources */,
 				3F3C6F612788113A00628BC5 /* PokemonListAllInteractor.swift in Sources */,
+				3F119E8F27AC4F86006C57D8 /* PersistenceManager.swift in Sources */,
 				3F7EE20627A4DBF100158834 /* AppColors.swift in Sources */,
+				3F119E9127AC537D006C57D8 /* PersistenceContainer.swift in Sources */,
 				3F3C70522789318B00628BC5 /* PokemonListCell.swift in Sources */,
 				3FBBEF4527939AE4000DC7E3 /* PokemonDetailCoordinator.swift in Sources */,
 				3F3C70202789197200628BC5 /* RequesterProtocol.swift in Sources */,
