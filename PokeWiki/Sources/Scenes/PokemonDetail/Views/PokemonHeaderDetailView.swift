@@ -14,17 +14,24 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     private let font = UIFont(name: "GillSans-Bold", size: 30)
     
     // MARK: - Public properties
-    private(set) var imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
+    private let imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
+    private let favoriteButton = UIButton()
     private(set) var pokemonImage = UIImageView(frame: .zero)
-    private(set) var nameLabel: UILabel = UILabel(frame: .zero)
-    private(set) var numberLabel: UILabel = UILabel(frame: .zero)
-    private(set) var typesStack: UIStackView = {
+    fileprivate let nameLabel: UILabel = UILabel(frame: .zero)
+    fileprivate let numberLabel: UILabel = UILabel(frame: .zero)
+    private let typesStack: UIStackView = {
         $0.axis = .horizontal
         return $0
     }(UIStackView())
     
+    private(set) var tapFavorite: Observable<Void>
+    
     // MARK: - Initializers
     override init(frame: CGRect) {
+        self.tapFavorite = favoriteButton.rx
+            .tap
+            .asObservable()
+        
         super.init(frame: frame)
         self.setupLayout()
     }
@@ -38,10 +45,14 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         addSubview(numberLabel)
         addSubview(imageHLBG)
         addSubview(typesStack)
+        addSubview(favoriteButton)
         imageHLBG.addSubview(pokemonImage)
     }
     
     func setupViewConfigs() {
+        favoriteButton.titleLabel?.text = "Favorite"
+        favoriteButton.backgroundColor = .blue
+        
         nameLabel.font = font
         nameLabel.numberOfLines = 2
         nameLabel.textAlignment = .center
@@ -53,6 +64,13 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     }
     
     func setupConstraints() {
+        
+        favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 22).isActive = true
+        favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        favoriteButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        
         imageHLBG.topAnchor.constraint(equalTo: topAnchor).isActive = true
         imageHLBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         imageHLBG.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true

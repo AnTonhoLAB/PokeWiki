@@ -34,7 +34,6 @@ class PersistenceManager {
                 let unfilteredAns = ans as? [NSManagedObject] {
                 ans = unfilteredAns.filter { predicate.evaluate(with: $0) }
             }
-               //swiftlint:disable:next force_cast
             completion(ans as! [T])
         } catch {
             throw CoreDataError.couldNotFetchObject

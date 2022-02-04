@@ -1,10 +1,3 @@
-//
-//  App Classes.swift
-//  PokeWiki
-//
-//  Created by George Vilnei Arboite Gomes on 08/01/22.
-//
-
 import Foundation
 import UIKit
 
