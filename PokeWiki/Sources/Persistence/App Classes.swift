@@ -105,7 +105,8 @@ extension Double {
 }
 
 // MARK: - PokemonDetail
-struct PokemonDetail: Codable, Equatable {
+class PokemonDetail: Codable, Equatable {
+    
     static func == (lhs: PokemonDetail, rhs: PokemonDetail) -> Bool {
         return lhs.id == rhs.id
     }
@@ -144,6 +145,10 @@ struct PokemonDetail: Codable, Equatable {
         case moves, name, order
         case species, stats, types, weight
         case sprites
+    }
+    
+    func togglePersistence() {
+        self.fromPersistence.toggle()
     }
 }
 

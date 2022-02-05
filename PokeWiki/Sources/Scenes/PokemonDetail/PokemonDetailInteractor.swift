@@ -11,6 +11,7 @@ import RxSwift
 protocol PokemonDetailInteractorProtocol {
     func fetchAPokemon(with name: String) -> Single<PokemonDetail>
     func fetchPokemonImage(for id: Int) -> Single<Data>
+    func favoriteToogle(pokemon: PokemonDetail) throws 
 }
 
 class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
@@ -48,14 +49,34 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
         return service.fechPokemonImage(for: id)
     }
     
-    func favorite(pokemon: inout PokemonDetail) throws {
+    func favoriteToogle(pokemon: PokemonDetail) throws {
         
-        pokemon.fromPersistence = true
+        switch pokemon.fromPersistence {
+        case true:
+            try removePokemon(pokemon: pokemon)
+        case false:
+            try savePokemon(pokemon: pokemon)
+        }
+    }
+    
+    private func savePokemon(pokemon: PokemonDetail) throws {
+        pokemon.togglePersistence()
         
         do {
             let pokemonToSave = try persistenceManager.create(PokemonEntity.self)
+            pokemonToSave.id = "\(pokemon.id)"
             pokemonToSave.pokemonDetail = try JSONEncoder().encode(pokemon)
             try persistenceManager.save()
+        } catch  {
+            throw error
+        }
+    }
+    
+    private func removePokemon(pokemon: PokemonDetail) throws {
+        pokemon.togglePersistence()
+        
+        do {
+            try persistenceManager.delete(PokemonEntity.self, id: 1)
         } catch  {
             throw error
         }

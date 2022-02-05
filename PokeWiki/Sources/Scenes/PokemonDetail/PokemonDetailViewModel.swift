@@ -30,6 +30,7 @@ protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol
     var typeinfoColor: Observable<UIColor> { get }
     var bioInfo: Observable<PokemonBioInfo> { get }
     var status: Observable<[Stat]> { get }
+    var alertMessage: Observable<String> { get }
 }
 
 class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
@@ -133,15 +134,17 @@ extension PokemonBasicDetailViewModel {
 }
 
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
+   
     
     private(set) var didTapFavorite: PublishSubject<Void> = .init()
     private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
     private(set) var status: Observable<[Stat]> = .never()
-
+    private(set) var alertMessage: Observable<String> = .never()
+    
     override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         super.init(name: name, url: url, interactor: interactor)
-
+        
         typeinfoColor = pokemonResponse
             .map { $0.types.map { $0.type.name.color()}.first }
             .unwrap()
@@ -150,10 +153,21 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
         bioInfo = pokemonResponse
             .map { PokemonBioInfo(height: $0.height, weight: $0.weight) }
             .asObservable()
-
+        
         status = pokemonResponse
             .map { $0.stats }
             .asObservable()
+        
+        alertMessage = didTapFavorite.withLatestFrom(pokemonResponse)
+            .map { (detail) in
+                do {
+                    try interactor.favoriteToogle(pokemon: detail)
+                    return "Success"
+                } catch {
+                    return "Error, could not complete action"
+                }
+            }.asObservable()
     }
-
 }
+
+

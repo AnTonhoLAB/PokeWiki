@@ -12,6 +12,7 @@ import RxSwift
 enum CoreDataError: Error {
     case couldNotCreateObject
     case couldNotFetchObject
+    case couldNotDeleteObject
 }
 
 class PersistenceManager {
@@ -43,6 +44,22 @@ class PersistenceManager {
     func save() throws {
         try PersistentContainer.shared.viewContext.save()
     }
+    
+    func delete<T: NSManagedObject>(_ model: T.Type, id: Int) throws {
+        
+        let entityName = String(describing: model)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        request.predicate = NSPredicate(format: "id == %@", "\(id)")
+        
+        do {
+            let context = PersistentContainer.shared.viewContext
+            guard let results = try context.fetch(request) as? [NSManagedObject] else { throw CoreDataError.couldNotDeleteObject }
+            for result in results  {
+                context.delete(result)
+            }
+            try save()
+         } catch {
+             throw CoreDataError.couldNotDeleteObject
+         }
+     }
 }
-
-
