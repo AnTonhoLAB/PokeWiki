@@ -30,6 +30,7 @@ protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol
     var typeinfoColor: Observable<UIColor> { get }
     var bioInfo: Observable<PokemonBioInfo> { get }
     var status: Observable<[Stat]> { get }
+    var alertMessage: Observable<ManagedDataResult> { get }
 }
 
 class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
@@ -41,6 +42,7 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     
     // MARK: - Inputs
     let viewWillAppear: PublishSubject<Void> = .init()
+    let tapFavorit: PublishSubject<Void> = .init()
     
     // MARK: - Outputs
     let name: String
@@ -56,13 +58,13 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         self.basicInfo = pokemonResponse
             .map { PokemonBasicInfo(id: $0.id,
                                     name: $0.name,
-                                    type: $0.types)
+                                    type: $0.types,
+                                    isFavorite: $0.fromPersistence)
             }
             .asObservable()
         
         self.pokemonImage = pokemonImageResponse.asObservable()
         self.serviceState = createServiceState(with: name, url: url)
-        
     }
     
     // MARK: - Internal methods
@@ -75,8 +77,7 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
             .trackActivity(activityIndicator)
             .trackError(errorTracker)
             .do(onNext: { [pokemonResponse] pokemonDetail in
-                
-               pokemonResponse.onNext(pokemonDetail)
+                pokemonResponse.onNext(pokemonDetail)
             })
             .map { ServiceState(type: .success, info: $0) }
 
@@ -134,15 +135,17 @@ extension PokemonBasicDetailViewModel {
 }
 
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
+   
     
     private(set) var didTapFavorite: PublishSubject<Void> = .init()
     private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
     private(set) var status: Observable<[Stat]> = .never()
-
+    private(set) var alertMessage: Observable<ManagedDataResult> = .never()
+    
     override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         super.init(name: name, url: url, interactor: interactor)
-
+        
         typeinfoColor = pokemonResponse
             .map { $0.types.map { $0.type.name.color()}.first }
             .unwrap()
@@ -151,10 +154,20 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
         bioInfo = pokemonResponse
             .map { PokemonBioInfo(height: $0.height, weight: $0.weight) }
             .asObservable()
-
+        
         status = pokemonResponse
             .map { $0.stats }
             .asObservable()
+        
+        alertMessage = didTapFavorite.withLatestFrom(pokemonResponse)
+            .map { (detail) in
+                do {
+                    return try interactor.favoriteToogle(pokemon: detail)
+                } catch {
+                    return ManagedDataResult.error
+                }
+            }.asObservable()
     }
-
 }
+
+
