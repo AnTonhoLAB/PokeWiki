@@ -41,6 +41,7 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
     
     // MARK: - Inputs
     let viewWillAppear: PublishSubject<Void> = .init()
+    let tapFavorit: PublishSubject<Void> = .init()
     
     // MARK: - Outputs
     let name: String
@@ -62,7 +63,6 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         
         self.pokemonImage = pokemonImageResponse.asObservable()
         self.serviceState = createServiceState(with: name, url: url)
-        
     }
     
     // MARK: - Internal methods

@@ -17,6 +17,7 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
     
     let service: PokemonDetailServiceProtocol
     let networkingManager: NetworkingManagerProtocol
+    private let persistenceManager = PersistenceManager()
     
     init(service: PokemonDetailServiceProtocol, networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
         self.service = service
@@ -45,5 +46,18 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
         }
         
         return service.fechPokemonImage(for: id)
+    }
+    
+    func favorite(pokemon: inout PokemonDetail) throws {
+        
+        pokemon.fromPersistence = true
+        
+        do {
+            let pokemonToSave = try persistenceManager.create(PokemonEntity.self)
+            pokemonToSave.pokemonDetail = try JSONEncoder().encode(pokemon)
+            try persistenceManager.save()
+        } catch  {
+            throw error
+        }
     }
 }

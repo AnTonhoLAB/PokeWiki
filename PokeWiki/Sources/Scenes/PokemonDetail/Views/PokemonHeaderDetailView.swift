@@ -7,6 +7,12 @@
 
 import GGDevelopmentKit
 import RxSwift
+import Lottie
+
+enum HeaderAnimations: String {
+    case favoriteAnimation
+    case favoriteAnimationB
+}
 
 class PokemonHeaderDetailView: UIView, ViewCoded {
     
@@ -15,7 +21,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     
     // MARK: - Public properties
     private let imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
-    private let favoriteButton = UIButton()
+    let favoriteButton = AnimatedLottieButton(name: HeaderAnimations.favoriteAnimationB.rawValue, frame: .zero)
     private(set) var pokemonImage = UIImageView(frame: .zero)
     fileprivate let nameLabel: UILabel = UILabel(frame: .zero)
     fileprivate let numberLabel: UILabel = UILabel(frame: .zero)
@@ -23,6 +29,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         $0.axis = .horizontal
         return $0
     }(UIStackView())
+    let bag = DisposeBag()
     
     private(set) var tapFavorite: Observable<Void>
     
@@ -30,6 +37,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     override init(frame: CGRect) {
         self.tapFavorite = favoriteButton.rx
             .tap
+            .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
             .asObservable()
         
         super.init(frame: frame)
@@ -50,9 +58,6 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     }
     
     func setupViewConfigs() {
-        favoriteButton.titleLabel?.text = "Favorite"
-        favoriteButton.backgroundColor = .blue
-        
         nameLabel.font = font
         nameLabel.numberOfLines = 2
         nameLabel.textAlignment = .center
@@ -67,8 +72,8 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         
         favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 22).isActive = true
         favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22).isActive = true
-        favoriteButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        favoriteButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 85).isActive = true
+        favoriteButton.widthAnchor.constraint(equalToConstant: 85).isActive = true
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         
         imageHLBG.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -113,7 +118,6 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             
             typeContentView.addSubview(typeBadgeView)
             typeBadgeView.addSubview(typeLabel)
-            
             
             typeBadgeView.backgroundColor = element.type.name.color()
             typeLabel.text = element.type.name.rawValue

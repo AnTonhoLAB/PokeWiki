@@ -110,6 +110,7 @@ struct PokemonDetail: Codable, Equatable {
         return lhs.id == rhs.id
     }
     
+    var fromPersistence = false
     let abilities: [Ability]
     let baseExperience: Int
     let forms: [Species]
