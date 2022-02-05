@@ -70,8 +70,8 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     
     func setupConstraints() {
         
-        favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 22).isActive = true
-        favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22).isActive = true
+        favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         favoriteButton.heightAnchor.constraint(equalToConstant: 85).isActive = true
         favoriteButton.widthAnchor.constraint(equalToConstant: 85).isActive = true
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
@@ -142,10 +142,10 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             typeBadgeView.translatesAutoresizingMaskIntoConstraints = false
             typeBadgeView.heightAnchor.constraint(equalToConstant: 36).isActive = true
             
-            typeContentView.widthAnchor.constraint(equalToConstant:( (frame.width - 60) / CGFloat(types.count)) ).isActive = true
             typeContentView.translatesAutoresizingMaskIntoConstraints = false
            
             typesStack.addArrangedSubview(typeContentView)
+            typesStack.distribution = .fillEqually
         }
     }
 }
@@ -157,6 +157,9 @@ extension Reactive where Base: PokemonHeaderDetailView {
             view.nameLabel.text = detail.name.capitalized
             view.numberLabel.text = "#\(detail.id)"
             view.createBadges(with: detail.type)
+            if detail.isFavorite {
+                view.favoriteButton.full(with: 80)
+            }
         }
     }
 }

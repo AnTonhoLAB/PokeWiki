@@ -90,24 +90,15 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
                     .pokemonStatsInfo)
             .disposed(by: disposeBag)
         
-        // TODO: 
-        var i = 0
-        
-//        headerView.tapFavorite.subscribe(onNext: {
-//
-//            if i % 2 == 0 {
-//                self.headerView.favoriteButton.full(with: 78)
-//                i = i+1
-//            } else {
-//                self.headerView.favoriteButton.stop()
-//                i = i+1
-//            }
-//
-//        })
-//        .disposed(by: disposeBag)
-        
         viewModel.alertMessage.subscribe(onNext: { message in
-            print(message)
+            switch message {
+            case .added:
+                self.headerView.favoriteButton.play()
+            case .deleted:
+                self.headerView.favoriteButton.stop()
+            case .error:
+                break
+            }
         })
         .disposed(by: disposeBag)
 

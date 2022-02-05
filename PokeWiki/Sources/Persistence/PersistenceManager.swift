@@ -25,17 +25,51 @@ class PersistenceManager {
         return object
     }
        
-    func fetch<T: NSManagedObject>(_ model: T.Type, predicate: NSPredicate? = nil, completion: @escaping (([T]) -> Void)) throws {
+    func fetch<T: NSManagedObject>(_ model: T.Type) throws -> [T] {
         let entityName = String(describing: model)
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
            
         do {
-            var ans = try PersistentContainer.shared.viewContext.fetch(request)
-            if let predicate = predicate,
-                let unfilteredAns = ans as? [NSManagedObject] {
-                ans = unfilteredAns.filter { predicate.evaluate(with: $0) }
-            }
-            completion(ans as! [T])
+            let context = PersistentContainer.shared.viewContext
+            guard let results = try context.fetch(request) as? [NSManagedObject],
+            let uwnrapResults = results as? [T] else { throw CoreDataError.couldNotDeleteObject }
+            return uwnrapResults
+        } catch {
+            throw CoreDataError.couldNotFetchObject
+        }
+    }
+    
+    func fetchSingle<T: NSManagedObject>(_ model: T.Type, id: Int) throws  -> T {
+        
+        let entityName = String(describing: model)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        request.predicate = NSPredicate(format: "id == %@", "\(id)")
+        
+        do {
+            let context = PersistentContainer.shared.viewContext
+            guard let results = try context.fetch(request) as? [NSManagedObject],
+            let result = results.first,
+            let uwnrapResult = result as? T else { throw CoreDataError.couldNotDeleteObject }
+            
+            return uwnrapResult
+        } catch {
+            throw CoreDataError.couldNotFetchObject
+        }
+    }
+    
+    func fetchSingle<T: NSManagedObject>(_ model: T.Type, name: String) throws  -> T {
+        
+        let entityName = String(describing: model)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        request.predicate = NSPredicate(format: "name == %@", name)
+        
+        do {
+            let context = PersistentContainer.shared.viewContext
+            guard let results = try context.fetch(request) as? [NSManagedObject],
+            let result = results.first,
+            let uwnrapResult = result as? T else { throw CoreDataError.couldNotDeleteObject }
+            
+            return uwnrapResult
         } catch {
             throw CoreDataError.couldNotFetchObject
         }

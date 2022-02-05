@@ -30,7 +30,7 @@ protocol PokemonFullDetailViewModelProtocol: PokemonBasicDetailViewModelProtocol
     var typeinfoColor: Observable<UIColor> { get }
     var bioInfo: Observable<PokemonBioInfo> { get }
     var status: Observable<[Stat]> { get }
-    var alertMessage: Observable<String> { get }
+    var alertMessage: Observable<ManagedDataResult> { get }
 }
 
 class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
@@ -58,7 +58,8 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         self.basicInfo = pokemonResponse
             .map { PokemonBasicInfo(id: $0.id,
                                     name: $0.name,
-                                    type: $0.types)
+                                    type: $0.types,
+                                    isFavorite: $0.fromPersistence)
             }
             .asObservable()
         
@@ -140,7 +141,7 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
     private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
     private(set) var status: Observable<[Stat]> = .never()
-    private(set) var alertMessage: Observable<String> = .never()
+    private(set) var alertMessage: Observable<ManagedDataResult> = .never()
     
     override init(name: String, url: String, interactor: PokemonDetailInteractorProtocol) {
         super.init(name: name, url: url, interactor: interactor)
@@ -161,10 +162,9 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
         alertMessage = didTapFavorite.withLatestFrom(pokemonResponse)
             .map { (detail) in
                 do {
-                    try interactor.favoriteToogle(pokemon: detail)
-                    return "Success"
+                    return try interactor.favoriteToogle(pokemon: detail)
                 } catch {
-                    return "Error, could not complete action"
+                    return ManagedDataResult.error
                 }
             }.asObservable()
     }
