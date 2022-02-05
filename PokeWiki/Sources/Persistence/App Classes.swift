@@ -132,6 +132,26 @@ class PokemonDetail: Codable, Equatable {
     var mainType: PokemonType {
         return types.first?.type.name ?? PokemonType.unknown
     }
+    
+    internal init(fromPersistence: Bool = false, abilities: [Ability], baseExperience: Int, forms: [Species], gameIndices: [GameIndex], height: Double, id: Int, isDefault: Bool, locationAreaEncounters: String, moves: [Move], name: String, order: Int, species: Species, stats: [Stat], types: [TypeElement], weight: Double, sprites: Sprites) {
+        self.fromPersistence = fromPersistence
+        self.abilities = abilities
+        self.baseExperience = baseExperience
+        self.forms = forms
+        self.gameIndices = gameIndices
+        self.height = height
+        self.id = id
+        self.isDefault = isDefault
+        self.locationAreaEncounters = locationAreaEncounters
+        self.moves = moves
+        self.name = name
+        self.order = order
+        self.species = species
+        self.stats = stats
+        self.types = types
+        self.weight = weight
+        self.sprites = sprites
+    }
 
     enum CodingKeys: String, CodingKey {
         case abilities
