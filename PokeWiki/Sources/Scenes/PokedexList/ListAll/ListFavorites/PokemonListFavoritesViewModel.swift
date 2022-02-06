@@ -40,9 +40,19 @@ class PokemonListFavoritesViewModel: PokemonListViewModel, PokemonListViewModelP
         super.init()
         self.serviceState = createServiceState()
         self.navigation = createNavigation()
+        
+        // Escuta mudanças no coredata
+        let context = PersistentContainer.shared.viewContext
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
     }
     
     // MARK: - Internal methods
+    @objc private func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        //reload na collection
+        viewDidLoad.onNext(true)
+    }
+    
     private func createServiceState() -> Driver<ServiceState> {
                 
         let activityIndicator = ActivityIndicator()

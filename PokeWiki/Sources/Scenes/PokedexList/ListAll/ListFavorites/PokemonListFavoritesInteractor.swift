@@ -11,10 +11,6 @@ import RxSwift
 class PokemonListFavoritesInteractor: PokemonListInteractorProtocol {
     
     private let persistenceManager = PersistenceManager()
-   
-    init() {
-        
-    }
     
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>

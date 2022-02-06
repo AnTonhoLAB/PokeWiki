@@ -30,19 +30,6 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     init(viewModel: PokemonListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        let context = PersistentContainer.shared.viewContext
-        
-        
-        // Escuta mudanças no coredata
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
-    }
-    
-    @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
-        if type(of: viewModel) == PokemonListFavoritesViewModel.self  {
-            //reload na collection
-            viewModel.viewDidLoad.onNext(true)
-        }
     }
     
     @available(*, unavailable)
