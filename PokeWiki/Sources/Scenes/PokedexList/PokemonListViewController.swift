@@ -44,6 +44,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         configureViews()
         
         setupRx()
+        navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: - Private methods
