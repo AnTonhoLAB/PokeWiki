@@ -28,8 +28,11 @@ class PersistenceManager {
     func fetch<T: NSManagedObject>(_ model: T.Type) throws -> [T] {
         let entityName = String(describing: model)
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-           
+        let sort = NSSortDescriptor(key: "id", ascending: true)
+        request.sortDescriptors = [sort]
+        
         do {
+            
             let context = PersistentContainer.shared.viewContext
             guard let results = try context.fetch(request) as? [NSManagedObject],
             let uwnrapResults = results as? [T] else { throw CoreDataError.couldNotDeleteObject }

@@ -10,25 +10,29 @@ import RxSwift
 import RxCocoa
 import GGDevelopmentKit
 
-protocol PokemonListAllViewModelProtocol {
+class PokemonListViewModel {
     
+}
+
+protocol PokemonListViewModelProtocol {
     // MARK: - Inputs
     var viewDidLoad: PublishSubject<Bool> { get }
+    var loadMore: PublishSubject<Bool> { get }
     var didSelectItem: PublishSubject<PokemonItem> { get }
     
     // MARK: - Outputs
-    var navigation: Driver<Navigation<PokemonListAllViewModel.Route>> { get }
-    var serviceState: Driver<Navigation<PokemonListAllViewModel.State>> { get }
+    var navigation: Driver<Navigation<PokemonListViewModel.Route>> { get }
+    var serviceState: Driver<Navigation<PokemonListViewModel.State>> { get }
     var pokemonList: Driver<[PokemonItem]> { get }
 }
 
-final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
+final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelProtocol {
     // MARK: - Definitions
     typealias ListNavigation = Navigation<Route>
     typealias ServiceState = Navigation<State>
     
     // MARK: - Internal properties
-    private let interactor: PokemonListAllInteractorProtocol
+    private let interactor: PokemonListInteractorProtocol
     private let pokemonListResponse = BehaviorRelay<[PokemonItem]>(value: [])
     private let paginationSupport: GGPaginationSupport = GGPaginationSupport(limit: 20)
     
@@ -43,10 +47,10 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
     private(set) var pokemonList: Driver<[PokemonItem]>
     
     // MARK: - Initializer
-    init(interactor: PokemonListAllInteractorProtocol) {
+    init(interactor: PokemonListInteractorProtocol) {
         self.interactor = interactor
         self.pokemonList = pokemonListResponse.asDriverOnErrorJustComplete()
-        
+        super.init()
         self.serviceState = createServiceState()
         self.navigation = createNavigation()
     }
@@ -104,7 +108,7 @@ final class PokemonListAllViewModel: PokemonListAllViewModelProtocol {
 }
 
 // MARK: - Helpers
-extension PokemonListAllViewModel {
+extension PokemonListViewModel {
     
     // MARK: - Route
     enum Route: Equatable {

@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import GGDevelopmentKit
+import CoreData
 
 class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlertableViewController {
     
@@ -22,13 +23,26 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return collectionView
     }()
     
-    private let viewModel: PokemonListAllViewModel
+    private let viewModel: PokemonListViewModelProtocol
     let disposeBag = DisposeBag()
     
     // MARK: - Initializers
-    init(viewModel: PokemonListAllViewModel) {
+    init(viewModel: PokemonListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        let context = PersistentContainer.shared.viewContext
+        
+        
+        // Escuta mudanças no coredata
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
+    }
+    
+    @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        if type(of: viewModel) == PokemonListFavoritesViewModel.self  {
+            //reload na collection
+            viewModel.viewDidLoad.onNext(true)
+        }
     }
     
     @available(*, unavailable)
@@ -95,7 +109,7 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
             .unwrap()
             .drive { [handle] error in
                 self.view.removeLoading()
-                handle(error)
+                print(error)
             }
             .disposed(by: disposeBag)
         
@@ -141,4 +155,5 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return CGSize(width: size, height: size)
     }
 }
+
 

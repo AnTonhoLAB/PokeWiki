@@ -97,7 +97,7 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
         
         do {
             let pokemonToSave = try persistenceManager.create(PokemonEntity.self)
-            pokemonToSave.id = "\(pokemon.id)"
+            pokemonToSave.id = Double(pokemon.id)
             pokemonToSave.name = pokemon.name
             pokemon.togglePersistence()
             

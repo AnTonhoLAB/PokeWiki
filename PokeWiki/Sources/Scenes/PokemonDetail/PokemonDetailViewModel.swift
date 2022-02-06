@@ -85,7 +85,6 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         let id = idStr.parseToIntOrZero()
         
         let fetchImage = interactor.fetchPokemonImage(for: id)
-            .trackActivity(activityIndicator)
             .trackError(errorTracker)
             .do(onNext: { [pokemonImageResponse] pokemonImage in
                 pokemonImageResponse.onNext(pokemonImage)
