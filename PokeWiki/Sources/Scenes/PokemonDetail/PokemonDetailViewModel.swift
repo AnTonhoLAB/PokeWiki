@@ -158,10 +158,13 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
             .map { $0.stats }
             .asObservable()
         
-        alertMessage = didTapFavorite.withLatestFrom(pokemonResponse)
-            .map { (detail) in
+        let data = Observable.combineLatest(pokemonResponse, pokemonImage)
+         { ($0, $1) }
+        
+        alertMessage = didTapFavorite.withLatestFrom(data)
+            .map { (pokemonDetail, imageData) in
                 do {
-                    return try interactor.favoriteToogle(pokemon: detail)
+                    return try interactor.favoriteToogle(pokemon: pokemonDetail, image: imageData)
                 } catch {
                     return ManagedDataResult.error
                 }

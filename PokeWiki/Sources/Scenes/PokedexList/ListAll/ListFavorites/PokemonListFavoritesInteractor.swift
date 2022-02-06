@@ -23,7 +23,7 @@ class PokemonListFavoritesInteractor: PokemonListInteractorProtocol {
                             let pokemons: [PokemonItem] = pokemonEntity
                                 .compactMap { $0.pokemonDetail }
                                 .compactMap { return try? JSONDecoder().decode(PokemonDetail.self, from: $0) }
-                                .map { PokemonItem(name: $0.name, url: $0.name)}
+                                .map { PokemonItem(name: $0.name, url: "pokemon/\($0.id)")}
                             single(.success(PokemonListResponse(count: pokemons.count, next: nil, previous: nil, results: pokemons)))
                         } else {
                             single(.failure(CoreDataError.couldNotFetchObject))

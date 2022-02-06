@@ -52,7 +52,7 @@ class PersistenceManager {
             let context = PersistentContainer.shared.viewContext
             guard let results = try context.fetch(request) as? [NSManagedObject],
             let result = results.first,
-            let uwnrapResult = result as? T else { throw CoreDataError.couldNotDeleteObject }
+            let uwnrapResult = result as? T else { throw CoreDataError.couldNotFetchObject }
             
             return uwnrapResult
         } catch {
