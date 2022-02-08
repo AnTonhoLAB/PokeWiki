@@ -95,8 +95,7 @@ class PokemonListFavoritesViewModel: PokemonListViewModel, PokemonListViewModelP
         let routeToNext = didSelectItem
             .map { ListNavigation(type: .openDetail, info: $0) }
         
-        return Observable.merge([routeToNext]
-        )
+        return Observable.merge([routeToNext])
             .asDriver(onErrorRecover: { _ in .never() })
     }
 }
