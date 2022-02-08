@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - PokemonBasicInfo
 struct PokemonBasicInfo {
     let id: Int
     let name: String
