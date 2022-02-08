@@ -45,9 +45,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         setupRx()
     }
     
-    // MARK: - Private methods
-    
-    
     // MARK: - Setup methods
     private func setupRx() {
         viewModel.serviceState

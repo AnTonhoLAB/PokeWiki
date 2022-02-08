@@ -162,5 +162,3 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return CGSize(width: size, height: size)
     }
 }
-
-
