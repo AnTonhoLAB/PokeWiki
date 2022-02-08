@@ -12,6 +12,27 @@ import GGDevelopmentKit
 
 class PokemonListViewModel {
     
+    // Helpers
+    // MARK: - Route
+    enum Route: Equatable {
+        case openDetail
+    }
+    
+    // MARK: - State
+    enum State: Equatable {
+        case loading
+        case success
+        case error
+    }
+    
+    // MARK: - Actions
+    struct Actions {
+        let next: PublishSubject<Void>
+        
+        init(next: PublishSubject<Void> = .init()) {
+            self.next = next
+        }
+    }
 }
 
 protocol PokemonListViewModelProtocol {
@@ -101,34 +122,7 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
         let routeToNext = didSelectItem
             .map { ListNavigation(type: .openDetail, info: $0) }
         
-        return Observable.merge([routeToNext]
-        )
+        return Observable.merge([routeToNext])
             .asDriver(onErrorRecover: { _ in .never() })
     }
 }
-
-// MARK: - Helpers
-extension PokemonListViewModel {
-    
-    // MARK: - Route
-    enum Route: Equatable {
-        case openDetail
-    }
-    
-    // MARK: - State
-    enum State: Equatable {
-        case loading
-        case success
-        case error
-    }
-    
-    // MARK: - Actions
-    struct Actions {
-        let next: PublishSubject<Void>
-        
-        init(next: PublishSubject<Void> = .init()) {
-            self.next = next
-        }
-    }
-}
-
