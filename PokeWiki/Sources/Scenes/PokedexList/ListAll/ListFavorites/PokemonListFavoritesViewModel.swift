@@ -1,53 +1,18 @@
 //
-//  PokemonListAllViewModel.swift
+//  PokemonListFavoritesViewModel.swift
 //  PokeWiki
 //
-//  Created by George Vilnei Arboite Gomes on 07/01/22.
+//  Created by George Vilnei Arboite Gomes on 05/02/22.
 //
 
 import Foundation
 import RxSwift
 import RxCocoa
 import GGDevelopmentKit
+import CoreData
 
-class PokemonListViewModel {
+class PokemonListFavoritesViewModel: PokemonListViewModel, PokemonListViewModelProtocol {
     
-    // Helpers
-    // MARK: - Route
-    enum Route: Equatable {
-        case openDetail
-    }
-    
-    // MARK: - State
-    enum State: Equatable {
-        case loading
-        case success
-        case error
-    }
-    
-    // MARK: - Actions
-    struct Actions {
-        let next: PublishSubject<Void>
-        
-        init(next: PublishSubject<Void> = .init()) {
-            self.next = next
-        }
-    }
-}
-
-protocol PokemonListViewModelProtocol {
-    // MARK: - Inputs
-    var viewDidLoad: PublishSubject<Bool> { get }
-    var loadMore: PublishSubject<Bool> { get }
-    var didSelectItem: PublishSubject<PokemonItem> { get }
-    
-    // MARK: - Outputs
-    var navigation: Driver<Navigation<PokemonListViewModel.Route>> { get }
-    var serviceState: Driver<Navigation<PokemonListViewModel.State>> { get }
-    var pokemonList: Driver<[PokemonItem]> { get }
-}
-
-final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelProtocol {
     // MARK: - Definitions
     typealias ListNavigation = Navigation<Route>
     typealias ServiceState = Navigation<State>
@@ -63,9 +28,9 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
     let didSelectItem: PublishSubject<PokemonItem> = .init()
     
     // MARK: - Outputs
-    private(set) var navigation: Driver<ListNavigation> = .never()
-    private(set) var serviceState: Driver<ServiceState> = .never()
-    private(set) var pokemonList: Driver<[PokemonItem]>
+    private(set) var navigation: Driver<Navigation<PokemonListViewModel.Route>> = .never()
+    private(set) var serviceState: Driver<Navigation<PokemonListViewModel.State>> = .never()
+    private(set) var pokemonList: Driver<[PokemonItem]> = .never()
     
     // MARK: - Initializer
     init(interactor: PokemonListInteractorProtocol) {
@@ -74,32 +39,39 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
         super.init()
         self.serviceState = createServiceState()
         self.navigation = createNavigation()
+        
+        // Escuta mudanças no coredata
+        let context = PersistentContainer.shared.viewContext
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: context)
     }
     
     // MARK: - Internal methods
+    @objc private func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        //reload na collection
+        viewDidLoad.onNext(true)
+    }
+    
     private func createServiceState() -> Driver<ServiceState> {
                 
         let activityIndicator = ActivityIndicator()
         
         /// Triger when start to load
-        let startLoad = Observable.merge([viewDidLoad, loadMore])
+        let startLoad = Observable.merge([viewDidLoad])
         
         /// Function to load Pokemons
-        let fetchPokemons: (_ reload: Bool) -> Observable<PokemonListAllViewModel.ServiceState> = { [pokemonListResponse, paginationSupport, interactor] (reload)  in
+        let fetchPokemons: (_ reload: Bool) -> Observable<PokemonListFavoritesViewModel.ServiceState> = { [pokemonListResponse, paginationSupport, interactor] (reload)  in
             return interactor.fetchList(with: paginationSupport.limit, offSet: paginationSupport.offSet)
                 .trackActivity(activityIndicator)
-                .do(onNext: { [pokemonListResponse, paginationSupport] (pokemonResponse) in
-                    let newValue = reload ? pokemonResponse.results : pokemonListResponse.value + pokemonResponse.results
-                    pokemonListResponse.accept(newValue)
-                    paginationSupport.size = pokemonResponse.count
-                    paginationSupport.validateIsLast(count: pokemonListResponse.value.count)
+                .do(onNext: { [pokemonListResponse] (pokemonResponse) in
+                    pokemonListResponse.accept(pokemonResponse.results)
                 })
                 .map { ServiceState(type: .success, info: $0) }
                 .catch { err in
                     return .just(ServiceState(type: .error, info: err))
                 }
         }
-            
+    
         let loadList = startLoad
             .filter { reload in self.paginationSupport.needCall(reload: reload) }
             .flatMapLatest { reload in
@@ -126,3 +98,4 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
             .asDriver(onErrorRecover: { _ in .never() })
     }
 }
+

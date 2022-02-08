@@ -30,7 +30,7 @@ extension ManagedDataResult {
 protocol PokemonDetailInteractorProtocol {
     func fetchAPokemon(with name: String) -> Single<PokemonDetail>
     func fetchPokemonImage(for id: Int) -> Single<Data>
-    func favoriteToogle(pokemon: PokemonDetail) throws -> ManagedDataResult
+    func favoriteToogle(pokemon: PokemonDetail, image: Data) throws -> ManagedDataResult
 }
 
 class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
@@ -72,6 +72,16 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
     }
     
     func fetchPokemonImage(for id: Int) -> Single<Data> {
+        
+        if let pokemonEntity = try? persistenceManager.fetchSingle(PokemonImageEntity.self, id: id),
+           let pokemonImage = pokemonEntity.pokemonImage {
+            return Single<Data>
+                        .create { single in
+                            single(.success(pokemonImage))
+                            return Disposables.create()
+                        }
+        }
+        
         guard networkingManager.isConnected()  else {
             return Single<Data>
                         .create { single in
@@ -83,25 +93,30 @@ class PokemonDetailInteractor: PokemonDetailInteractorProtocol {
         return service.fechPokemonImage(for: id)
     }
     
-    func favoriteToogle(pokemon: PokemonDetail) throws -> ManagedDataResult {
+    func favoriteToogle(pokemon: PokemonDetail, image: Data) throws -> ManagedDataResult {
         
         switch pokemon.fromPersistence {
         case true:
             return try removePokemon(pokemon: pokemon)
         case false:
-            return try savePokemon(pokemon: pokemon)
+            return try savePokemon(pokemon: pokemon, image: image)
         }
     }
     
-    private func savePokemon(pokemon: PokemonDetail) throws -> ManagedDataResult {
+    private func savePokemon(pokemon: PokemonDetail, image: Data) throws -> ManagedDataResult {
         
         do {
             let pokemonToSave = try persistenceManager.create(PokemonEntity.self)
-            pokemonToSave.id = "\(pokemon.id)"
+            pokemonToSave.id = Double(pokemon.id)
             pokemonToSave.name = pokemon.name
             pokemon.togglePersistence()
-            
             pokemonToSave.pokemonDetail = try JSONEncoder().encode(pokemon)
+            
+            let pokemonImageToSave = try persistenceManager.create(PokemonImageEntity.self)
+            pokemonImageToSave.id = Double(pokemon.id)
+            pokemonImageToSave.name = pokemon.name
+            pokemonImageToSave.pokemonImage = image
+            
             try persistenceManager.save()
             return .added
         } catch  {

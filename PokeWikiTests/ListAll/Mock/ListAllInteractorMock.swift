@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 
-class ListAllInteractorMock: PokemonListAllInteractorProtocol {
+class ListAllInteractorMock: PokemonListInteractorProtocol {
     
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>
@@ -21,7 +21,7 @@ class ListAllInteractorMock: PokemonListAllInteractorProtocol {
     }
 }
 
-class ListAllWithErrorInteractorMock: PokemonListAllInteractorProtocol {
+class ListAllWithErrorInteractorMock: PokemonListInteractorProtocol {
     
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>

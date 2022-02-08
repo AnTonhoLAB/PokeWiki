@@ -45,9 +45,6 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         setupRx()
     }
     
-    // MARK: - Private methods
-    
-    
     // MARK: - Setup methods
     private func setupRx() {
         viewModel.serviceState
@@ -102,12 +99,10 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         })
         .disposed(by: disposeBag)
 
-        
         headerView.tapFavorite
             .bind(to: viewModel.didTapFavorite)
             .disposed(by: disposeBag)
-
-
+        
         viewModel.viewWillAppear
             .onNext(())
     }

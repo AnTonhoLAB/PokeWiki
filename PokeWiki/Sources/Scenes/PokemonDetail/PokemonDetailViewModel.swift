@@ -85,7 +85,6 @@ class PokemonBasicDetailViewModel: PokemonBasicDetailViewModelProtocol {
         let id = idStr.parseToIntOrZero()
         
         let fetchImage = interactor.fetchPokemonImage(for: id)
-            .trackActivity(activityIndicator)
             .trackError(errorTracker)
             .do(onNext: { [pokemonImageResponse] pokemonImage in
                 pokemonImageResponse.onNext(pokemonImage)
@@ -136,7 +135,6 @@ extension PokemonBasicDetailViewModel {
 
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
    
-    
     private(set) var didTapFavorite: PublishSubject<Void> = .init()
     private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()
@@ -159,10 +157,13 @@ final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFull
             .map { $0.stats }
             .asObservable()
         
-        alertMessage = didTapFavorite.withLatestFrom(pokemonResponse)
-            .map { (detail) in
+        let data = Observable.combineLatest(pokemonResponse, pokemonImage)
+         { ($0, $1) }
+        
+        alertMessage = didTapFavorite.withLatestFrom(data)
+            .map { (pokemonDetail, imageData) in
                 do {
-                    return try interactor.favoriteToogle(pokemon: detail)
+                    return try interactor.favoriteToogle(pokemon: pokemonDetail, image: imageData)
                 } catch {
                     return ManagedDataResult.error
                 }

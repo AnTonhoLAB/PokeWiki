@@ -22,13 +22,32 @@ class TabBarCoordinator: GGBaseCoordinator<UITabBarController> {
     }
        
     override func start() {
-        let listCoordinator = PokemonListCoordinator()
+        
+        //List All
+        let service = PokemonListAllService()
+        let interactor = PokemonListAllInteractor(service: service)
+        let viewModel = PokemonListAllViewModel(interactor: interactor)
+        let listViewController = PokemonListViewController(viewModel: viewModel)
+        
+        let listCoordinator = PokemonListCoordinator(listViewController: listViewController, viewModel: viewModel)
         let listTabBarItem = UITabBarItem(title: "", image: #imageLiteral(resourceName: "PokeDexIcon"), selectedImage: #imageLiteral(resourceName: "PokeDexIcon"))
         listTabBarItem.tag = 0
         listCoordinator.rootViewController.tabBarItem = listTabBarItem
         listCoordinator.start()
+        
+        //List Favorites
+        let listFavinteractor = PokemonListFavoritesInteractor()
+        let listFaviViewModel = PokemonListFavoritesViewModel(interactor: listFavinteractor)
+        let listFavViewController = PokemonListViewController(viewModel: listFaviViewModel)
+        
+        let listFavCoordinator = PokemonListCoordinator(listViewController: listFavViewController, viewModel: listFaviViewModel)
+        let listFavTabBarItem = UITabBarItem(title: "", image: #imageLiteral(resourceName: "PokeballIcon"), selectedImage: #imageLiteral(resourceName: "PokeballIcon"))
+        listFavTabBarItem.tag = 1
+        listFavCoordinator.rootViewController.tabBarItem = listFavTabBarItem
+        listFavCoordinator.start()
 
-        tabBarController.setViewControllers([listCoordinator.rootViewController],
+        tabBarController.setViewControllers([listCoordinator.rootViewController,
+                                             listFavCoordinator.rootViewController],
                                              animated: true)
     }
 }
