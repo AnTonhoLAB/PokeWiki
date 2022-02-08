@@ -23,6 +23,7 @@ Layout baseado no design desenvolvido por mim utilizando [Figma](https://www.fig
 
 * Xcode 12.x
 * Swift 5
+* iOS 14+
 
 ## Instalação
 
