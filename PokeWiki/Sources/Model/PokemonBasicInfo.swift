@@ -7,10 +7,12 @@
 
 import Foundation
 
+// MARK: - PokemonBasicInfo
 struct PokemonBasicInfo {
     let id: Int
     let name: String
     let type: [TypeElement]
+    let isFavorite: Bool
 }
 
 struct PokemonBioInfo {

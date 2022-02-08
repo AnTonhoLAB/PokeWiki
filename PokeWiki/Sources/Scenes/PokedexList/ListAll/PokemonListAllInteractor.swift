@@ -8,11 +8,11 @@
 import Foundation
 import RxSwift
 
-protocol PokemonListAllInteractorProtocol {
+protocol PokemonListInteractorProtocol {
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse>
 }
 
-class PokemonListAllInteractor: PokemonListAllInteractorProtocol {
+class PokemonListAllInteractor: PokemonListInteractorProtocol {
     
     let service: PokemonListAllServiceProtocol
     let networkingManager: NetworkingManagerProtocol

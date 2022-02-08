@@ -22,6 +22,6 @@ class PokemonDetailCoordinator: GGCoordinator {
         let viewModel = PokemonFullDetailViewModel(name: pokemonItem.name, url: pokemonItem.url, interactor: interactor)
         let detailViewController = PokemonDetailViewController(viewModel: viewModel)
         
-        show(detailViewController)
+        present(detailViewController)
     }
 }

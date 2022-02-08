@@ -9,9 +9,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 import GGDevelopmentKit
+import CoreData
 
 class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlertableViewController {
     
+    private let bgImageView = UIImageView(image: #imageLiteral(resourceName: "ListBG"))
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
     
@@ -22,11 +24,11 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return collectionView
     }()
     
-    private let viewModel: PokemonListAllViewModel
+    private let viewModel: PokemonListViewModelProtocol
     let disposeBag = DisposeBag()
     
     // MARK: - Initializers
-    init(viewModel: PokemonListAllViewModel) {
+    init(viewModel: PokemonListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,13 +45,22 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         configureViews()
         
         setupRx()
+        navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: - Private methods
     private func setupRx() {
         viewModel
             .pokemonList
+            .skip(1)
             .asObservable()
+            .do(onNext: { [weak self] (pokemonResponse) in
+                guard let self = self else { return }
+                if pokemonResponse.count == 0 {
+                    self.displayWarningInView(title: "oh no", message: "You don't have any Pokemon saved", buttonTitle: "Ok", action: nil)
+                    self.bgImageView.isHidden = false
+                }
+            })
             .bind(to: collectionView.rx
                     .items(cellIdentifier: PokemonListCell.identifier,
                            cellType: PokemonListCell.self)) { row, pokemon, cell in
@@ -104,30 +115,40 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
     }
     
     private func handle(error: Error) {
-        let reload: (UIAlertAction) -> Void = { [weak self] _ in
+        let reload: (GGAlertAction) -> Void = { [weak self] _ in
             self?.viewModel
                 .viewDidLoad
                 .onNext(true)
         }
-        
+
+        let tryAgain = "Try again"
+
         if let listError = error as? PokemonListError {
-            self.alertSimpleMessage(title: "oh no, an error occurred", message: listError.localizedDescription, buttonTitle: "Try again", action: reload)
+            displayWarningInView(title: "oh no, an error occurred", message: listError.localizedDescription, buttonTitle: tryAgain, action: reload)
         } else {
-            self.alertSimpleMessage(message: "An unexpected error occurred", buttonTitle: "Try again", action: reload)
+            displayWarningInView(title: "Error", message: "An unexpected error occurred", buttonTitle: tryAgain, action: reload)
         }
     }
     
     private func setupViews() {
+        view.addSubview(bgImageView)
         view.addSubview(collectionView)
     }
     
     private func configureViews() {
-        self.collectionView.backgroundColor = AppColors.bgColor
+        self.bgImageView.isHidden = true
+        self.collectionView.backgroundColor = .clear
         self.view.backgroundColor = AppColors.bgColor
     }
     
     // MARK: - Delegate methods
     private func setupConstraints() {
+        bgImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        bgImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        bgImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        bgImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        bgImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
@@ -141,4 +162,3 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return CGSize(width: size, height: size)
     }
 }
-

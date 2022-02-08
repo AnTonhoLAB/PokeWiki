@@ -10,17 +10,17 @@ import GGDevelopmentKit
 
 class PokemonListCoordinator: GGCoordinator {
     
-    init() {
+    let listViewController: PokemonListViewController
+    let viewModel: PokemonListViewModelProtocol
+    
+    init(listViewController: PokemonListViewController, viewModel: PokemonListViewModelProtocol) {
         let navigation = UINavigationController()
-//        navigation.interactivePopGestureRecognizer?.isEnabled = false
+        self.viewModel = viewModel
+        self.listViewController = listViewController
         super.init(rootViewController: navigation)
     }
 
     override func start() {
-        let service = PokemonListAllService()
-        let interactor = PokemonListAllInteractor(service: service)
-        let viewModel = PokemonListAllViewModel(interactor: interactor)
-        let listViewController = PokemonListViewController(viewModel: viewModel)
         
         viewModel.navigation
             .filter { $0.type == .openDetail}

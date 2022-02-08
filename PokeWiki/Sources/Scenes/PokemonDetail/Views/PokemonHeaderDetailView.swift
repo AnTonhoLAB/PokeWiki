@@ -7,6 +7,12 @@
 
 import GGDevelopmentKit
 import RxSwift
+import Lottie
+
+enum HeaderAnimations: String {
+    case favoriteAnimation
+    case favoriteAnimationB
+}
 
 class PokemonHeaderDetailView: UIView, ViewCoded {
     
@@ -14,17 +20,27 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     private let font = UIFont(name: "GillSans-Bold", size: 30)
     
     // MARK: - Public properties
-    private(set) var imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
+    private let imageHLBG = UIImageView(image: #imageLiteral(resourceName: "HeaderBG"))
+    let favoriteButton = AnimatedLottieButton(name: HeaderAnimations.favoriteAnimationB.rawValue, frame: .zero)
     private(set) var pokemonImage = UIImageView(frame: .zero)
-    private(set) var nameLabel: UILabel = UILabel(frame: .zero)
-    private(set) var numberLabel: UILabel = UILabel(frame: .zero)
-    private(set) var typesStack: UIStackView = {
+    fileprivate let nameLabel: UILabel = UILabel(frame: .zero)
+    fileprivate let numberLabel: UILabel = UILabel(frame: .zero)
+    private let typesStack: UIStackView = {
         $0.axis = .horizontal
+        $0.distribution = .fillEqually
         return $0
     }(UIStackView())
+    let bag = DisposeBag()
+    
+    private(set) var tapFavorite: Observable<Void>
     
     // MARK: - Initializers
     override init(frame: CGRect) {
+        self.tapFavorite = favoriteButton.rx
+            .tap
+            .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .asObservable()
+        
         super.init(frame: frame)
         self.setupLayout()
     }
@@ -38,6 +54,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
         addSubview(numberLabel)
         addSubview(imageHLBG)
         addSubview(typesStack)
+        addSubview(favoriteButton)
         imageHLBG.addSubview(pokemonImage)
     }
     
@@ -53,6 +70,13 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     }
     
     func setupConstraints() {
+        
+        favoriteButton.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        favoriteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 85).isActive = true
+        favoriteButton.widthAnchor.constraint(equalToConstant: 85).isActive = true
+        favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        
         imageHLBG.topAnchor.constraint(equalTo: topAnchor).isActive = true
         imageHLBG.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         imageHLBG.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -96,7 +120,6 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             typeContentView.addSubview(typeBadgeView)
             typeBadgeView.addSubview(typeLabel)
             
-            
             typeBadgeView.backgroundColor = element.type.name.color()
             typeLabel.text = element.type.name.rawValue
             typeLabel.textAlignment = .center
@@ -120,10 +143,10 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             typeBadgeView.translatesAutoresizingMaskIntoConstraints = false
             typeBadgeView.heightAnchor.constraint(equalToConstant: 36).isActive = true
             
-            typeContentView.widthAnchor.constraint(equalToConstant:( (frame.width - 60) / CGFloat(types.count)) ).isActive = true
             typeContentView.translatesAutoresizingMaskIntoConstraints = false
            
             typesStack.addArrangedSubview(typeContentView)
+            
         }
     }
 }
@@ -135,6 +158,9 @@ extension Reactive where Base: PokemonHeaderDetailView {
             view.nameLabel.text = detail.name.capitalized
             view.numberLabel.text = "#\(detail.id)"
             view.createBadges(with: detail.type)
+            if detail.isFavorite {
+                view.favoriteButton.full(with: 80)
+            }
         }
     }
 }
