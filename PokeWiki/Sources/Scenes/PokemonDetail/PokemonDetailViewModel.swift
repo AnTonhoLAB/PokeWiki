@@ -135,7 +135,6 @@ extension PokemonBasicDetailViewModel {
 
 final class PokemonFullDetailViewModel: PokemonBasicDetailViewModel, PokemonFullDetailViewModelProtocol {
    
-    
     private(set) var didTapFavorite: PublishSubject<Void> = .init()
     private(set) var typeinfoColor: Observable<UIColor> = .never()
     private(set) var bioInfo: Observable<PokemonBioInfo> = .never()

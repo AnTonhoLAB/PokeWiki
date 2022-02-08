@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (5.5.0)
-  - GGDevelopmentKit (0.6.0):
+  - GGDevelopmentKit (0.7.0):
     - RxCocoa
     - RxSwift
   - lottie-ios (3.3.0)
@@ -19,7 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.5)
-  - GGDevelopmentKit (~> 0.6.0)
+  - GGDevelopmentKit (~> 0.7.0)
   - lottie-ios (~> 3.3.0)
   - Nimble (~> 9.2.1)
   - Quick (~> 4.0.0)
@@ -44,7 +44,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
-  GGDevelopmentKit: f8541391e7631308982d5c6c98cffce3a87fdd7d
+  GGDevelopmentKit: 25959466b35ea38dcfe814e724f426239fda7fbb
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
   Nimble: e7e615c0335ee4bf5b0d786685451e62746117d5
   Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
@@ -54,6 +54,6 @@ SPEC CHECKSUMS:
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   RxTest: 0c692fa672b694373ba86d2b00033595297a2831
 
-PODFILE CHECKSUM: 963e5a8ba5164c457156b204e183c5cdd4bc1b4e
+PODFILE CHECKSUM: 223458621066dcb5b130424be9cbe11176527f9c
 
 COCOAPODS: 1.11.0

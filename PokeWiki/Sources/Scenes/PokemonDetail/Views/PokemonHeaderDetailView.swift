@@ -27,6 +27,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
     fileprivate let numberLabel: UILabel = UILabel(frame: .zero)
     private let typesStack: UIStackView = {
         $0.axis = .horizontal
+        $0.distribution = .fillEqually
         return $0
     }(UIStackView())
     let bag = DisposeBag()
@@ -145,7 +146,7 @@ class PokemonHeaderDetailView: UIView, ViewCoded {
             typeContentView.translatesAutoresizingMaskIntoConstraints = false
            
             typesStack.addArrangedSubview(typeContentView)
-            typesStack.distribution = .fillEqually
+            
         }
     }
 }

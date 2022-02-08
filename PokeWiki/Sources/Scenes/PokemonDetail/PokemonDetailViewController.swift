@@ -102,12 +102,10 @@ final class PokemonDetailViewController: UIViewController, ViewCoded {
         })
         .disposed(by: disposeBag)
 
-        
         headerView.tapFavorite
             .bind(to: viewModel.didTapFavorite)
             .disposed(by: disposeBag)
-
-
+        
         viewModel.viewWillAppear
             .onNext(())
     }
