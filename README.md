@@ -9,7 +9,7 @@
 </p>
 
 # PokeWiki
-### Um app de pokedex feito em swift com a lista de todos pokemons
+### Um app de pokedex feito em swift com a lista;detalhe de todos pokemons com a possibilidade de salvar localmente o detalhe dos favoritos
 
 ## Tecnologias utilizadas: 
   - [MVVM-C](assets/PokeWikiArc.png)
