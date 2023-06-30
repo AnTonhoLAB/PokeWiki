@@ -12,7 +12,11 @@ import GGDevelopmentKit
 import CoreData
 
 class PokemonListFavoritesViewModel: PokemonListViewModel, PokemonListViewModelProtocol {
+    var updateUI: (() -> Void)
     
+    var titleText: UIImage {
+        return #imageLiteral(resourceName: "ListBG")
+    }
     // MARK: - Definitions
     typealias ListNavigation = Navigation<Route>
     typealias ServiceState = Navigation<State>
@@ -36,6 +40,9 @@ class PokemonListFavoritesViewModel: PokemonListViewModel, PokemonListViewModelP
     init(interactor: PokemonListInteractorProtocol) {
         self.interactor = interactor
         self.pokemonList = pokemonListResponse.asDriverOnErrorJustComplete()
+        self.updateUI = {
+            
+        }
         super.init()
         self.serviceState = createServiceState()
         self.navigation = createNavigation()

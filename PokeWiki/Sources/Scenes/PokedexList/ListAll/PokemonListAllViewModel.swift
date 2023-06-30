@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import GGDevelopmentKit
+import UIKit
 
 class PokemonListViewModel {
     
@@ -36,6 +37,8 @@ class PokemonListViewModel {
 }
 
 protocol PokemonListViewModelProtocol {
+    var updateUI: (() -> Void) { get set }
+    var titleText: UIImage { get }
     // MARK: - Inputs
     var viewDidLoad: PublishSubject<Bool> { get }
     var loadMore: PublishSubject<Bool> { get }
@@ -48,6 +51,12 @@ protocol PokemonListViewModelProtocol {
 }
 
 final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelProtocol {
+    var updateUI: (() -> Void)
+    
+    var titleText: UIImage {
+        return #imageLiteral(resourceName: "ListBG")
+    }
+    
     // MARK: - Definitions
     typealias ListNavigation = Navigation<Route>
     typealias ServiceState = Navigation<State>
@@ -71,6 +80,9 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
     init(interactor: PokemonListInteractorProtocol) {
         self.interactor = interactor
         self.pokemonList = pokemonListResponse.asDriverOnErrorJustComplete()
+        self.updateUI = {
+            
+        }
         super.init()
         self.serviceState = createServiceState()
         self.navigation = createNavigation()
@@ -78,7 +90,7 @@ final class PokemonListAllViewModel: PokemonListViewModel, PokemonListViewModelP
     
     // MARK: - Internal methods
     private func createServiceState() -> Driver<ServiceState> {
-                
+                 
         let activityIndicator = ActivityIndicator()
         
         /// Triger when start to load

@@ -13,7 +13,7 @@ import CoreData
 
 class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowLayout, GGAlertableViewController {
     
-    private let bgImageView = UIImageView(image: #imageLiteral(resourceName: "ListBG"))
+    private var bgImageView = UIImageView(image: #imageLiteral(resourceName: "ListBG"))
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
     
@@ -24,13 +24,17 @@ class PokemonListViewController: UIViewController, UICollectionViewDelegateFlowL
         return collectionView
     }()
     
-    private let viewModel: PokemonListViewModelProtocol
+    private var viewModel: PokemonListViewModelProtocol
     let disposeBag = DisposeBag()
     
     // MARK: - Initializers
     init(viewModel: PokemonListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.updateUI = { //in
+            self.bgImageView =  UIImageView(image: viewModel.titleText)
+        }
     }
     
     @available(*, unavailable)

@@ -20,6 +20,7 @@ private enum URLParams: String {
 final class PokemonListAllService: PokemonListAllServiceProtocol, RequesterProtocol {
         
     private let baseURL = "https://pokeapi.co/api/v2/pokemon"
+    
     func fetchList(with limit: Int, offSet: Int) -> Single<PokemonListResponse> {
         return Single<PokemonListResponse>
             .create { [weak self, baseURL] single in
